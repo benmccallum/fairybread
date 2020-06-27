@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Input validation for HotChocolate</Description>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="8.6.2"/>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="8.6.2"/>
     <PackageReference Include="HotChocolate.Types" Version="10.5.0-preview.6"/>
   </ItemGroup>

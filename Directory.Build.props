@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup Label="Сommon properties">
+    <LangVersion>latest</LangVersion>
+    <PackageProjectUrl>https://github.com/benmccallum/fairybread</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/benmccallum/fairybread</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Copyright>Ben McCallum</Copyright>
+    <Authors>Ben McCallum</Authors>
+    <Product>Validation for HotChocolate</Product>
+    <Company>Ben McCallum</Company>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <PackageId>$(MSBuildProjectName)</PackageId>
+    <Version>1.0.0-preview.1</Version>
+  </PropertyGroup>
+</Project>
