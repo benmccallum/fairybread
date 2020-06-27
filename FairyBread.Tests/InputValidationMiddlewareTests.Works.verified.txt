@@ -1,5 +1,0 @@
-{
-  Data: {
-    foo: 'SomeInteger: 1, SomeString: hello'
-  }
-}

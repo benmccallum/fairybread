@@ -1,0 +1,25 @@
+{
+  Data: {
+    read: 'SomeInteger: -1, SomeString: hello; EmailAddress: ben@lol.com'
+  },
+  Errors: [
+    {
+      Message: '\'Some Integer\' must be equal to \'1\'.',
+      Path: [
+        'read'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
+      Extensions: {
+        ResourceName: 'EqualValidator',
+        PropertyName: 'SomeInteger',
+        ErrorCode: 'EqualValidator',
+        Severity: 'Error'
+      }
+    }
+  ]
+}

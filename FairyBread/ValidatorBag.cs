@@ -5,11 +5,6 @@ using System.Linq;
 
 namespace FairyBread
 {
-    public interface IValidatorBag
-    {
-        IEnumerable<IValidator> GetValidators(Type typeToValidate);
-    }
-
     public class ValidatorBag : IValidatorBag
     {
         private readonly IServiceProvider _serviceProvider;

@@ -7,11 +7,15 @@ namespace FairyBread
     {
         private readonly FieldDelegate _next;
         private readonly IValidatorBag _validatorBag;
+        private readonly IValidationResultHandler validationResultHandler;
 
-        public InputValidationMiddleware(FieldDelegate next, IValidatorBag validatorBag)
+        public InputValidationMiddleware(FieldDelegate next, 
+            IValidatorBag validatorBag,
+            IValidationResultHandler validationResultHandler)
         {
             _next = next;
             _validatorBag = validatorBag;
+            this.validationResultHandler = validationResultHandler;
         }
 
         public async Task InvokeAsync(IMiddlewareContext context)
@@ -22,13 +26,17 @@ namespace FairyBread
                 foreach (var argument in arguments)
                 {
                     var validators = _validatorBag.GetValidators(argument.ClrType);
+                    var value = context.Argument<object>(argument.Name);
                     foreach (var validator in validators)
                     {
-                        await validator.ValidateAsync("", context.RequestAborted);
+                        var validationResult = await validator.ValidateAsync(value, context.RequestAborted);
+                        if (validationResult != null)
+                        {
+                            validationResultHandler.Handle(context, validationResult);
+                        }
                     }
                 }
             }
-
 
             await _next(context);
         }

@@ -3,6 +3,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using VerifyTests;
@@ -14,31 +15,22 @@ namespace FairyBread.Tests
     [UsesVerify]
     public class InputValidationMiddlewareTests
     {
-        private readonly VerifySettings _verifySettings;
-
-        public InputValidationMiddlewareTests()
+        static InputValidationMiddlewareTests()
         {
-            _verifySettings = new VerifySettings();
-            //_verifySettings.ScrubLinesContaining(@"""Id"":");
+            VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
 
-        [Fact]
-        public Task Works()
+        [Theory]
+        [MemberData(nameof(Cases))]
+        public Task Works(CaseData caseData)
         {
             // Arrange
-            var serviceCollection = new ServiceCollection();
-            
-            // TODO: Use FluentValidation.DependencyInjection extension
-            serviceCollection.AddTransient<MyInputDtoValidator>();
-
-            // TODO: Move into helper setup extension
-            serviceCollection.AddSingleton<IFairyBreadOptions>(sp => new FairyBreadOptions
+            var services = new ServiceCollection();
+            services.AddFairyBread(options =>
             {
-                AssembliesToScanForValidators = new Assembly[] { typeof(MyInputDtoValidator).Assembly }
+                options.AssembliesToScanForValidators = new Assembly[] { typeof(FooInputDtoValidator).Assembly };
             });
-            serviceCollection.AddSingleton<IValidatorBag, ValidatorBag>();
-
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
 
             var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
@@ -47,59 +39,123 @@ namespace FairyBread.Tests
                 .AddServices(serviceProvider)
                 .Create();
 
-            var input = @"{ someInteger: 1, someString: ""hello"" }";
-            var query = "query { foo(input: " + input + ") }";
+            var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
             // Act
             var executor = schema.MakeExecutable();
             var result = executor.ExecuteAsync(query);
 
             // Assert
-            return Verifier.Verify(result, _verifySettings);
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(caseData);
+            return Verifier.Verify(result, verifySettings);
         }
 
+        public static IEnumerable<object[]> Cases()
+        {
+            var caseId = 1;
+            yield return new object[]
+            {
+                // Happy days
+                new CaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }", @"{ emailAddress: ""ben@lol.com"" }")
+            };
+            yield return new object[]
+            {
+                // Sync error
+                new CaseData(caseId++, @"{ someInteger: -1, someString: ""hello"" }", @"{ emailAddress: ""ben@lol.com"" }")
+            };
+            yield return new object[]
+            {
+                // Async error
+                new CaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }", @"{ emailAddress: ""-1"" }")
+            };
+            yield return new object[]
+            {
+                // Multiple sync errors and async error
+                new CaseData(caseId++, @"{ someInteger: -1, someString: ""-1"" }", @"{ emailAddress: ""-1"" }")
+            };
+        }
 
+        public class CaseData
+        {
+            public string CaseId { get; set; }
+            public string FooInput { get; set; }
+            public string BarInput { get; set; }
+
+            public CaseData(int caseId, string fooInput, string barInput)
+            {
+                CaseId = caseId.ToString();
+                FooInput = fooInput;
+                BarInput = barInput;
+            }
+        }
+
+        // TODO: Unit tests for:
+        // - cancellation
+        // - multiple that access shared thing, like DbContext
 
         public class QueryType
         {
-            public string Foo(MyInputDto input) => input.ToString();
+            public string Read(FooInputDto foo, BarInputDto bar) => $"{foo}; {bar}";
         }
 
         public class MutationType
         {
-            public string Bar(MyInputDto input) => input.ToString();
+            public string Write(FooInputDto foo, BarInputDto bar) => $"{foo}; {bar}";
         }
 
-        public class MyInput : InputObjectType<MyInputDto>
+        public class MyInput : InputObjectType<FooInputDto>
         {
-            protected override void Configure(IInputObjectTypeDescriptor<MyInputDto> descriptor)
+            protected override void Configure(IInputObjectTypeDescriptor<FooInputDto> descriptor)
             {
                 descriptor.BindFieldsImplicitly();
             }
         }
 
-#nullable disable
-        public class MyInputDto
+        public class FooInputDto
         {
             public int SomeInteger { get; set; }
-            
-            [GraphQLType(typeof(NonNullType<StringType>))]
-            public string SomeString { get; set; }
 
-            public override string ToString()
+            public string SomeString { get; set; } = "";
+
+            public override string ToString() => 
+                $"SomeInteger: {SomeInteger}, " +
+                $"SomeString: {SomeString}";
+        }
+
+        public class FooInputDtoValidator : AbstractValidator<FooInputDto>
+        {
+            public FooInputDtoValidator()
             {
-                return $"SomeInteger: {SomeInteger}, " +
-                    $"SomeString: {SomeString}";
+                RuleFor(x => x.SomeInteger).Equal(1);
+                RuleFor(x => x.SomeString).Equal("hello");
             }
         }
-#nullable enable
 
-        public class MyInputDtoValidator : AbstractValidator<MyInputDto>
+        public class BarInputDto
         {
-            public MyInputDtoValidator()
+            public string EmailAddress { get; set; } = "";
+
+            public override string ToString()
+                => $"EmailAddress: {EmailAddress}";
+        }
+
+
+        public class BarInputDtoValidator : AbstractValidator<BarInputDto>
+        {
+            public BarInputDtoValidator()
             {
-                RuleFor(x => x.SomeInteger).Equals(1);
-                RuleFor(x => x.SomeString).Equals("hello");
+                RuleFor(x => x.EmailAddress).NotNull();
+            }
+        }
+
+        public class BarInputDtoAsyncValidator : AbstractValidator<BarInputDto>
+        {
+            public BarInputDtoAsyncValidator()
+            {
+                RuleFor(x => x.EmailAddress)
+                    // TODO: Cancellation unit test
+                    .MustAsync((val, cancellationToken) => Task.FromResult(val == "ben@lol.com"));
             }
         }
     }
