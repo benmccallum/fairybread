@@ -6,14 +6,17 @@ namespace FairyBread
     public class InputValidationMiddleware
     {
         private readonly FieldDelegate _next;
+        private readonly IFairyBreadOptions _options;
         private readonly IValidatorProvider _validatorProvider;
         private readonly IValidationResultHandler _validationResultHandler;
 
-        public InputValidationMiddleware(FieldDelegate next, 
+        public InputValidationMiddleware(FieldDelegate next,
+            IFairyBreadOptions options,
             IValidatorProvider validatorProvider,
             IValidationResultHandler validationResultHandler)
         {
             _next = next;
+            _options = options;
             _validatorProvider = validatorProvider;
             _validationResultHandler = validationResultHandler;
         }
@@ -25,6 +28,11 @@ namespace FairyBread
             {
                 foreach (var argument in arguments)
                 {
+                    if (!_options.ShouldValidate(context, argument))
+                    {
+                        continue;
+                    }
+
                     var validators = _validatorProvider.GetValidators(argument.ClrType);
                     var value = context.Argument<object>(argument.Name);
                     foreach (var validator in validators)

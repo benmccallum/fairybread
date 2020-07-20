@@ -1,4 +1,6 @@
-﻿using HotChocolate.Resolvers;
+﻿using HotChocolate.Language;
+using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,18 @@ namespace FairyBread
 
         public bool ThrowIfNoValidatorsFound { get; set; } = true;
 
-        public Func<IMiddlewareContext, bool> ShouldValidate { get; set; } = context => true;
+        public Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; } 
+            = (context, argument) =>
+            {
+                if (context.Operation.Operation == OperationType.Mutation)
+                {
+                    return true;
+                }
+
+                // TODO: If argument has attribute on it
+                // ...
+
+                return false;
+            };
     }
 }

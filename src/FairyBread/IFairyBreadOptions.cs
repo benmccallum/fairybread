@@ -1,4 +1,5 @@
 ﻿using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -11,6 +12,6 @@ namespace FairyBread
 
         public bool ThrowIfNoValidatorsFound { get; set; }
 
-        Func<IMiddlewareContext, bool> ShouldValidate { get; set; }
+        Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; }
     }
 }
