@@ -22,33 +22,30 @@ namespace FairyBread.Tests
 
         [Theory]
         [MemberData(nameof(Cases))]
-        public Task Works(CaseData caseData)
+        public async Task Works(CaseData caseData)
         {
             // Arrange
             var services = new ServiceCollection();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new Assembly[] { typeof(FooInputDtoValidator).Assembly };
-            });
+            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
             var serviceProvider = services.BuildServiceProvider();
 
             var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .Use<InputValidationMiddleware>()
                 .AddServices(serviceProvider)
+                .AddFairyBread(services)
                 .Create();
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
             // Act
             var executor = schema.MakeExecutable();
-            var result = executor.ExecuteAsync(query);
+            var result = await executor.ExecuteAsync(query);
 
             // Assert
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
-            return Verifier.Verify(result, verifySettings);
+            await Verifier.Verify(result, verifySettings);
         }
 
         public static IEnumerable<object[]> Cases()

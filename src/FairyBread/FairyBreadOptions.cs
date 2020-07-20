@@ -1,20 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using HotChocolate.Resolvers;
+using System;
 
 namespace FairyBread
 {
-    public interface IFairyBreadOptions
-    {
-        IEnumerable<Assembly> AssembliesToScanForValidators { get; set; }
-
-        bool ThrowIfNoValidatorsFound { get; set; }
-    }
 
     public class FairyBreadOptions : IFairyBreadOptions
     {
-        public virtual IEnumerable<Assembly> AssembliesToScanForValidators { get; set; } = Enumerable.Empty<Assembly>();
+        public bool ThrowIfNoValidatorsFound { get; } = true;
 
-        public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
+        public Func<IMiddlewareContext, bool> ShouldValidate { get; } = context => true;
     }
 }

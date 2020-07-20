@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FairyBread
 {
-    public interface IValidatorBag
+    public interface IValidatorProvider
     {
         IEnumerable<IValidator> GetValidators(Type typeToValidate);
     }
