@@ -12,5 +12,7 @@
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <PackageId>$(MSBuildProjectName)</PackageId>
     <Version>1.0.0-preview.1</Version>
+
+    <HotChocolateVersion>10.5.0-rc.0</HotChocolateVersion>
   </PropertyGroup>
 </Project>

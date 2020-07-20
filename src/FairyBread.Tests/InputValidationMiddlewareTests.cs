@@ -27,13 +27,17 @@ namespace FairyBread.Tests
             // Arrange
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+            services.AddFairyBread(options =>
+            {
+                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+            });
             var serviceProvider = services.BuildServiceProvider();
 
             var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
                 .AddServices(serviceProvider)
-                .AddFairyBread(services)
+                .UseFairyBread()
                 .Create();
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";

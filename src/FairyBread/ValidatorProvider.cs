@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +7,45 @@ namespace FairyBread
 {
     public class ValidatorProvider : IValidatorProvider
     {
-        private readonly IFairyBreadOptions _options;
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<Type, List<Type>> _cache = new Dictionary<Type, List<Type>>();
 
-        public ValidatorProvider(IFairyBreadOptions options, IServiceProvider serviceProvider)
+        public ValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
         {
-            _options = options;
             _serviceProvider = serviceProvider;
 
-            var validators = _serviceProvider.GetServices<IValidator>();
-            if (!validators.Any() && options.ThrowIfNoValidatorsFound)
+            var validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToArray();
+
+            if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
             {
-                throw new Exception($"No validators were found. Ensure you've registered some.");
+                throw new Exception($"No validators were found in the provided " +
+                    $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} which included: " +
+                    $"{string.Join(",", options.AssembliesToScanForValidators)}.");
             }
 
-            foreach (var validator in validators)
+            foreach (var validatorResult in validatorResults)
             {
-                var validatorX = validator as IValidator<object>;
-                //var validatedType = validator..InterfaceType.GenericTypeArguments.Single();
-                //if (!_cache.TryGetValue(validatedType, out var validatorsForType))
-                //{
-                //    _cache[validatedType] = validatorsForType = new List<Type>();
-                //}
+                var validatorType = validatorResult.ValidatorType;
+                if (validatorType.IsAbstract)
+                {
+                    continue;
+                }
 
-                //validatorsForType.Add(validatorType);
+                var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
+                if (!_cache.TryGetValue(validatedType, out var validatorsForType))
+                {
+                    _cache[validatedType] = validatorsForType = new List<Type>();
+                }
+
+                validatorsForType.Add(validatorType);
             }
         }
 
-        public IEnumerable<IValidator> GetValidators(Type validatorType)
+        public IEnumerable<IValidator> GetValidators(Type typeToValidate)
         {
-            return _serviceProvider.GetServices(validatorType).Cast<IValidator>();
+            return _cache.TryGetValue(typeToValidate, out var validatorTypes)
+                ? validatorTypes.Select(t => (IValidator)_serviceProvider.GetService(t))
+                : Enumerable.Empty<IValidator>();
         }
     }
 }
