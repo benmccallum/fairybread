@@ -1,6 +1,9 @@
-﻿namespace FairyBread
+﻿using FluentValidation;
+
+namespace FairyBread
 {
-    public interface IScopedValidator
+    public interface IScopedValidator : IValidator
     {
+
     }
 }
