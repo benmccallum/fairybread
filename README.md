@@ -9,8 +9,19 @@
   </p>
 </div>
 
+
+## Installation
+
+```bash
+dotnet add package FairyBread
+```
+
 ## Usage
 
 For now, please see the tests while I wrap up the 
 previews and the configuration is finalised.
+
+## Backlog
+
+See issues.
 
