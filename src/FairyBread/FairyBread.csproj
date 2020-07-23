@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="8.6.2"/>
-    <PackageReference Include="HotChocolate.Types" Version="10.5.0-preview.6"/>
+    <PackageReference Include="HotChocolate.Types" Version="$(HotChocolateVersion)"/>
   </ItemGroup>
   
 </Project>

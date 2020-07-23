@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace FairyBread
 {
-    public class ValidatorBag : IValidatorBag
+    public class ValidatorProvider : IValidatorProvider
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<Type, List<Type>> _cache = new Dictionary<Type, List<Type>>();
 
-        public ValidatorBag(IServiceProvider serviceProvider, IFairyBreadOptions options)
+        public ValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
         {
             _serviceProvider = serviceProvider;
 

@@ -1,10 +1,10 @@
 using FluentValidation;
 using HotChocolate;
 using HotChocolate.Execution;
+using HotChocolate.Language;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using VerifyTests;
 using VerifyXunit;
@@ -22,33 +22,35 @@ namespace FairyBread.Tests
 
         [Theory]
         [MemberData(nameof(Cases))]
-        public Task Works(CaseData caseData)
+        public async Task Query_Works(CaseData caseData)
         {
             // Arrange
             var services = new ServiceCollection();
+            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
             services.AddFairyBread(options =>
             {
-                options.AssembliesToScanForValidators = new Assembly[] { typeof(FooInputDtoValidator).Assembly };
+                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
             });
             var serviceProvider = services.BuildServiceProvider();
 
             var schema = SchemaBuilder.New()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .Use<InputValidationMiddleware>()
                 .AddServices(serviceProvider)
+                .UseFairyBread()
                 .Create();
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
             // Act
             var executor = schema.MakeExecutable();
-            var result = executor.ExecuteAsync(query);
+            var result = await executor.ExecuteAsync(query);
 
             // Assert
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
-            return Verifier.Verify(result, verifySettings);
+            await Verifier.Verify(result, verifySettings);
         }
 
         public static IEnumerable<object[]> Cases()
@@ -93,6 +95,38 @@ namespace FairyBread.Tests
         // TODO: Unit tests for:
         // - cancellation
         // - multiple that access shared thing, like DbContext
+
+        [Theory]
+        [MemberData(nameof(Cases))]
+        public async Task Mutation_Works(CaseData caseData)
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+            services.AddFairyBread(options =>
+            {
+                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+            });
+            var serviceProvider = services.BuildServiceProvider();
+
+            var schema = SchemaBuilder.New()
+                .AddQueryType<QueryType>()
+                .AddMutationType<MutationType>()
+                .AddServices(serviceProvider)
+                .UseFairyBread()
+                .Create();
+
+            var query = "mutation { write(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
+
+            // Act
+            var executor = schema.MakeExecutable();
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(caseData);
+            await Verifier.Verify(result, verifySettings);
+        }
 
         public class QueryType
         {
