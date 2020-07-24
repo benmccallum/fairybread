@@ -1,8 +1,10 @@
 name: publish to nuget
+
 on:
   push:
-    branches:
-      - master
+    branches: [master, develop]
+  pull_request: {}
+
 env:
   VERSION_FILE_PATH: src/Directory.Build.props
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
@@ -22,6 +24,7 @@ jobs:
         run: dotnet test
 
       - name: publish FairyBread on version change
+        if: github.ref != 'refs/heads/master'
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
