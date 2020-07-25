@@ -10,13 +10,13 @@ namespace FairyBread
             this IServiceCollection services,
             Action<IFairyBreadOptions>? configureOptions = null)
         {
-            var options = new FairyBreadOptions();
+            var options = new DefaultFairyBreadOptions();
             configureOptions?.Invoke(options);
             services.TryAddSingleton<IFairyBreadOptions>(options);
 
-            services.TryAddSingleton<IValidatorProvider, ValidatorProvider>();
+            services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
             
-            services.TryAddSingleton<IValidationResultHandler, ValidationResultHandler>();
+            services.TryAddSingleton<IValidationResultHandler, DefaultValidationResultHandler>();
 
             return services;
         }

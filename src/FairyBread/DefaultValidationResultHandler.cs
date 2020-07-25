@@ -4,7 +4,7 @@ using HotChocolate.Resolvers;
 
 namespace FairyBread
 {
-    public class ValidationResultHandler : IValidationResultHandler
+    public class DefaultValidationResultHandler : IValidationResultHandler
     {
         public virtual void Handle(IMiddlewareContext context, ValidationResult result)
         {

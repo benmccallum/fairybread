@@ -8,9 +8,9 @@ namespace FairyBread
 {
     public interface IFairyBreadOptions
     {
-        public IEnumerable<Assembly> AssembliesToScanForValidators { get; set; }
+        IEnumerable<Assembly> AssembliesToScanForValidators { get; set; }
 
-        public bool ThrowIfNoValidatorsFound { get; set; }
+        bool ThrowIfNoValidatorsFound { get; set; }
 
         Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; }
     }

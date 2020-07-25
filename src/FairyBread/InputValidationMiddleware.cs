@@ -33,7 +33,7 @@ namespace FairyBread
                         continue;
                     }
 
-                    var validators = _validatorProvider.GetValidators(argument.ClrType);
+                    var validators = _validatorProvider.GetValidators(context, argument.ClrType);
                     var value = context.Argument<object>(argument.Name);
                     foreach (var validator in validators)
                     {

@@ -43,8 +43,9 @@ namespace FairyBread.Tests
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
-            // Act
             var executor = schema.MakeExecutable();
+
+            // Act
             var result = await executor.ExecuteAsync(query);
 
             // Assert
