@@ -1,16 +1,17 @@
 ﻿using FluentValidation;
+using HotChocolate.Resolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace FairyBread
 {
-    public class ValidatorProvider : IValidatorProvider
+    public class DefaultValidatorProvider : IValidatorProvider
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly Dictionary<Type, List<Type>> _cache = new Dictionary<Type, List<Type>>();
 
-        public ValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
+        public DefaultValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
         {
             _serviceProvider = serviceProvider;
 
@@ -41,7 +42,7 @@ namespace FairyBread
             }
         }
 
-        public IEnumerable<IValidator> GetValidators(Type typeToValidate)
+        public virtual IEnumerable<IValidator> GetValidators(IMiddlewareContext context, Type typeToValidate)
         {
             return _cache.TryGetValue(typeToValidate, out var validatorTypes)
                 ? validatorTypes.Select(t => (IValidator)_serviceProvider.GetService(t))

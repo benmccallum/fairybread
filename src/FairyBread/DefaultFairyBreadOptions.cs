@@ -8,13 +8,13 @@ using System.Reflection;
 
 namespace FairyBread
 {
-    public class FairyBreadOptions : IFairyBreadOptions
+    public class DefaultFairyBreadOptions : IFairyBreadOptions
     {
-        public IEnumerable<Assembly> AssembliesToScanForValidators { get; set; } = Enumerable.Empty<Assembly>();
+        public virtual IEnumerable<Assembly> AssembliesToScanForValidators { get; set; } = Enumerable.Empty<Assembly>();
 
-        public bool ThrowIfNoValidatorsFound { get; set; } = true;
+        public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
-        public Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; } 
+        public virtual Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; } 
             = (context, argument) =>
             {
                 if (context.Operation.Operation == OperationType.Mutation)

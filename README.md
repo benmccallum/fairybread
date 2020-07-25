@@ -1,9 +1,5 @@
 <div align="center">
-  <p>
-    <a href="http://overdrive.autoguru.io/">
-      <img alt="fairybread" src="logo.svg" height="200px">
-    </a>
-  </p>
+  <img alt="fairybread" src="logo.svg" height="200px">
   <p>
     Input validation for HotChocolate.
   </p>
