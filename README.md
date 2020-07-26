@@ -90,8 +90,7 @@ modify the way error codes are set on the `IError`, which can be done like so:
 public class CustomValidationResultHandler : DefaultValidationResultHandler
 {
     protected override IErrorBuilder ExtractError(IMiddlewareContext context, ValidationFailure failure)
-        => base
-            .ExtractError(context, failure)
+        => base.ExtractError(context, failure)
             .SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
 }
 ```
