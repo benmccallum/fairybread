@@ -1,20 +1,30 @@
-name: publish to nuget
+name: ci/cd
+
 on:
   push:
-    branches:
-      - master
+    branches: [master, develop]
+  pull_request: {}
+
 env:
   VERSION_FILE_PATH: src/Directory.Build.props
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
   TAG_COMMIT: false
-jobs: 
+jobs:
   publish:
     name: list on nuget
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2      
-        
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "3.1.x" # Will install the latest in the 3.1 channel
+
+      - name: run unit tests
+        run: dotnet test src/
+
       - name: publish FairyBread on version change
+        if: github.ref == 'refs/heads/master'
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
