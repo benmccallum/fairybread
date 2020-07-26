@@ -37,11 +37,14 @@ HotChocolate.SchemaBuilder.New()
     ...;
 ```
 
-Set up FluentValidation validators like you usually would on your input CLR types.
+Set up [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
+the CLR types backing your HotChocolate input types.
 
 ```c#
 
 public class UserInput { ... }
+
+public class UserInputType : InputObjectType<UserInput> { ... }
 
 public class UserInputValidator : AbstractValidator<UserInput> { ... }
 
@@ -151,3 +154,10 @@ Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTest
 
 See issues.
 
+## What the heck is a fairy bread?
+
+A (bizarre) Australian food served at children's parties. Since I'm Australian and HotChocolate has a lot of 
+project names with sweet tendencies, this seemed like a fun name for the project.
+
+According to [wikipedia](https://en.wikipedia.org/wiki/Fairy_bread):
+> "Fairy bread is sliced white bread spread with butter or margarine and covered with sprinkles or "hundreds and thousands", served at children's parties in Australia and New Zealand. It is typically cut into triangles."
