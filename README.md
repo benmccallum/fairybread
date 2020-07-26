@@ -57,9 +57,9 @@ By default, FairyBread will validate any argument that:
 
 > Note: by default, query operations are notably excluded. This is mostly for performance reasons.
 
-If the default doesn't suit you, you can always change it by configuring `IFairyBreadOptions.ShouldValidate`. See Customization.
+If the default doesn't suit you, you can always change it by configuring `IFairyBreadOptions.ShouldValidate`. See [Customization](#Customization).
 
-For more example, please see the tests.
+For more examples, please see the tests.
 
 ## Customization
 
