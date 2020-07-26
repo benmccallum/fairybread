@@ -17,12 +17,15 @@ namespace FairyBread
         public virtual Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; } 
             = (context, argument) =>
             {
-                if (context.Operation.Operation == OperationType.Mutation)
+                if (context.Operation.Operation == OperationType.Mutation &&
+                    argument.Type.InnerType() is InputObjectType inputObjectType)
                 {
                     return true;
                 }
 
                 // TODO: If argument has attribute on it
+                // TODO: If the InputObjectType has attribute on it
+                // TODO: If the ClrType has attribute on it
                 // ...
 
                 return false;

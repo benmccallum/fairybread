@@ -24,24 +24,31 @@ namespace FairyBread
         public async Task InvokeAsync(IMiddlewareContext context)
         {
             var arguments = context.Field.Arguments;
-            if (arguments.Count > 0)
+            foreach (var argument in arguments)
             {
-                foreach (var argument in arguments)
+                if (argument == null || !_options.ShouldValidate(context, argument))
                 {
-                    if (!_options.ShouldValidate(context, argument))
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var validators = _validatorProvider.GetValidators(context, argument.ClrType);
+                var resolvedValidators = _validatorProvider.GetValidators(context, argument);
+                try
+                {
                     var value = context.Argument<object>(argument.Name);
-                    foreach (var validator in validators)
+                    foreach (var resolvedValidator in resolvedValidators)
                     {
-                        var validationResult = await validator.ValidateAsync(value, context.RequestAborted);
+                        var validationResult = await resolvedValidator.Validator.ValidateAsync(value, context.RequestAborted);
                         if (validationResult != null)
                         {
                             _validationResultHandler.Handle(context, validationResult);
                         }
+                    }
+                }
+                finally
+                {
+                    foreach (var resolvedValidator in resolvedValidators)
+                    {
+                        resolvedValidator.Scope?.Dispose();
                     }
                 }
             }

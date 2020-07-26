@@ -4,6 +4,7 @@ using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Language;
 using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,22 +13,21 @@ using System.Threading.Tasks;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
-using static FairyBread.Tests.InputValidationMiddlewareTests;
 
 namespace FairyBread.Tests
 {
     [UsesVerify]
     public class CustomizationTests
     {
-        private const string query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }, bar: { emailAddress: ""ben@lol.com"" }) }";
+        private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
 
         private IQueryExecutor InitQueryExecutor(Action<IServiceCollection> preBuildProviderAction)
         {
             var services = new ServiceCollection();
-            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+            services.AddValidatorsFromAssemblyContaining<CustomValidator>();
             services.AddFairyBread(options =>
             {
-                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                options.AssembliesToScanForValidators = new[] { typeof(CustomValidator).Assembly };
                 options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
             });
 
@@ -55,7 +55,7 @@ namespace FairyBread.Tests
             });
 
             // Act            
-            var result = await queryExecutor.ExecuteAsync(query);
+            var result = await queryExecutor.ExecuteAsync(Query);
 
             // Assert
             Assert.NotEmpty(result.Errors.AsEnumerable());
@@ -80,7 +80,7 @@ namespace FairyBread.Tests
             });
 
             // Act
-            var result = await queryExecutor.ExecuteAsync(query);
+            var result = await queryExecutor.ExecuteAsync(Query);
 
             // Assert
             await Verifier.Verify(result, new VerifySettings());
@@ -91,10 +91,31 @@ namespace FairyBread.Tests
             public CustomValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
                 : base(serviceProvider, options) { }
 
-            public override IEnumerable<IValidator> GetValidators(IMiddlewareContext context, Type typeToValidate) 
-                => typeToValidate == typeof(FooInputDto)
-                    ? (new IValidator[] { new CustomValidator() })
-                    : base.GetValidators(context, typeToValidate);
+            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument) 
+                => argument.ClrType == typeof(FooInputDto)
+                    ? (new ResolvedValidator[] { new ResolvedValidator(new CustomValidator()) })
+                    : base.GetValidators(context, argument);
+        }
+
+        public class QueryType
+        {
+            public string Read(FooInputDto foo) => $"{foo};";
+        }
+
+        public class MutationType
+        {
+            public string Write(FooInputDto foo) => $"{foo};";
+        }
+
+        public class FooInputDto
+        {
+            public int SomeInteger { get; set; }
+
+            public string SomeString { get; set; } = "";
+
+            public override string ToString() =>
+                $"SomeInteger: {SomeInteger}, " +
+                $"SomeString: {SomeString}";
         }
 
         public class CustomValidator : AbstractValidator<FooInputDto>

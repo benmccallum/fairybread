@@ -1,6 +1,6 @@
 {
   Data: {
-    read: 'SomeInteger: 1, SomeString: hello; EmailAddress: ben@lol.com'
+    read: 'SomeInteger: 1, SomeString: hello;'
   },
   Errors: [
     {

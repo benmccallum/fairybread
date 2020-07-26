@@ -1,5 +1,5 @@
-﻿using FluentValidation;
-using HotChocolate.Resolvers;
+﻿using HotChocolate.Resolvers;
+using HotChocolate.Types;
 using System;
 using System.Collections.Generic;
 
@@ -7,6 +7,8 @@ namespace FairyBread
 {
     public interface IValidatorProvider
     {
-        IEnumerable<IValidator> GetValidators(IMiddlewareContext context, Type typeToValidate);
+        IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument);
+
+        bool ShouldBeResolvedInOwnScope(Type validatorType);
     }
 }

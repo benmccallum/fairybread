@@ -1,0 +1,6 @@
+## Language conventions
+# Dotnet code style settings:
+[*.{cs,vb}]
+
+# Async unit test methods don't need the "Async" suffix
+dotnet_naming_rule.async_methods_end_in_async.severity = none
