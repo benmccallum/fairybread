@@ -1,4 +1,4 @@
-name: publish to nuget
+name: ci/cd
 
 on:
   push:
