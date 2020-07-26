@@ -64,10 +64,13 @@ If the default doesn't suit you, you can always change it by configuring `IFairy
 ### How validation errors will be handled
 
 Errors will be written out into the GraphQL execution result in the `Errors` property. By default, 
-extra information about the validation will be written out in the Extensions property. For example:
-```json
+extra information about the validation will be written out in the Extensions property. 
+
+For example (note, not JSON):
+
+```
 {
-  Data: { ... },
+  Data: ...,
   Errors: [
     {
       Message: '\'Some Integer\' must be equal to \'1\'.',
