@@ -5,6 +5,7 @@
   </p>
 </div>
 
+[![GitHub release](https://img.shields.io/github/release/benmccallum/fairybread.svg)](https://github.com/benmccallum/fairybread/releases) [![NuGet Package](https://img.shields.io/nuget/v/FairyBread.svg)](https://www.nuget.org/packages/FairyBread/) ![Nuget](https://img.shields.io/nuget/dt/FairyBread)
 
 ## Getting started
 
