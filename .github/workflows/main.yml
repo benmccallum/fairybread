@@ -21,7 +21,7 @@ jobs:
           dotnet-version: "3.1.x" # Will install the latest in the 3.1 channel
 
       - name: run unit tests
-        run: dotnet test
+        run: dotnet test src/
 
       - name: publish FairyBread on version change
         if: github.ref == 'refs/heads/master'
