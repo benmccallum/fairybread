@@ -49,6 +49,8 @@ public class UserInputValidator : AbstractValidator<UserInput> { ... }
 public Task CreateUser(UserInput userInput) { ... }
 ```
 
+### When validation will fire
+
 By default, FairyBread will validate any argument that:
 * is an `InputObjectType` on a mutation operation,
 * or (coming soon) is:
@@ -58,6 +60,37 @@ By default, FairyBread will validate any argument that:
 > Note: by default, query operations are notably excluded. This is mostly for performance reasons.
 
 If the default doesn't suit you, you can always change it by configuring `IFairyBreadOptions.ShouldValidate`. See [Customization](#Customization).
+
+### How validation errors will be handled
+
+Errors will be written out into the GraphQL execution result in the `Errors` property. By default, 
+extra information about the validation will be written out in the Extensions property. For example:
+```json
+{
+  Data: { ... },
+  Errors: [
+    {
+      Message: '\'Some Integer\' must be equal to \'1\'.',
+      Path: [
+        'someMutationField'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 12
+        }
+      ],
+      Extensions: {
+        ResourceName: 'EqualValidator',
+        PropertyName: 'SomeInteger',
+        ErrorCode: 'EqualValidator',
+        Severity: 'Error'
+      }
+    }
+  ]
+```
+
+### Where to next?
 
 For more examples, please see the tests.
 
