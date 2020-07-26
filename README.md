@@ -88,6 +88,7 @@ extra information about the validation will be written out in the Extensions pro
       }
     }
   ]
+}
 ```
 
 ### Where to next?
