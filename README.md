@@ -27,14 +27,14 @@ services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
 // Add FairyBread
 services.AddFairyBread(options =>
 {
-	options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
 });
 
 // Configure FairyBread middleware using HotChocolate's ISchemaBuilder
 HotChocolate.SchemaBuilder.New()
-	...
-	.UseFairyBread()
-	...;
+    ...
+    .UseFairyBread()
+    ...;
 ```
 
 Set up FluentValidation validators like you usually would on your input CLR types.
@@ -68,9 +68,9 @@ FairyBread was built with customization in mind. At configuration time, you can 
 ```c#
 services.AddFairyBread(options =>
 {
-	options.AssembliesToScanForValidators = new[] { typeof(MyValidator).Assembly };
-	options.ShouldValidate = (ctx, arg) => ...;
-	options.ThrowIfNoValidatorsFound = true/false;
+    options.AssembliesToScanForValidators = new[] { typeof(MyValidator).Assembly };
+    options.ShouldValidate = (ctx, arg) => ...;
+    options.ThrowIfNoValidatorsFound = true/false;
 });
 ```
 
@@ -90,9 +90,9 @@ modify the way error codes are set on the `IError`, which can be done like so:
 public class CustomValidationResultHandler : DefaultValidationResultHandler
 {
     protected override IErrorBuilder ExtractError(IMiddlewareContext context, ValidationFailure failure)
-	    => base.ExtractError(context, failure)
-			.SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
-	}
+        => base
+            .ExtractError(context, failure)
+            .SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
 }
 ```
 
