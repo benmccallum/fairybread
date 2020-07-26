@@ -93,10 +93,6 @@ namespace FairyBread.Tests
             }
         }
 
-        // TODO: Unit tests for:
-        // - cancellation
-        // - multiple that access shared thing, like DbContext
-
         [Theory]
         [MemberData(nameof(Cases))]
         public async Task Mutation_Works(CaseData caseData)
@@ -128,6 +124,9 @@ namespace FairyBread.Tests
             verifySettings.UseParameters(caseData);
             await Verifier.Verify(result, verifySettings);
         }
+
+        // TODO: Unit tests for:
+        // - cancellation
 
         public class QueryType
         {
@@ -174,7 +173,6 @@ namespace FairyBread.Tests
             public override string ToString()
                 => $"EmailAddress: {EmailAddress}";
         }
-
 
         public class BarInputDtoValidator : AbstractValidator<BarInputDto>
         {
