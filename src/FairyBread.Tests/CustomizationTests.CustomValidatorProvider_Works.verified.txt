@@ -1,7 +1,34 @@
 {
   Errors: [
     {
-      Message: 'The execution pipeline yielded no query result.'
+      Message: '\'Some Integer\' must be greater than or equal to \'999\'.',
+      Path: [
+        'read'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
+      Extensions: {
+        ResourceName: 'GreaterThanOrEqualValidator',
+        PropertyName: 'SomeInteger',
+        ErrorCode: 'GreaterThanOrEqualValidator',
+        Severity: 'Error'
+      }
+    },
+    {
+      Message: 'Validation errors occurred.',
+      Path: [
+        'read'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ]
     }
   ]
 }
