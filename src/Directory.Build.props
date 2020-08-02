@@ -10,9 +10,12 @@
     <Company>Ben McCallum</Company>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    
     <PackageId>$(MSBuildProjectName)</PackageId>
-    <Version>1.0.0-preview.4</Version>
+    <PackageIconUrl>https://github.com/benmccallum/fairybread/raw/master/logo-400x400.png</PackageIconUrl>
+    
+    <Version>1.0.0-preview.6</Version>
 
-    <HotChocolateVersion>10.5.0-rc.6</HotChocolateVersion>
+    <HotChocolateVersion>10.5.2</HotChocolateVersion>
   </PropertyGroup>
 </Project>

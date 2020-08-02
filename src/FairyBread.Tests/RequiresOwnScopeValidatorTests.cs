@@ -39,7 +39,12 @@ namespace FairyBread.Tests
                 .UseFairyBread()
                 .Create();
 
-            return schema.MakeExecutable();
+            return schema.MakeExecutable(builder =>
+            {
+                builder
+                    .UseDefaultPipeline()
+                    .AddErrorFilter<DefaultValidationErrorFilter>();
+            });
         }
 
         [Fact]

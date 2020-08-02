@@ -1,4 +1,8 @@
-﻿using HotChocolate.Resolvers;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using HotChocolate.Resolvers;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FairyBread
@@ -24,6 +28,9 @@ namespace FairyBread
         public async Task InvokeAsync(IMiddlewareContext context)
         {
             var arguments = context.Field.Arguments;
+
+            var validationResults = new List<ValidationResult>();
+
             foreach (var argument in arguments)
             {
                 if (argument == null || !_options.ShouldValidate(context, argument))
@@ -40,6 +47,7 @@ namespace FairyBread
                         var validationResult = await resolvedValidator.Validator.ValidateAsync(value, context.RequestAborted);
                         if (validationResult != null)
                         {
+                            validationResults.Add(validationResult);
                             _validationResultHandler.Handle(context, validationResult);
                         }
                     }
@@ -53,7 +61,20 @@ namespace FairyBread
                 }
             }
 
+            var invalidValidationResults = validationResults.Where(r => !r.IsValid);
+            if (invalidValidationResults.Any())
+            {
+                OnInvalid(context, invalidValidationResults);
+            }
+
             await _next(context);
+        }
+
+        protected virtual void OnInvalid(IMiddlewareContext middlewareContext, IEnumerable<ValidationResult> invalidValidationResults)
+        {
+            // TODO: Discuss with Michael. Is there a better way to short-circuit out of the middleware given
+            // we've already raised the errors we wanted too?
+            throw new ValidationException("Validation errors found.");
         }
     }
 }
