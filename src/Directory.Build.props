@@ -11,8 +11,8 @@
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
     <PackageId>$(MSBuildProjectName)</PackageId>
-    <Version>1.0.0-preview.4</Version>
+    <Version>1.0.0-preview.5</Version>
 
-    <HotChocolateVersion>10.5.0-rc.6</HotChocolateVersion>
+    <HotChocolateVersion>10.5.2</HotChocolateVersion>
   </PropertyGroup>
 </Project>
