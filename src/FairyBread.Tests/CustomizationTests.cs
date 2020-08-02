@@ -42,7 +42,12 @@ namespace FairyBread.Tests
                 .UseFairyBread()
                 .Create();
 
-            return schema.MakeExecutable();
+            return schema.MakeExecutable(builder =>
+            {
+                builder
+                    .UseDefaultPipeline()
+                    .AddErrorFilter<DefaultValidationErrorFilter>();
+            });
         }
 
         [Fact]
@@ -54,19 +59,20 @@ namespace FairyBread.Tests
                 services.AddSingleton<IValidationResultHandler, CustomValidationResultHandler>();
             });
 
-            // Act            
+            // Act
             var result = await queryExecutor.ExecuteAsync(Query);
 
             // Assert
             Assert.NotEmpty(result.Errors.AsEnumerable());
-            Assert.All(result.Errors, e => Assert.Equal("lol", e.Message));
+            Assert.True(result.Errors.Count(e => e.Message == "lol") == 1);
         }
 
         public class CustomValidationResultHandler : DefaultValidationResultHandler
         {
-            public override void Handle(IMiddlewareContext context, ValidationResult result)
+            public override bool Handle(IMiddlewareContext context, ValidationResult result)
             {
                 context.ReportError("lol");
+                return false;
             }
         }
 
@@ -91,7 +97,7 @@ namespace FairyBread.Tests
             public CustomValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
                 : base(serviceProvider, options) { }
 
-            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument) 
+            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument)
                 => argument.ClrType == typeof(FooInputDto)
                     ? (new ResolvedValidator[] { new ResolvedValidator(new CustomValidator()) })
                     : base.GetValidators(context, argument);

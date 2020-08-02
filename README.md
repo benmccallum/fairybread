@@ -34,7 +34,17 @@ services.AddFairyBread(options =>
 HotChocolate.SchemaBuilder.New()
     ...
     .UseFairyBread()
-    ...;
+    .Create()
+    .MakeExecutable(options =>
+    {
+        options
+           .UseDefaultPipeline()
+           // Note: If you've already got your own IErrorFilter
+           // in the pipeline, you should have it call this one
+           // as part of its error handling, to rewrite the
+           // validation error
+           .AddErrorFilter<DefaultValidationErrorFilter>();
+    });
 ```
 
 Set up [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on

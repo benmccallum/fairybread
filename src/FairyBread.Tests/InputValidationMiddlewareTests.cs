@@ -4,6 +4,7 @@ using HotChocolate.Execution;
 using HotChocolate.Language;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VerifyTests;
@@ -20,17 +21,14 @@ namespace FairyBread.Tests
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
 
-        [Theory]
-        [MemberData(nameof(Cases))]
-        public async Task Query_Works(CaseData caseData)
+        private IQueryExecutor GetQueryExecutor(Action<IFairyBreadOptions>? configureOptions = null)
         {
-            // Arrange
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
             services.AddFairyBread(options =>
             {
                 options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                configureOptions?.Invoke(options);
             });
             var serviceProvider = services.BuildServiceProvider();
 
@@ -41,9 +39,25 @@ namespace FairyBread.Tests
                 .UseFairyBread()
                 .Create();
 
-            var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
+            return schema.MakeExecutable(builder =>
+            {
+                builder
+                    .UseDefaultPipeline()
+                    .AddErrorFilter<DefaultValidationErrorFilter>();
+            });
+        }
 
-            var executor = schema.MakeExecutable();
+        [Theory]
+        [MemberData(nameof(Cases))]
+        public async Task Query_Works(CaseData caseData)
+        {
+            // Arrange
+            var executor = GetQueryExecutor(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+            });
+
+            var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
@@ -115,8 +129,14 @@ namespace FairyBread.Tests
 
             var query = "mutation { write(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
+            var executor = schema.MakeExecutable(builder =>
+            {
+                builder
+                    .UseDefaultPipeline()
+                    .AddErrorFilter<DefaultValidationErrorFilter>();
+            });
+
             // Act
-            var executor = schema.MakeExecutable();
             var result = await executor.ExecuteAsync(query);
 
             // Assert

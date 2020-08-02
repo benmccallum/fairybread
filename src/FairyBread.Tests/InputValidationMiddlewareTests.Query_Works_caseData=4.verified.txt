@@ -1,7 +1,4 @@
 {
-  Data: {
-    read: 'SomeInteger: -1, SomeString: -1; EmailAddress: -1'
-  },
   Errors: [
     {
       Message: 'The specified condition was not met for \'Email Address\'.',
@@ -56,6 +53,18 @@
         ErrorCode: 'EqualValidator',
         Severity: 'Error'
       }
+    },
+    {
+      Message: 'Validation errors occurred.',
+      Path: [
+        'read'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ]
     }
   ]
 }

@@ -6,15 +6,17 @@ namespace FairyBread
 {
     public class DefaultValidationResultHandler : IValidationResultHandler
     {
-        public virtual void Handle(IMiddlewareContext context, ValidationResult result)
+        public virtual bool Handle(IMiddlewareContext context, ValidationResult result)
         {
             if (result.IsValid)
             {
                 HandleValid(context, result);
+                return true;
             }
             else
             {
                 HandleInvalid(context, result);
+                return false;
             }
         }
 
