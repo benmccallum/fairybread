@@ -1,4 +1,6 @@
-﻿using FluentValidation;
+﻿using System.Linq;
+using FluentValidation;
+using FluentValidation.Results;
 using HotChocolate;
 
 namespace FairyBread
@@ -16,12 +18,28 @@ namespace FairyBread
             return error;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Default implementation doesn't require them")]
-        private IError OnValidationException(IError error, ValidationException validationException)
+        protected virtual IError OnValidationException(IError error, ValidationException validationException)
         {
             return error
                 .WithMessage("Validation errors occurred.")
+                .WithCode("FairyBread_ValidationError")
+                .AddExtension("Failures", validationException.Errors.Select(FormatFailure))
                 .RemoveException();
+        }
+
+        protected virtual object FormatFailure(ValidationFailure failure)
+        {
+            return new
+            {
+                failure.ErrorCode,
+                failure.ErrorMessage,
+                failure.PropertyName,
+                failure.ResourceName,
+                failure.AttemptedValue,
+                failure.Severity,
+                failure.FormattedMessageArguments,
+                failure.FormattedMessagePlaceholderValues
+            };
         }
     }
 }

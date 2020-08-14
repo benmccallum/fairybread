@@ -79,16 +79,19 @@ If the default doesn't suit you, you can always change it by configuring `IFairy
 Errors will be written out into the GraphQL execution result in the `Errors` property. By default, 
 extra information about the validation will be written out in the Extensions property. 
 
-For example (note, not JSON):
+For example:
 
-```
+> (note, this is the serialized `IExecutionResult`, not a GraphQL server response)
+
+```json
 {
   Data: ...,
   Errors: [
     {
-      Message: '\'Some Integer\' must be equal to \'1\'.',
+      Message: 'Validation errors occurred.',
+      Code: 'FairyBread_ValidationError',
       Path: [
-        'someMutationField'
+        'write'
       ],
       Locations: [
         {
@@ -97,10 +100,22 @@ For example (note, not JSON):
         }
       ],
       Extensions: {
-        ResourceName: 'EqualValidator',
-        PropertyName: 'SomeInteger',
-        ErrorCode: 'EqualValidator',
-        Severity: 'Error'
+        code: 'FairyBread_ValidationError',
+        Failures: [
+          {
+            ErrorCode: 'EqualValidator',
+            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
+            PropertyName: 'SomeInteger',
+            ResourceName: 'EqualValidator',
+            AttemptedValue: -1,
+            FormattedMessagePlaceholderValues: {
+              ComparisonValue: 1,
+              PropertyName: 'Some Integer',
+              PropertyValue: -1
+            }
+          },
+          ...
+        ]
       }
     }
   ]

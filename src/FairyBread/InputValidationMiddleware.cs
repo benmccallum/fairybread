@@ -33,7 +33,18 @@ namespace FairyBread
 
             foreach (var argument in arguments)
             {
-                if (argument == null || !_options.ShouldValidate(context, argument))
+                if (argument == null)
+                {
+                    continue;
+                }
+
+                // If validation isn't allowed by options
+                // and not explicitly opted-in too via the Validate descriptor
+                if (!_options.ShouldValidate(context, argument) &&
+                    (!argument.ContextData.TryGetValue(
+                        ValidateArgumentDescriptorExtensions.ValidateContextDataKey,
+                        out var isValidateDescriptorApplied) ||
+                    !(bool)isValidateDescriptorApplied))
                 {
                     continue;
                 }
@@ -70,11 +81,9 @@ namespace FairyBread
             await _next(context);
         }
 
-        protected virtual void OnInvalid(IMiddlewareContext middlewareContext, IEnumerable<ValidationResult> invalidValidationResults)
+        protected virtual void OnInvalid(IMiddlewareContext context, IEnumerable<ValidationResult> invalidValidationResults)
         {
-            // TODO: Discuss with Michael. Is there a better way to short-circuit out of the middleware given
-            // we've already raised the errors we wanted too?
-            throw new ValidationException("Validation errors found.");
+            throw new ValidationException(invalidValidationResults.SelectMany(vr => vr.Errors));
         }
     }
 }

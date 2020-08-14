@@ -1,7 +1,8 @@
 {
   Errors: [
     {
-      Message: 'The specified condition was not met for \'Email Address\'.',
+      Message: 'Validation errors occurred.',
+      Code: 'FairyBread_ValidationError',
       Path: [
         'write'
       ],
@@ -12,23 +13,21 @@
         }
       ],
       Extensions: {
-        ResourceName: 'AsyncPredicateValidator',
-        PropertyName: 'EmailAddress',
-        ErrorCode: 'AsyncPredicateValidator',
-        Severity: 'Error'
+        code: 'FairyBread_ValidationError',
+        Failures: [
+          {
+            ErrorCode: 'AsyncPredicateValidator',
+            ErrorMessage: 'The specified condition was not met for \'Email Address\'.',
+            PropertyName: 'EmailAddress',
+            ResourceName: 'AsyncPredicateValidator',
+            AttemptedValue: '-1',
+            FormattedMessagePlaceholderValues: {
+              PropertyName: 'Email Address',
+              PropertyValue: '-1'
+            }
+          }
+        ]
       }
-    },
-    {
-      Message: 'Validation errors occurred.',
-      Path: [
-        'write'
-      ],
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ]
     }
   ]
 }

@@ -1,61 +1,8 @@
 {
   Errors: [
     {
-      Message: 'The specified condition was not met for \'Email Address\'.',
-      Path: [
-        'write'
-      ],
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ],
-      Extensions: {
-        ResourceName: 'AsyncPredicateValidator',
-        PropertyName: 'EmailAddress',
-        ErrorCode: 'AsyncPredicateValidator',
-        Severity: 'Error'
-      }
-    },
-    {
-      Message: '\'Some Integer\' must be equal to \'1\'.',
-      Path: [
-        'write'
-      ],
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ],
-      Extensions: {
-        ResourceName: 'EqualValidator',
-        PropertyName: 'SomeInteger',
-        ErrorCode: 'EqualValidator',
-        Severity: 'Error'
-      }
-    },
-    {
-      Message: '\'Some String\' must be equal to \'hello\'.',
-      Path: [
-        'write'
-      ],
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ],
-      Extensions: {
-        ResourceName: 'EqualValidator',
-        PropertyName: 'SomeString',
-        ErrorCode: 'EqualValidator',
-        Severity: 'Error'
-      }
-    },
-    {
       Message: 'Validation errors occurred.',
+      Code: 'FairyBread_ValidationError',
       Path: [
         'write'
       ],
@@ -64,7 +11,47 @@
           Line: 1,
           Column: 12
         }
-      ]
+      ],
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        Failures: [
+          {
+            ErrorCode: 'AsyncPredicateValidator',
+            ErrorMessage: 'The specified condition was not met for \'Email Address\'.',
+            PropertyName: 'EmailAddress',
+            ResourceName: 'AsyncPredicateValidator',
+            AttemptedValue: '-1',
+            FormattedMessagePlaceholderValues: {
+              PropertyName: 'Email Address',
+              PropertyValue: '-1'
+            }
+          },
+          {
+            ErrorCode: 'EqualValidator',
+            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
+            PropertyName: 'SomeInteger',
+            ResourceName: 'EqualValidator',
+            AttemptedValue: -1,
+            FormattedMessagePlaceholderValues: {
+              ComparisonValue: 1,
+              PropertyName: 'Some Integer',
+              PropertyValue: -1
+            }
+          },
+          {
+            ErrorCode: 'EqualValidator',
+            ErrorMessage: '\'Some String\' must be equal to \'hello\'.',
+            PropertyName: 'SomeString',
+            ResourceName: 'EqualValidator',
+            AttemptedValue: '-1',
+            FormattedMessagePlaceholderValues: {
+              ComparisonValue: 'hello',
+              PropertyName: 'Some String',
+              PropertyValue: '-1'
+            }
+          }
+        ]
+      }
     }
   ]
 }
