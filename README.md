@@ -66,13 +66,18 @@ public Task CreateUser(UserInput userInput) { ... }
 
 By default, FairyBread will validate any argument that:
 * is an `InputObjectType` on a mutation operation,
-* or (coming soon) is:
-    * manually marked with `[Validate]` (i.e. opt-in only at the field-level)
-	* it's CLR type or `InputObjectType` are marked with `[Validate]` (i.e. opt-in this type of argument globally).
+* is manually opted-in at the field level with:
+    * `[Validate]` on the resolver method argument in pure code first
+    * `.UseValidation()` on the argument definition in code first
+* is manually opted-in at the input type level with:
+    * `[Validate]` on the CLR backing type in pure code first
+    * `.UseValidation()` on the InputObjectType descriptor in code first
+* it's CLR type or `InputObjectType` are marked with `[Validate]` (i.e. opt-in this type of argument globally).
 
 > Note: by default, query operations are notably excluded. This is mostly for performance reasons.
 
 If the default doesn't suit you, you can always change it by configuring `IFairyBreadOptions.ShouldValidate`. See [Customization](#Customization).
+Some of the default implementations are defined publicly on the default options class so they can be re-used and composed to form your own implementation.
 
 ### How validation errors will be handled
 

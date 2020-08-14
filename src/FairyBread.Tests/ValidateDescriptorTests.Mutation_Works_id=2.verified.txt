@@ -1,0 +1,34 @@
+{
+  Errors: [
+    {
+      Message: 'Validation errors occurred.',
+      Code: 'FairyBread_ValidationError',
+      Path: [
+        'writeWithValidateOnArgument'
+      ],
+      Locations: [
+        {
+          Line: 1,
+          Column: 12
+        }
+      ],
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        Failures: [
+          {
+            ErrorCode: 'EqualValidator',
+            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
+            PropertyName: 'SomeInteger',
+            ResourceName: 'EqualValidator',
+            AttemptedValue: -1,
+            FormattedMessagePlaceholderValues: {
+              ComparisonValue: 1,
+              PropertyName: 'Some Integer',
+              PropertyValue: -1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

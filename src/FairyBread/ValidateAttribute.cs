@@ -1,17 +1,32 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 
 namespace FairyBread
 {
     /// <summary>
-    /// Used to annotate that a resolver argument should always be validated.
+    /// Used to annotate arguments, input types or CLR types that should always be validated.
     /// </summary>
-    public class ValidateAttribute : ArgumentDescriptorAttribute
+    [AttributeUsage(
+        AttributeTargets.Class | AttributeTargets.Parameter,
+        Inherited = true,
+        AllowMultiple = false)]
+    public class ValidateAttribute : DescriptorAttribute
     {
-        public override void OnConfigure(IDescriptorContext context, IArgumentDescriptor descriptor, ParameterInfo parameter)
+        internal const string ValidateContextDataKey = "FairyBread_Validate";
+
+        protected override void TryConfigure(IDescriptorContext context, IDescriptor descriptor, ICustomAttributeProvider element)
         {
-            descriptor.UseValidation();
+            switch (descriptor)
+            {
+                case IInputObjectTypeDescriptor inputObjectTypeDescriptor:
+                    inputObjectTypeDescriptor.UseValidation();
+                    break;
+                case IArgumentDescriptor argumentDescriptor:
+                    argumentDescriptor.UseValidation();
+                    break;
+            }
         }
     }
 }

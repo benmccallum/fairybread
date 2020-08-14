@@ -33,18 +33,8 @@ namespace FairyBread
 
             foreach (var argument in arguments)
             {
-                if (argument == null)
-                {
-                    continue;
-                }
-
-                // If validation isn't allowed by options
-                // and not explicitly opted-in too via the Validate descriptor
-                if (!_options.ShouldValidate(context, argument) &&
-                    (!argument.ContextData.TryGetValue(
-                        ValidateArgumentDescriptorExtensions.ValidateContextDataKey,
-                        out var isValidateDescriptorApplied) ||
-                    !(bool)isValidateDescriptorApplied))
+                if (argument == null ||
+                    !_options.ShouldValidate(context, argument))
                 {
                     continue;
                 }
