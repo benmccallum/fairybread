@@ -88,7 +88,7 @@ For example:
 
 > (note, this is the serialized `IExecutionResult`, not a GraphQL server response)
 
-```json
+```
 {
   Data: ...,
   Errors: [
