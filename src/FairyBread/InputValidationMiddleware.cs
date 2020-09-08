@@ -45,7 +45,8 @@ namespace FairyBread
                     var value = context.Argument<object>(argument.Name);
                     foreach (var resolvedValidator in resolvedValidators)
                     {
-                        var validationResult = await resolvedValidator.Validator.ValidateAsync(value, context.RequestAborted);
+                        var validationContext = new ValidationContext<object>(value);
+                        var validationResult = await resolvedValidator.Validator.ValidateAsync(validationContext, context.RequestAborted);
                         if (validationResult != null)
                         {
                             validationResults.Add(validationResult);
