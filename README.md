@@ -20,32 +20,37 @@ dotnet add package FairyBread
 
 Hook up FairyBread in your `Startup.cs`.
 
-```c#
+<!-- snippet: Startup -->
+<a id='snippet-startup'></a>
+```cs
+var services = new ServiceCollection();
+
 // Add the FluentValidation validators
-services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+services.AddValidatorsFromAssemblyContaining<CustomValidator>();
 
 // Add FairyBread
 services.AddFairyBread(options =>
 {
-    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+    options.AssembliesToScanForValidators = new[] {typeof(CustomValidator).Assembly};
 });
 
 // Configure FairyBread middleware using HotChocolate's ISchemaBuilder
 HotChocolate.SchemaBuilder.New()
-    ...
     .UseFairyBread()
     .Create()
     .MakeExecutable(options =>
     {
         options
-           .UseDefaultPipeline()
-           // Note: If you've already got your own IErrorFilter
-           // in the pipeline, you should have it call this one
-           // as part of its error handling, to rewrite the
-           // validation error
-           .AddErrorFilter<DefaultValidationErrorFilter>();
+            .UseDefaultPipeline()
+            // Note: If you've already got your own IErrorFilter
+            // in the pipeline, you should have it call this one
+            // as part of its error handling, to rewrite the
+            // validation error
+            .AddErrorFilter<DefaultValidationErrorFilter>();
     });
 ```
+<sup><a href='/src/FairyBread.Tests/Snippets/Startup.cs#L12-L40' title='File snippet `startup` was extracted from'>snippet source</a> | <a href='#snippet-startup' title='Navigate to start of snippet `startup`'>anchor</a></sup>
+<!-- endSnippet -->
 
 Set up [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
 the CLR types backing your HotChocolate input types.
@@ -133,12 +138,20 @@ GraphQL resolvers are inherently multi-threaded; as such, you can run into issue
 
 With FairyBread, you might need to do this if one of your validators uses a `DbContext` (say to check if a username already exists on a create user mutation). Good news is, it's as easy as marking your validator with `IRequiresOwnScopeValidator` and we'll take care of the rest.
 
-```c# 
+<!-- snippet: UserInputValidator -->
+<a id='snippet-userinputvalidator'></a>
+```cs
 public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScopeValidator
 {
-    public UserInputValidator(SomeDbContext db) { ... } // db will be a unique instance for this validation operation
+    // db will be a unique instance for this validation operation
+    public UserInputValidator(SomeDbContext db)
+    {
+        // ...
+    }
 }
 ```
+<sup><a href='/src/FairyBread.Tests/Snippets/UserInputValidator.cs#L4-L15' title='File snippet `userinputvalidator` was extracted from'>snippet source</a> | <a href='#snippet-userinputvalidator' title='Navigate to start of snippet `userinputvalidator`'>anchor</a></sup>
+<!-- endSnippet -->
 
 ### Where to next?
 
@@ -148,14 +161,23 @@ For more examples, please see the tests.
 
 FairyBread was built with customization in mind. At configuration time, you can tweak the default settings as needed:
 
-```c#
+<!-- snippet: Customization -->
+<a id='snippet-customization'></a>
+```cs
 services.AddFairyBread(options =>
 {
-    options.AssembliesToScanForValidators = new[] { typeof(MyValidator).Assembly };
-    options.ShouldValidate = (ctx, arg) => ...;
-    options.ThrowIfNoValidatorsFound = true/false;
+    options.AssembliesToScanForValidators = new[] { typeof(CustomValidator).Assembly };
+    options.ShouldValidate = (ctx, arg) =>
+    {
+        //TODO: define under what conditions to perform validation
+        // for example: only validate queries
+        return ctx.Operation.Operation == OperationType.Query;
+    };
+    options.ThrowIfNoValidatorsFound = true;
 });
 ```
+<sup><a href='/src/FairyBread.Tests/Snippets/Startup.cs#L46-L59' title='File snippet `customization` was extracted from'>snippet source</a> | <a href='#snippet-customization' title='Navigate to start of snippet `customization`'>anchor</a></sup>
+<!-- endSnippet -->
 
 But it goes further than that. You can completely swap in your own options, validator provider, 
 validator result handler and so on to get the functionality you need by simply adding your own 
@@ -169,14 +191,19 @@ If you want to just change one element of a default implementation, they aren't 
 their methods are `virtual` so have at it. For instance, the `CustomValidationResultHandler` above might want to
 modify the way error codes are set on the `IError`, which can be done like so:
 
-```c#
+<!-- snippet: CustomValidationResultHandler -->
+<a id='snippet-customvalidationresulthandler'></a>
+```cs
 public class CustomValidationResultHandler : DefaultValidationResultHandler
 {
-    protected override IErrorBuilder ExtractError(IMiddlewareContext context, ValidationFailure failure)
-        => base.ExtractError(context, failure)
-            .SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
+    //TODO: what to do here since ExtractError doesnt exist
+    //protected override IErrorBuilder ExtractError(IMiddlewareContext context, ValidationFailure failure)
+    //    => base.ExtractError(context, failure)
+    //        .SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
 }
 ```
+<sup><a href='/src/FairyBread.Tests/Snippets/CustomValidationResultHandler.cs#L3-L13' title='File snippet `customvalidationresulthandler` was extracted from'>snippet source</a> | <a href='#snippet-customvalidationresulthandler' title='Navigate to start of snippet `customvalidationresulthandler`'>anchor</a></sup>
+<!-- endSnippet -->
 
 Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a> for complete examples.
 
