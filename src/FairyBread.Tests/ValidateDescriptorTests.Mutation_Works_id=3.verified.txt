@@ -17,7 +17,7 @@
         Failures: [
           {
             ErrorCode: 'EqualValidator',
-            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
+            ErrorMessage: "'Some Integer' must be equal to '1'.",
             PropertyName: 'SomeInteger',
             ResourceName: 'EqualValidator',
             AttemptedValue: -1,
