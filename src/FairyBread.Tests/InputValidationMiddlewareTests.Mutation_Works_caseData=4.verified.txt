@@ -17,7 +17,7 @@
         Failures: [
           {
             ErrorCode: 'AsyncPredicateValidator',
-            ErrorMessage: 'The specified condition was not met for \'Email Address\'.',
+            ErrorMessage: "The specified condition was not met for 'Email Address'.",
             PropertyName: 'EmailAddress',
             ResourceName: 'AsyncPredicateValidator',
             AttemptedValue: '-1',
@@ -28,7 +28,7 @@
           },
           {
             ErrorCode: 'EqualValidator',
-            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
+            ErrorMessage: "'Some Integer' must be equal to '1'.",
             PropertyName: 'SomeInteger',
             ResourceName: 'EqualValidator',
             AttemptedValue: -1,
@@ -40,7 +40,7 @@
           },
           {
             ErrorCode: 'EqualValidator',
-            ErrorMessage: '\'Some String\' must be equal to \'hello\'.',
+            ErrorMessage: "'Some String' must be equal to 'hello'.",
             PropertyName: 'SomeString',
             ResourceName: 'EqualValidator',
             AttemptedValue: '-1',

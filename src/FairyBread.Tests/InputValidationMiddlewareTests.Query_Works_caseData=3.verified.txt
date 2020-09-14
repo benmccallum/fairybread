@@ -17,7 +17,7 @@
         Failures: [
           {
             ErrorCode: 'AsyncPredicateValidator',
-            ErrorMessage: 'The specified condition was not met for \'Email Address\'.',
+            ErrorMessage: "The specified condition was not met for 'Email Address'.",
             PropertyName: 'EmailAddress',
             ResourceName: 'AsyncPredicateValidator',
             AttemptedValue: '-1',
