@@ -89,7 +89,7 @@ namespace FairyBread.Tests
             var result = await queryExecutor.ExecuteAsync(Query);
 
             // Assert
-            await Verifier.Verify(result, new VerifySettings());
+            await Verifier.Verify(result);
         }
 
         public class CustomValidatorProvider : DefaultValidatorProvider
