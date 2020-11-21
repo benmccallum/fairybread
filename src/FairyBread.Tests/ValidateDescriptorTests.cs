@@ -21,7 +21,7 @@ namespace FairyBread.Tests
             services.AddFairyBread(options =>
             {
                 options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-                options.ShouldValidate = DefaultFairyBreadOptions.ShouldValidateBasedOnValidateDescriptorImplementation;
+                options.ShouldValidate = DefaultFairyBreadOptions.DefaultImplementations.ShouldValidateBasedOnValidateDescriptor;
             });
 
             var serviceProvider = services.BuildServiceProvider();
@@ -42,7 +42,7 @@ namespace FairyBread.Tests
             {
                 builder
                     .UseDefaultPipeline()
-                    .AddErrorFilter<DefaultValidationErrorFilter>();
+                    .AddErrorFilter<ValidationErrorFilter>();
             });
         }
 

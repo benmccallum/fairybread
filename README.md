@@ -84,6 +84,11 @@ Some of the default implementations are defined publicly on the default options 
 Errors will be written out into the GraphQL execution result in the `Errors` property. By default, 
 extra information about the validation will be written out in the Extensions property. 
 
+This is handled by the `ValidationErrorFilter`.
+
+If you need to selectively ignore some `ValidationException` instances,
+you can provide your own predicate function to `ValidationErrorFilter` via the constructor.
+
 For example:
 
 > (note, this is the serialized `IExecutionResult`, not a GraphQL server response)
@@ -139,6 +144,13 @@ public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScop
     public UserInputValidator(SomeDbContext db) { ... } // db will be a unique instance for this validation operation
 }
 ```
+
+### Using MediatR for firing validation?
+
+If you're using [MediatR](https://github.com/jbogard/MediatR) for firing validation, no worries!
+
+If your MediatR pipeline behaviour throws a `FluentValidation.ValidationException` you can still use FairyBread's
+`DefaultValidationErrorFilter` as mentioned earlier to rewrite it on the way out into a friendlier error for the client.
 
 ### Where to next?
 

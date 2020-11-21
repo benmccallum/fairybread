@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,61 +14,113 @@ namespace FairyBread
 
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
-        public virtual Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; } = ShouldValidateImplementation;
+        /// <inheritdoc/>
+        public virtual Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; }
+            = DefaultImplementations.ShouldValidate;
 
-        public static bool ShouldValidateImplementation(IMiddlewareContext context, Argument argument)
+        /// <summary>
+        /// Default implementations of some things that can be re-composed as needed.
+        /// </summary>
+        public static class DefaultImplementations
         {
-            // If a mutation operation and this is an input object
-            if (context.Operation.Operation == OperationType.Mutation &&
-                argument.Type.InnerType() is InputObjectType)
+            /// <summary>
+            /// By default, FairyBread will validate any argument that:
+            /// <list type="bullet">
+            ///     <item>
+            ///         <description>
+            ///             is an InputObjectType on a mutation operation,
+            ///         </description>
+            ///     </item>
+            ///     <item>
+            ///         <description>
+            ///             is manually opted-in at the field level with:
+            ///             <list type="bullet">
+            ///                 <item><description>
+            ///                     [Validate] on the resolver method argument in pure code first
+            ///                 </description></item>
+            ///                 <item><description>
+            ///                     .UseValidation() on the argument definition in code first
+            ///                 </description></item>
+            ///             </list>
+            ///         </description>
+            ///     </item>
+            ///     <item>
+            ///         <description>
+            ///             is manually opted-in at the input type level with:
+            ///             <list type="bullet">
+            ///                 <item><description>
+            ///                     [Validate] on the CLR backing type in pure code first
+            ///                 </description></item>
+            ///                 <item><description>
+            ///                     .UseValidation() on the InputObjectType descriptor in code first
+            ///                 </description></item>
+            ///             </list>
+            ///         </description>
+            ///     </item>
+            ///     <item>
+            ///        <description>
+            ///            
+            ///        </description>
+            ///     </item>
+            /// </list>
+            /// </summary>
+            /// <remarks>
+            /// More at: https://github.com/benmccallum/fairybread#when-validation-will-fire
+            /// </remarks>
+            public static bool ShouldValidate(IMiddlewareContext context, Argument argument)
             {
-                return true;
+                // If a mutation operation and this is an input object
+                if (context.Operation.Operation == OperationType.Mutation &&
+                    argument.Type.InnerType() is InputObjectType)
+                {
+                    return true;
+                }
+
+                if (ShouldValidateBasedOnValidateDescriptor(context, argument))
+                {
+                    return true;
+                }
+
+                return false;
             }
 
-            if (ShouldValidateBasedOnValidateDescriptorImplementation(context, argument))
+            public static bool ShouldValidateBasedOnValidateDescriptor(IMiddlewareContext context, Argument argument)
             {
-                return true;
+                // If argument itself was annotated
+                if (IsValidateDescriptorApplied(argument.ContextData))
+                {
+                    return true;
+                }
+
+                // If argument's input type was annotated
+                if (argument.Type.InnerType() is InputObjectType inputType &&
+                    IsValidateDescriptorApplied(inputType))
+                {
+                    return true;
+                }
+
+                // If argument's clr type was annotated
+                if (ClrTypesMarkedWithValidate.Cache.GetOrAdd(
+                        argument.ClrType,
+                        clrType => clrType.GetCustomAttribute<ValidateAttribute>(inherit: true) != null))
+                {
+                    return true;
+                }
+
+                return false;
             }
 
-            return false;
-        }
-
-        public static bool ShouldValidateBasedOnValidateDescriptorImplementation(IMiddlewareContext context, Argument argument)
-        {
-            // If argument itself was annotated
-            if (IsValidateDescriptorApplied(argument.ContextData))
+            private static bool IsValidateDescriptorApplied(IHasContextData thing)
             {
-                return true;
+                return IsValidateDescriptorApplied(thing.ContextData);
             }
 
-            // If argument's input type was annotated
-            if (argument.Type.InnerType() is InputObjectType inputType &&
-                IsValidateDescriptorApplied(inputType))
+            private static bool IsValidateDescriptorApplied(IReadOnlyDictionary<string, object?> contextData)
             {
-                return true;
+                return contextData.TryGetValue(ValidateAttribute.ValidateContextDataKey, out var isValidateDescriptorAppliedRaw) &&
+                   isValidateDescriptorAppliedRaw is bool isValidateDescriptorApplied &&
+                   isValidateDescriptorApplied;
             }
-
-            // If argument's clr type was annotated
-            if (ClrTypesMarkedWithValidate.Cache.GetOrAdd(
-                    argument.ClrType,
-                    clrType => clrType.GetCustomAttribute<ValidateAttribute>(inherit: true) != null))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool IsValidateDescriptorApplied(IHasContextData thing)
-        {
-            return IsValidateDescriptorApplied(thing.ContextData);
-        }
-
-        private static bool IsValidateDescriptorApplied(IReadOnlyDictionary<string, object?> contextData)
-        {
-            return contextData.TryGetValue(ValidateAttribute.ValidateContextDataKey, out var isValidateDescriptorAppliedRaw) &&
-               isValidateDescriptorAppliedRaw is bool isValidateDescriptorApplied &&
-               isValidateDescriptorApplied;
         }
     }
 }
