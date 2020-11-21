@@ -12,44 +12,35 @@
 
 ## Getting started
 
-Install the package version compatible with your version of [HotChocolate](https://github.com/ChilliCream/hotchocolate).
-See [compatibility table](#Compatibility).
+Install a [compatible version](#Compatibility).
 
 ```bash
 dotnet add package FairyBread
 ```
 
-Hook up FairyBread in your `Startup.cs`.
+Configure services.
 
 ```c#
 // Add the FluentValidation validators
 services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
 
-// Add FairyBread
-services.AddFairyBread(options =>
-{
-    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-});
-
-// Configure FairyBread middleware using HotChocolate's ISchemaBuilder
-HotChocolate.SchemaBuilder.New()
+// Add GraphQL and FairyBread
+services
+    .AddGraphQL()
     ...
-    .UseFairyBread()
-    .Create()
-    .MakeExecutable(options =>
+    .AddFairyBread(options =>
     {
-        options
-           .UseDefaultPipeline()
-           // Note: If you've already got your own IErrorFilter
-           // in the pipeline, you should have it call this one
-           // as part of its error handling, to rewrite the
-           // validation error
-           .AddErrorFilter<DefaultValidationErrorFilter>();
-    });
+        options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+    })
+    // Note: If you've already got your own IErrorFilter
+    // in the pipeline, you should have it call this one
+    // as part of its error handling, to rewrite the
+    // validation error
+    .AddErrorFilter<ValidationErrorFilter>();
 ```
 
-Set up [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
-the CLR types backing your HotChocolate input types.
+Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
+the CLR types that back your HotChocolate input types.
 
 ```c#
 
@@ -151,7 +142,7 @@ public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScop
 If you're using [MediatR](https://github.com/jbogard/MediatR) for firing validation, no worries!
 
 If your MediatR pipeline behaviour throws a `FluentValidation.ValidationException` you can still use FairyBread's
-`DefaultValidationErrorFilter` as mentioned earlier to rewrite it on the way out into a friendlier error for the client.
+`ValidationErrorFilter` as mentioned earlier to rewrite it on the way out into a friendlier error for the client.
 
 ### Where to next?
 
@@ -205,10 +196,10 @@ Compatibility is listed below.
 
 We also strive to match their target frameworks.
 
-| HotChocolate | FairyBread |
-| ------------ | ---------- |
-|          v10 |         v1 |
-|          v11 |         v2 |
+| HotChocolate | FairyBread | FairyBread docs |
+| ------------ | ---------- | --------------- |
+|          v10 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
+|          v11 |         v2 | right here |
 
 ## What the heck is a fairy bread?
 
