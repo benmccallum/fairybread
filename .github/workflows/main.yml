@@ -20,16 +20,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: "3.1.x" # Will install the latest in the 3.1 channel
+          dotnet-version: "2.2.x"
+
+      - uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: "3.1.x"
+
+      - uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: "5.0.x"
 
       - name: run unit tests
         run: dotnet test src/
 
       - name: publish FairyBread on version change
         if: github.ref == 'refs/heads/master'
-        uses: rohith/publish-nuget@v2
+        uses: rohith/publish-nuget@v2.5.5
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
           TAG_COMMIT: true
