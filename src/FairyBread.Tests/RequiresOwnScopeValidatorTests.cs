@@ -18,46 +18,36 @@ namespace FairyBread.Tests
     {
         private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
 
-        private IQueryExecutor InitQueryExecutor(Action<IServiceCollection> preBuildProviderAction)
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IServiceCollection> preBuildProviderAction)
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<RequiresOwnScopeValidator>();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new[] { typeof(RequiresOwnScopeValidator).Assembly };
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-            });
-
             preBuildProviderAction?.Invoke(services);
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            var schema = SchemaBuilder.New()
+            return await services
+                .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .AddServices(serviceProvider)
-                .UseFairyBread()
-                .Create();
-
-            return schema.MakeExecutable(builder =>
-            {
-                builder
-                    .UseDefaultPipeline()
-                    .AddErrorFilter<ValidationErrorFilter>();
-            });
+                .AddFairyBread(options =>
+                {
+                    options.AssembliesToScanForValidators = new[] { typeof(RequiresOwnScopeValidator).Assembly };
+                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                })
+                .AddErrorFilter<ValidationErrorFilter>()
+                .BuildRequestExecutorAsync();
         }
 
         [Fact]
         public async Task OwnScopes_Work()
         {
             // Arrange
-            var queryExecutor = InitQueryExecutor(services =>
+            var executor = await GetRequestExecutorAsync(services =>
             {
                 services.AddSingleton<IValidatorProvider, AssertingScopageValidatorProvider>();
             });
 
             // Act            
-            var result = await queryExecutor.ExecuteAsync(Query);
+            var result = await executor.ExecuteAsync(Query);
 
             // Assert
             // Done in CustomValidatorProvider
@@ -70,14 +60,14 @@ namespace FairyBread.Tests
             var scopeMock = new Mock<IServiceScope>();
             scopeMock.Setup(x => x.Dispose());
 
-            var queryExecutor = InitQueryExecutor(services =>
+            var executor = await GetRequestExecutorAsync(services =>
             {
                 services.AddSingleton<IValidatorProvider>(sp =>
                     new ScopeMockingValidatorProvider(sp, sp.GetRequiredService<IFairyBreadOptions>(), scopeMock.Object));
             });
 
             // Act            
-            var result = await queryExecutor.ExecuteAsync(Query);
+            var result = await executor.ExecuteAsync(Query);
 
             // Assert
             scopeMock.Verify(x => x.Dispose(), Times.Once);
@@ -88,7 +78,7 @@ namespace FairyBread.Tests
             public AssertingScopageValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
                 : base(serviceProvider, options) { }
 
-            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument)
+            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
             {
                 var validators = base.GetValidators(context, argument);
 
@@ -122,7 +112,7 @@ namespace FairyBread.Tests
                 _mockScope = mockScope;
             }
 
-            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument)
+            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
             {
                 yield return new ResolvedValidator(new RequiresOwnScopeValidator(), _mockScope);
             }

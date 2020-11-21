@@ -1,24 +1,31 @@
 ﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+using FairyBread;
+using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace FairyBread
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class IServiceCollectionExtensions
+    public static class IRequestExecutorBuilderExtensions
     {
-        public static IServiceCollection AddFairyBread(
-            this IServiceCollection services,
+        public static IRequestExecutorBuilder AddFairyBread(
+            this IRequestExecutorBuilder requestExecutorBuilder,
             Action<IFairyBreadOptions>? configureOptions = null)
         {
+            // Services
+            var services = requestExecutorBuilder.Services;
+
             var options = new DefaultFairyBreadOptions();
             configureOptions?.Invoke(options);
             services.TryAddSingleton<IFairyBreadOptions>(options);
 
             services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
-            
+
             services.TryAddSingleton<IValidationResultHandler, DefaultValidationResultHandler>();
 
-            return services;
+            // Execution
+            requestExecutorBuilder.UseField<InputValidationMiddleware>();
+
+            return requestExecutorBuilder;
         }
     }
 }

@@ -12,7 +12,8 @@
 
 ## Getting started
 
-Install the package.
+Install the package version compatible with your version of [HotChocolate](https://github.com/ChilliCream/hotchocolate).
+See [compatibility table](#Compatibility).
 
 ```bash
 dotnet add package FairyBread
@@ -195,6 +196,19 @@ Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTest
 ## Backlog
 
 See issues.
+
+## Compatibility
+
+FairyBread depends on [HotChocolate.Execution](https://www.nuget.org/packages/HotChocolate.Execution)
+which can bring breaking changes from time to time and require a major bump our end.
+Compatibility is listed below.
+
+We also strive to match their target frameworks.
+
+| HotChocolate | FairyBread |
+| ------------ | ---------- |
+|          v10 |         v1 |
+|          v11 |         v2 |
 
 ## What the heck is a fairy bread?
 

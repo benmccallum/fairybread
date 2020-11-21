@@ -3,9 +3,9 @@
     {
       Message: 'Validation errors occurred.',
       Code: 'FairyBread_ValidationError',
-      Path: [
-        'read'
-      ],
+      Path: {
+        Name: 'read'
+      },
       Locations: [
         {
           Line: 1,

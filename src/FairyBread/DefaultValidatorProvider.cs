@@ -1,10 +1,10 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FluentValidation;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FairyBread
 {
@@ -50,9 +50,9 @@ namespace FairyBread
             }
         }
 
-        public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument)
+        public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
         {
-            if (Cache.TryGetValue(argument.ClrType, out var validatorDescriptors))
+            if (Cache.TryGetValue(argument.RuntimeType, out var validatorDescriptors))
             {
                 foreach (var validatorDescriptor in validatorDescriptors)
                 {

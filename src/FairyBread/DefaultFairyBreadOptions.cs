@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using HotChocolate;
 using HotChocolate.Language;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
@@ -15,7 +16,7 @@ namespace FairyBread
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
         /// <inheritdoc/>
-        public virtual Func<IMiddlewareContext, Argument, bool> ShouldValidate { get; set; }
+        public virtual Func<IMiddlewareContext, IInputField, bool> ShouldValidate { get; set; }
             = DefaultImplementations.ShouldValidate;
 
         /// <summary>
@@ -67,7 +68,7 @@ namespace FairyBread
             /// <remarks>
             /// More at: https://github.com/benmccallum/fairybread#when-validation-will-fire
             /// </remarks>
-            public static bool ShouldValidate(IMiddlewareContext context, Argument argument)
+            public static bool ShouldValidate(IMiddlewareContext context, IInputField argument)
             {
                 // If a mutation operation and this is an input object
                 if (context.Operation.Operation == OperationType.Mutation &&
@@ -84,7 +85,7 @@ namespace FairyBread
                 return false;
             }
 
-            public static bool ShouldValidateBasedOnValidateDescriptor(IMiddlewareContext context, Argument argument)
+            public static bool ShouldValidateBasedOnValidateDescriptor(IMiddlewareContext context, IInputField argument)
             {
                 // If argument itself was annotated
                 if (IsValidateDescriptorApplied(argument.ContextData))
@@ -101,7 +102,7 @@ namespace FairyBread
 
                 // If argument's clr type was annotated
                 if (ClrTypesMarkedWithValidate.Cache.GetOrAdd(
-                        argument.ClrType,
+                        argument.RuntimeType,
                         clrType => clrType.GetCustomAttribute<ValidateAttribute>(inherit: true) != null))
                 {
                     return true;
@@ -110,7 +111,7 @@ namespace FairyBread
                 return false;
             }
 
-            private static bool IsValidateDescriptorApplied(IHasContextData thing)
+            private static bool IsValidateDescriptorApplied(IHasReadOnlyContextData thing)
             {
                 return IsValidateDescriptorApplied(thing.ContextData);
             }
