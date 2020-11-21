@@ -3,9 +3,9 @@
     {
       Message: 'Validation errors occurred.',
       Code: 'FairyBread_ValidationError',
-      Path: [
-        'writeWithValidateOnArgument'
-      ],
+      Path: {
+        Name: 'writeWithValidateOnArgument'
+      },
       Locations: [
         {
           Line: 1,

@@ -14,19 +14,13 @@ namespace FairyBread.Tests
     [UsesVerify]
     public class ValidateDescriptorTests
     {
-        private IQueryExecutor InitQueryExecutor()
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync()
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-                options.ShouldValidate = DefaultFairyBreadOptions.DefaultImplementations.ShouldValidateBasedOnValidateDescriptor;
-            });
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            var schema = SchemaBuilder.New()
+            return await services
+                .AddGraphQL()
                 .AddQueryType<QueryType>()
                     .AddType<QueryTypeExtension>()
                 .AddMutationType<MutationType>()
@@ -34,16 +28,13 @@ namespace FairyBread.Tests
                 .AddType<FooInputDto>()
                 .AddType<BarInputType>()
                 .AddType<LolInputDto>()
-                .AddServices(serviceProvider)
-                .UseFairyBread()
-                .Create();
-
-            return schema.MakeExecutable(builder =>
-            {
-                builder
-                    .UseDefaultPipeline()
-                    .AddErrorFilter<ValidationErrorFilter>();
-            });
+                .AddFairyBread(options =>
+                {
+                    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                    options.ShouldValidate = DefaultFairyBreadOptions.DefaultImplementations.ShouldValidateBasedOnValidateDescriptor;
+                })
+                .AddErrorFilter<ValidationErrorFilter>()
+                .BuildRequestExecutorAsync();
         }
 
         private static readonly Dictionary<int, string> _queries = new Dictionary<int, string>
@@ -64,10 +55,10 @@ namespace FairyBread.Tests
         public async Task Query_Works(int id)
         {
             // Arrange
-            var queryExecutor = InitQueryExecutor();
+            var executor = await GetRequestExecutorAsync();
 
             // Act
-            var result = await queryExecutor.ExecuteAsync("query { " + _queries[id] + " }");
+            var result = await executor.ExecuteAsync("query { " + _queries[id] + " }");
 
             // Assert
             await Verifier.Verify(result, GetVerifySettings(id));
@@ -91,10 +82,10 @@ namespace FairyBread.Tests
         public async Task Mutation_Works(int id)
         {
             // Arrange
-            var queryExecutor = InitQueryExecutor();
+            var executor = await GetRequestExecutorAsync();
 
             // Act
-            var result = await queryExecutor.ExecuteAsync("mutation { " + _mutations[id] + " }");
+            var result = await executor.ExecuteAsync("mutation { " + _mutations[id] + " }");
 
             // Assert
             await Verifier.Verify(result, GetVerifySettings(id));

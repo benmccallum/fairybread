@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentValidation;
 using HotChocolate;
-using Moq;
 using Xunit;
 
 namespace FairyBread.Tests
@@ -49,32 +48,34 @@ namespace FairyBread.Tests
         {
             public string Message => throw new NotImplementedException();
 
-            public string Code => throw new NotImplementedException();
+            public string? Code => throw new NotImplementedException();
 
-            public IReadOnlyList<object> Path => throw new NotImplementedException();
+            public Path? Path => throw new NotImplementedException();
 
-            public IReadOnlyList<Location> Locations => throw new NotImplementedException();
+            public IReadOnlyList<Location>? Locations => throw new NotImplementedException();
 
-            private Exception? _exception;
-            public Exception? Exception => _exception;
+            public IReadOnlyDictionary<string, object?>? Extensions => throw new NotImplementedException();
 
-            public IReadOnlyDictionary<string, object> Extensions => throw new NotImplementedException();
-
-            public IError AddExtension(string key, object value) => throw new NotImplementedException();
-            public IError RemoveException() => throw new NotImplementedException();
-            public IError RemoveExtension(string key) => throw new NotImplementedException();
-            public IError WithCode(string code) => throw new NotImplementedException();
-            public IError WithException(Exception exception)
+            public Exception? Exception { get; private set; }
+            public IError WithException(Exception? exception)
             {
-                _exception = exception;
+                Exception = exception;
                 return this;
             }
 
-            public IError WithExtensions(IReadOnlyDictionary<string, object> extensions) => throw new NotImplementedException();
-            public IError WithLocations(IReadOnlyList<Location> locations) => throw new NotImplementedException();
+            public IError RemoveCode() => throw new NotImplementedException();
+            public IError RemoveException() => throw new NotImplementedException();
+            public IError RemoveExtension(string key) => throw new NotImplementedException();
+            public IError RemoveExtensions() => throw new NotImplementedException();
+            public IError RemoveLocations() => throw new NotImplementedException();
+            public IError RemovePath() => throw new NotImplementedException();
+            public IError SetExtension(string key, object? value) => throw new NotImplementedException();
+            public IError WithCode(string? code) => throw new NotImplementedException();
+            public IError WithExtensions(IReadOnlyDictionary<string, object?> extensions) => throw new NotImplementedException();
+            public IError WithLocations(IReadOnlyList<Location>? locations) => throw new NotImplementedException();
             public IError WithMessage(string message) => throw new NotImplementedException();
-            public IError WithPath(Path path) => throw new NotImplementedException();
-            public IError WithPath(IReadOnlyList<object> path) => throw new NotImplementedException();
+            public IError WithPath(Path? path) => throw new NotImplementedException();
+            public IError WithPath(IReadOnlyList<object>? path) => throw new NotImplementedException();
         }
     }
 }

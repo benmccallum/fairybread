@@ -41,7 +41,7 @@ namespace FairyBread
             return error
                 .WithMessage("Validation errors occurred.")
                 .WithCode("FairyBread_ValidationError")
-                .AddExtension("Failures", validationException.Errors.Select(FormatFailure))
+                .SetExtension("Failures", validationException.Errors.Select(FormatFailure))
                 .RemoveException();
         }
 

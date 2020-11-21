@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Language;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -21,30 +21,21 @@ namespace FairyBread.Tests
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
 
-        private IQueryExecutor GetQueryExecutor(Action<IFairyBreadOptions>? configureOptions = null)
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IFairyBreadOptions>? configureOptions = null)
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-                configureOptions?.Invoke(options);
-            });
-            var serviceProvider = services.BuildServiceProvider();
-
-            var schema = SchemaBuilder.New()
+            return await services
+                .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .AddServices(serviceProvider)
-                .UseFairyBread()
-                .Create();
-
-            return schema.MakeExecutable(builder =>
-            {
-                builder
-                    .UseDefaultPipeline()
-                    .AddErrorFilter<ValidationErrorFilter>();
-            });
+                .AddFairyBread(options =>
+                {
+                    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                    configureOptions?.Invoke(options);
+                })
+                .AddErrorFilter<ValidationErrorFilter>()
+                .BuildRequestExecutorAsync();
         }
 
         [Theory]
@@ -52,7 +43,7 @@ namespace FairyBread.Tests
         public async Task Query_Works(CaseData caseData)
         {
             // Arrange
-            var executor = GetQueryExecutor(options =>
+            var executor = await GetRequestExecutorAsync(options =>
             {
                 options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
             });
@@ -112,29 +103,9 @@ namespace FairyBread.Tests
         public async Task Mutation_Works(CaseData caseData)
         {
             // Arrange
-            var services = new ServiceCollection();
-            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-            });
-            var serviceProvider = services.BuildServiceProvider();
-
-            var schema = SchemaBuilder.New()
-                .AddQueryType<QueryType>()
-                .AddMutationType<MutationType>()
-                .AddServices(serviceProvider)
-                .UseFairyBread()
-                .Create();
+            var executor = await GetRequestExecutorAsync();
 
             var query = "mutation { write(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
-
-            var executor = schema.MakeExecutable(builder =>
-            {
-                builder
-                    .UseDefaultPipeline()
-                    .AddErrorFilter<ValidationErrorFilter>();
-            });
 
             // Act
             var result = await executor.ExecuteAsync(query);

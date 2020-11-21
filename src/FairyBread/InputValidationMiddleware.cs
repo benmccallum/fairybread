@@ -1,9 +1,9 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using HotChocolate.Resolvers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.Results;
+using HotChocolate.Resolvers;
 
 namespace FairyBread
 {
@@ -42,7 +42,7 @@ namespace FairyBread
                 var resolvedValidators = _validatorProvider.GetValidators(context, argument);
                 try
                 {
-                    var value = context.Argument<object>(argument.Name);
+                    var value = context.ArgumentValue<object>(argument.Name);
                     foreach (var resolvedValidator in resolvedValidators)
                     {
                         var validationContext = new ValidationContext<object>(value);

@@ -1,4 +1,8 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
@@ -6,11 +10,6 @@ using HotChocolate.Language;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using VerifyTests;
 using VerifyXunit;
 using Xunit;
 
@@ -21,49 +20,40 @@ namespace FairyBread.Tests
     {
         private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
 
-        private IQueryExecutor InitQueryExecutor(Action<IServiceCollection> preBuildProviderAction)
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IServiceCollection> preBuildProviderAction)
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<CustomValidator>();
-            services.AddFairyBread(options =>
-            {
-                options.AssembliesToScanForValidators = new[] { typeof(CustomValidator).Assembly };
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-            });
-
             preBuildProviderAction?.Invoke(services);
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            var schema = SchemaBuilder.New()
+            return await services
+                .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .AddServices(serviceProvider)
-                .UseFairyBread()
-                .Create();
-
-            return schema.MakeExecutable(builder =>
-            {
-                builder
-                    .UseDefaultPipeline()
-                    .AddErrorFilter<ValidationErrorFilter>();
-            });
+                .AddFairyBread(options =>
+                {
+                    options.AssembliesToScanForValidators = new[] { typeof(CustomValidator).Assembly };
+                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                })
+                .AddErrorFilter<ValidationErrorFilter>()
+                .BuildRequestExecutorAsync();
         }
 
         [Fact]
         public async Task CustomValidationResultHandler_Works()
         {
             // Arrange
-            var queryExecutor = InitQueryExecutor(services =>
+            var executor = await GetRequestExecutorAsync(services =>
             {
                 services.AddSingleton<IValidationResultHandler, CustomValidationResultHandler>();
             });
 
             // Act
-            var result = await queryExecutor.ExecuteAsync(Query);
+            var result = await executor.ExecuteAsync(Query);
 
             // Assert
-            Assert.NotEmpty(result.Errors.AsEnumerable());
+            Assert.NotNull(result.Errors);
+            Assert.NotEmpty(result.Errors);
             Assert.True(result.Errors.Count(e => e.Message == "lol") == 1);
         }
 
@@ -80,13 +70,13 @@ namespace FairyBread.Tests
         public async Task CustomValidatorProvider_Works()
         {
             // Arrange
-            var queryExecutor = InitQueryExecutor(services =>
+            var executor = await GetRequestExecutorAsync(services =>
             {
                 services.AddSingleton<IValidatorProvider, CustomValidatorProvider>();
             });
 
             // Act
-            var result = await queryExecutor.ExecuteAsync(Query);
+            var result = await executor.ExecuteAsync(Query);
 
             // Assert
             await Verifier.Verify(result);
@@ -97,8 +87,8 @@ namespace FairyBread.Tests
             public CustomValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
                 : base(serviceProvider, options) { }
 
-            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, Argument argument)
-                => argument.ClrType == typeof(FooInputDto)
+            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
+                => argument.RuntimeType == typeof(FooInputDto)
                     ? (new ResolvedValidator[] { new ResolvedValidator(new CustomValidator()) })
                     : base.GetValidators(context, argument);
         }

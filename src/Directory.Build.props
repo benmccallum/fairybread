@@ -10,12 +10,17 @@
     <Company>Ben McCallum</Company>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>$(MSBuildProjectName)</RootNamespace>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     
     <PackageId>$(MSBuildProjectName)</PackageId>
     <PackageIconUrl>https://github.com/benmccallum/fairybread/raw/master/logo-400x400.png</PackageIconUrl>
     
-    <Version>1.0.0</Version>
+    <Version>2.0.0-preview.1</Version>
 
-    <HotChocolateVersion>10.5.2</HotChocolateVersion>
+    <HotChocolateVersion>11.0.0-rc.6</HotChocolateVersion>
+
+    <LibraryTargetFrameworks>net5.0; netcoreapp3.1; netstandard2.0</LibraryTargetFrameworks>
+    <TestTargetFrameworks>net5.0; netcoreapp3.1; netcoreapp2.1</TestTargetFrameworks>
   </PropertyGroup>
 </Project>

@@ -3,9 +3,9 @@
     {
       Message: 'Validation errors occurred.',
       Code: 'FairyBread_ValidationError',
-      Path: [
-        'writeWithValidateOnClrType'
-      ],
+      Path: {
+        Name: 'writeWithValidateOnClrType'
+      },
       Locations: [
         {
           Line: 1,

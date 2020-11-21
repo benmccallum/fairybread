@@ -3,9 +3,9 @@
     {
       Message: 'Validation errors occurred.',
       Code: 'FairyBread_ValidationError',
-      Path: [
-        'read'
-      ],
+      Path: {
+        Name: 'read'
+      },
       Locations: [
         {
           Line: 1,
@@ -15,17 +15,6 @@
       Extensions: {
         code: 'FairyBread_ValidationError',
         Failures: [
-          {
-            ErrorCode: 'AsyncPredicateValidator',
-            ErrorMessage: "The specified condition was not met for 'Email Address'.",
-            PropertyName: 'EmailAddress',
-            ResourceName: 'AsyncPredicateValidator',
-            AttemptedValue: '-1',
-            FormattedMessagePlaceholderValues: {
-              PropertyName: 'Email Address',
-              PropertyValue: '-1'
-            }
-          },
           {
             ErrorCode: 'EqualValidator',
             ErrorMessage: "'Some Integer' must be equal to '1'.",
@@ -47,6 +36,17 @@
             FormattedMessagePlaceholderValues: {
               ComparisonValue: 'hello',
               PropertyName: 'Some String',
+              PropertyValue: '-1'
+            }
+          },
+          {
+            ErrorCode: 'AsyncPredicateValidator',
+            ErrorMessage: "The specified condition was not met for 'Email Address'.",
+            PropertyName: 'EmailAddress',
+            ResourceName: 'AsyncPredicateValidator',
+            AttemptedValue: '-1',
+            FormattedMessagePlaceholderValues: {
+              PropertyName: 'Email Address',
               PropertyValue: '-1'
             }
           }
