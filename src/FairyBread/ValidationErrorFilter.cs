@@ -1,16 +1,34 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 
 namespace FairyBread
 {
-    public class DefaultValidationErrorFilter : IErrorFilter
+    public class ValidationErrorFilter : IErrorFilter
     {
+        /// <summary>
+        /// Function used to determine if an <see cref="IError"/> with a <see cref="ValidationException"/>
+        /// should be handled and rewritten.
+        /// </summary>
+        private Func<ValidationException, bool> _shouldHandleValidationExceptionPredicate { get; set; } = ex => true;
+
+        public ValidationErrorFilter()
+        {
+
+        }
+
+        public ValidationErrorFilter(Func<ValidationException, bool> shouldHandleValidationExceptionPredicate)
+        {
+            _shouldHandleValidationExceptionPredicate = shouldHandleValidationExceptionPredicate;
+        }
+
         public IError OnError(IError error)
         {
             if (error.Exception != null &&
-                error.Exception is ValidationException validationException)
+                error.Exception is ValidationException validationException &&
+                _shouldHandleValidationExceptionPredicate(validationException))
             {
                 return OnValidationException(error, validationException);
             }

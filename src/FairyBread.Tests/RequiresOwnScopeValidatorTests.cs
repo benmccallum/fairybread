@@ -43,7 +43,7 @@ namespace FairyBread.Tests
             {
                 builder
                     .UseDefaultPipeline()
-                    .AddErrorFilter<DefaultValidationErrorFilter>();
+                    .AddErrorFilter<ValidationErrorFilter>();
             });
         }
 
