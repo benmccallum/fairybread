@@ -19,7 +19,6 @@
             ErrorCode: 'GreaterThanOrEqualValidator',
             ErrorMessage: "'Some Integer' must be greater than or equal to '999'.",
             PropertyName: 'SomeInteger',
-            ResourceName: 'GreaterThanOrEqualValidator',
             AttemptedValue: 1,
             FormattedMessagePlaceholderValues: {
               ComparisonValue: 999,

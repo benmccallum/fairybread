@@ -19,10 +19,10 @@
             ErrorCode: 'EqualValidator',
             ErrorMessage: "'Some Integer' must be equal to '1'.",
             PropertyName: 'SomeInteger',
-            ResourceName: 'EqualValidator',
             AttemptedValue: -1,
             FormattedMessagePlaceholderValues: {
               ComparisonValue: 1,
+              ComparisonProperty: '',
               PropertyName: 'Some Integer',
               PropertyValue: -1
             }

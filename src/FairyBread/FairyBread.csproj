@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="[8.*,9)" />
+    <PackageReference Include="FluentValidation" Version="9.*" />
     <PackageReference Include="HotChocolate.Execution" Version="$(HotChocolateVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.0" />
   </ItemGroup>
