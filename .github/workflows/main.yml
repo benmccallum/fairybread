@@ -2,7 +2,6 @@ name: ci/cd
 
 on:
   push:
-    branches: [master, develop]
     paths:
       - 'src/**'
       - '*.sln'
@@ -28,7 +27,7 @@ jobs:
         run: dotnet test src/
 
       - name: publish FairyBread on version change
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/v1/main'
         uses: rohith/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
