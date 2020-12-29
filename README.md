@@ -196,10 +196,10 @@ Compatibility is listed below.
 
 We strive to match HotChocolate's supported target frameworks, though this might not always be possible.
 
-| HotChocolate | FairyBread | FluentValidation | FairyBread docs |
-| ------------ | ---------- | ---------------- | --------------- |
-|          v10 |         v1 |               v8 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
-|          v11 |         v2 |               v9 |      right here |
+| HotChocolate | FluentValidation | FairyBread | FairyBread docs |
+| ------------ | ---------------- | ---------- | --------------- |
+|          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
+|          v11 |               v9 |         v2 |      right here |
 
 ## What the heck is a fairy bread?
 
