@@ -2,7 +2,8 @@ name: ci/cd
 
 on:
   push:
-    branches: '*'
+    branches:
+      - '**'
     paths:
       - 'src/**'
       - '*.sln'
