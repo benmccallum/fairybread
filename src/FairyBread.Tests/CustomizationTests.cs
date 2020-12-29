@@ -54,7 +54,7 @@ namespace FairyBread.Tests
             // Assert
             Assert.NotNull(result.Errors);
             Assert.NotEmpty(result.Errors);
-            Assert.True(result.Errors.Count(e => e.Message == "lol") == 1);
+            Assert.True(result.Errors!.Count(e => e.Message == "lol") == 1);
         }
 
         public class CustomValidationResultHandler : DefaultValidationResultHandler

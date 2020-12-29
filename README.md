@@ -190,15 +190,16 @@ See issues.
 ## Compatibility
 
 FairyBread depends on [HotChocolate.Execution](https://www.nuget.org/packages/HotChocolate.Execution)
-which can bring breaking changes from time to time and require a major bump our end.
+which can bring breaking changes from time to time and require a major bump our end. This is also the case
+for FluentValidation.
 Compatibility is listed below.
 
-We also strive to match their target frameworks.
+We strive to match HotChocolate's supported target frameworks, though this might not always be possible.
 
-| HotChocolate | FairyBread | FairyBread docs |
-| ------------ | ---------- | --------------- |
-|          v10 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
-|          v11 |         v2 | right here |
+| HotChocolate | FairyBread | FluentValidation | FairyBread docs |
+| ------------ | ---------- | ---------------- | --------------- |
+|          v10 |         v1 |               v8 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
+|          v11 |         v2 |               v9 |      right here |
 
 ## What the heck is a fairy bread?
 
