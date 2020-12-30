@@ -14,8 +14,8 @@ env:
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
   TAG_COMMIT: false
 jobs:
-  publish:
-    name: list on nuget
+  test_and_publish_if_allowed:
+    name: test and publish if allowed
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
