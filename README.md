@@ -31,12 +31,7 @@ services
     .AddFairyBread(options =>
     {
         options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-    })
-    // Note: If you've already got your own IErrorFilter
-    // in the pipeline, you should have it call this one
-    // as part of its error handling, to rewrite the
-    // validation error
-    .AddErrorFilter<ValidationErrorFilter>();
+    });
 ```
 
 Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
@@ -72,56 +67,7 @@ Some of the default implementations are defined publicly on the default options 
 
 ### How validation errors will be handled
 
-Errors will be written out into the GraphQL execution result in the `Errors` property. By default, 
-extra information about the validation will be written out in the Extensions property. 
-
-This is handled by the `ValidationErrorFilter`.
-
-If you need to selectively ignore some `ValidationException` instances,
-you can provide your own predicate function to `ValidationErrorFilter` via the constructor.
-
-For example:
-
-> (note, this is the serialized `IExecutionResult`, not a GraphQL server response)
-
-```
-{
-  Data: ...,
-  Errors: [
-    {
-      Message: 'Validation errors occurred.',
-      Code: 'FairyBread_ValidationError',
-      Path: [
-        'write'
-      ],
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ],
-      Extensions: {
-        code: 'FairyBread_ValidationError',
-        Failures: [
-          {
-            ErrorCode: 'EqualValidator',
-            ErrorMessage: '\'Some Integer\' must be equal to \'1\'.',
-            PropertyName: 'SomeInteger',
-            ResourceName: 'EqualValidator',
-            AttemptedValue: -1,
-            FormattedMessagePlaceholderValues: {
-              ComparisonValue: 1,
-              PropertyName: 'Some Integer',
-              PropertyValue: -1
-            }
-          },
-          ...
-        ]
-      }
-    }
-  ]
-}
-```
+Errors will be written out into the GraphQL execution result in the `Errors` property with one error being reported per failure on a field.
 
 ### Dealing with multi-threaded execution issues
 
@@ -161,27 +107,12 @@ services.AddFairyBread(options =>
 ```
 
 But it goes further than that. You can completely swap in your own options, validator provider, 
-validator result handler and so on to get the functionality you need by simply adding your own 
-implementation of the relevant interface before adding FairyBread, for example:
+validation errors result handler and so on to get the functionality you need by simply adding your own 
+implementation of the relevant interface before adding FairyBread. And you can use FairyBread's default
+and override singular methods if that makes life easier.
 
-```c#
-services.Add<IValidationResultHandler, CustomValidationResultHandler>();
-```
-
-If you want to just change one element of a default implementation, they aren't `sealed` and 
-their methods are `virtual` so have at it. For instance, the `CustomValidationResultHandler` above might want to
-modify the way error codes are set on the `IError`, which can be done like so:
-
-```c#
-public class CustomValidationResultHandler : DefaultValidationResultHandler
-{
-    protected override IErrorBuilder ExtractError(IMiddlewareContext context, ValidationFailure failure)
-        => base.ExtractError(context, failure)
-            .SetExtension(nameof(failure.ErrorCode), $"CustomPrefix:{failure.ErrorCode}");
-}
-```
-
-Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a> for complete examples.
+Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a>
+for complete examples.
 
 ## Backlog
 
@@ -199,7 +130,9 @@ We strive to match HotChocolate's supported target frameworks, though this might
 | HotChocolate | FluentValidation | FairyBread | FairyBread docs |
 | ------------ | ---------------- | ---------- | --------------- |
 |          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
-|          v11 |               v9 |         v2 |      right here |
+|          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
+|          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
+|          v11 |               v9 |         v4 |      right here |
 
 ## What the heck is a fairy bread?
 
