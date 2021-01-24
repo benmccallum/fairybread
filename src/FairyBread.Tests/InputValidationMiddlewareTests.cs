@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
@@ -59,6 +60,49 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+
+        [Theory]
+        [MemberData(nameof(Cases))]
+        public async Task Mutation_Works(CaseData caseData)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = "mutation { write(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(caseData);
+            await Verifier.Verify(result, verifySettings);
+        }
+
+        [Fact]
+        public async Task Ignores_Null_Argument_Value()
+        {
+            // Arrange
+            var caseData = (CaseData)Cases().First()[0];
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+            });
+
+            var query = "query { read(foo: " + caseData.FooInput + ") }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            await Verifier.Verify(result, verifySettings);
+        }
+
+
+        // TODO: Unit tests for:
+        // - cancellation
+
         public static IEnumerable<object[]> Cases()
         {
             var caseId = 1;
@@ -98,30 +142,9 @@ namespace FairyBread.Tests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(Cases))]
-        public async Task Mutation_Works(CaseData caseData)
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync();
-
-            var query = "mutation { write(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(caseData);
-            await Verifier.Verify(result, verifySettings);
-        }
-
-        // TODO: Unit tests for:
-        // - cancellation
-
         public class QueryType
         {
-            public string Read(FooInputDto foo, BarInputDto bar) => $"{foo}; {bar}";
+            public string Read(FooInputDto foo, BarInputDto? bar) => $"{foo}; {bar}";
         }
 
         public class MutationType
