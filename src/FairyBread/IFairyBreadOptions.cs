@@ -16,7 +16,8 @@ namespace FairyBread
         /// <summary>
         /// Function used to determine if an argument should be validated by
         /// FairyBread's <see cref="InputValidationMiddleware"/>.
-        /// The default implementation is <see cref="DefaultImplementations.ShouldValidate(IMiddlewareContext, Argument)"/>
+        /// The default implementation is
+        /// <see cref="DefaultImplementations.ShouldValidate(IMiddlewareContext, Argument)"/>
         /// </summary>
         Func<IMiddlewareContext, IInputField, bool> ShouldValidate { get; set; }
     }

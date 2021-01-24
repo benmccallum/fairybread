@@ -42,7 +42,12 @@ namespace FairyBread
                 var resolvedValidators = _validatorProvider.GetValidators(context, argument);
                 try
                 {
-                    var value = context.ArgumentValue<object>(argument.Name);
+                    var value = context.ArgumentValue<object?>(argument.Name);
+                    if (value == null)
+                    {
+                        continue;
+                    }
+
                     foreach (var resolvedValidator in resolvedValidators)
                     {
                         var validationContext = new ValidationContext<object>(value);
