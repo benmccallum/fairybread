@@ -1,33 +1,24 @@
 {
   Errors: [
     {
-      Message: 'Validation errors occurred.',
+      Message: "'Some Integer' must be equal to '1'.",
       Code: 'FairyBread_ValidationError',
       Path: {
         Name: 'read'
       },
-      Locations: [
-        {
-          Line: 1,
-          Column: 9
-        }
-      ],
       Extensions: {
         code: 'FairyBread_ValidationError',
-        Failures: [
-          {
-            ErrorCode: 'EqualValidator',
-            ErrorMessage: "'Some Integer' must be equal to '1'.",
-            PropertyName: 'SomeInteger',
-            AttemptedValue: -1,
-            FormattedMessagePlaceholderValues: {
-              ComparisonValue: 1,
-              ComparisonProperty: '',
-              PropertyName: 'Some Integer',
-              PropertyValue: -1
-            }
-          }
-        ]
+        errorCode: 'EqualValidator',
+        errorMessage: "'Some Integer' must be equal to '1'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: -1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: -1
+        }
       }
     }
   ]

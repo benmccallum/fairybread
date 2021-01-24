@@ -33,7 +33,6 @@ namespace FairyBread.Tests
                     options.AssembliesToScanForValidators = new[] { typeof(RequiresOwnScopeValidator).Assembly };
                     options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
                 })
-                .AddErrorFilter<ValidationErrorFilter>()
                 .BuildRequestExecutorAsync();
         }
 
