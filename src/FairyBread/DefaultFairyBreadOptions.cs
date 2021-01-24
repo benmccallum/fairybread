@@ -85,7 +85,9 @@ namespace FairyBread
                 return false;
             }
 
-            public static bool ShouldValidateBasedOnValidateDescriptor(IMiddlewareContext context, IInputField argument)
+            public static bool ShouldValidateBasedOnValidateDescriptor(
+                IMiddlewareContext context,
+                IInputField argument)
             {
                 // If argument itself was annotated
                 if (IsValidateDescriptorApplied(argument.ContextData))

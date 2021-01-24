@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>$(LibraryTargetFrameworks)</TargetFrameworks>
     <Description>Input validation for HotChocolate</Description>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

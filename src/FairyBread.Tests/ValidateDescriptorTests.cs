@@ -33,7 +33,6 @@ namespace FairyBread.Tests
                     options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
                     options.ShouldValidate = DefaultFairyBreadOptions.DefaultImplementations.ShouldValidateBasedOnValidateDescriptor;
                 })
-                .AddErrorFilter<ValidationErrorFilter>()
                 .BuildRequestExecutorAsync();
         }
 

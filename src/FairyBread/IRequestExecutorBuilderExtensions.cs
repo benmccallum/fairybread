@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
 
-            services.TryAddSingleton<IValidationResultHandler, DefaultValidationResultHandler>();
+            services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
 
             // Execution
             requestExecutorBuilder.UseField<InputValidationMiddleware>();

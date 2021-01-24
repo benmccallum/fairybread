@@ -20,7 +20,8 @@ namespace FairyBread.Tests
     {
         private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
 
-        private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IServiceCollection> preBuildProviderAction)
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync(
+            Action<IServiceCollection> preBuildProviderAction)
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<CustomValidator>();
@@ -35,7 +36,6 @@ namespace FairyBread.Tests
                     options.AssembliesToScanForValidators = new[] { typeof(CustomValidator).Assembly };
                     options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
                 })
-                .AddErrorFilter<ValidationErrorFilter>()
                 .BuildRequestExecutorAsync();
         }
 
@@ -45,7 +45,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(services =>
             {
-                services.AddSingleton<IValidationResultHandler, CustomValidationResultHandler>();
+                services.AddSingleton<IValidationErrorsHandler, CustomValidationErrorsHandler>();
             });
 
             // Act
@@ -54,16 +54,14 @@ namespace FairyBread.Tests
             // Assert
             Assert.NotNull(result.Errors);
             Assert.NotEmpty(result.Errors);
-            Assert.True(result.Errors!.Count(e => e.Message == "lol") == 1);
+            Assert.True(result.Errors!.All(e => e.Message == "lol"));
         }
 
-        public class CustomValidationResultHandler : DefaultValidationResultHandler
+        public class CustomValidationErrorsHandler : DefaultValidationErrorsHandler
         {
-            public override bool Handle(IMiddlewareContext context, ValidationResult result)
-            {
-                context.ReportError("lol");
-                return false;
-            }
+            protected override IError BuildError(IMiddlewareContext context, ValidationFailure failure) =>
+                base.BuildError(context, failure)
+                .WithMessage("lol");
         }
 
         [Fact]

@@ -1,55 +1,64 @@
 {
   Errors: [
     {
-      Message: 'Validation errors occurred.',
+      Message: "'Some Integer' must be equal to '1'.",
       Code: 'FairyBread_ValidationError',
       Path: {
         Name: 'write'
       },
-      Locations: [
-        {
-          Line: 1,
-          Column: 12
-        }
-      ],
       Extensions: {
         code: 'FairyBread_ValidationError',
-        Failures: [
-          {
-            ErrorCode: 'EqualValidator',
-            ErrorMessage: "'Some Integer' must be equal to '1'.",
-            PropertyName: 'SomeInteger',
-            AttemptedValue: -1,
-            FormattedMessagePlaceholderValues: {
-              ComparisonValue: 1,
-              ComparisonProperty: '',
-              PropertyName: 'Some Integer',
-              PropertyValue: -1
-            }
-          },
-          {
-            ErrorCode: 'EqualValidator',
-            ErrorMessage: "'Some String' must be equal to 'hello'.",
-            PropertyName: 'SomeString',
-            AttemptedValue: '-1',
-            FormattedMessagePlaceholderValues: {
-              ComparisonValue: 'hello',
-              ComparisonProperty: '',
-              PropertyName: 'Some String',
-              PropertyValue: '-1'
-            }
-          },
-          {
-            ErrorCode: 'AsyncPredicateValidator',
-            ErrorMessage: "The specified condition was not met for 'Email Address'.",
-            PropertyName: 'EmailAddress',
-            AttemptedValue: '-1',
-            FormattedMessagePlaceholderValues: {
-              PropertyName: 'Email Address',
-              PropertyValue: '-1'
-            }
-          }
-        ]
+        errorCode: 'EqualValidator',
+        errorMessage: "'Some Integer' must be equal to '1'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: -1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: -1
+        }
+      }
+    },
+    {
+      Message: "'Some String' must be equal to 'hello'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'write'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'EqualValidator',
+        errorMessage: "'Some String' must be equal to 'hello'.",
+        propertyName: 'SomeString',
+        attemptedValue: '-1',
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 'hello',
+          ComparisonProperty: '',
+          PropertyName: 'Some String',
+          PropertyValue: '-1'
+        }
+      }
+    },
+    {
+      Message: "The specified condition was not met for 'Email Address'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'write'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'AsyncPredicateValidator',
+        errorMessage: "The specified condition was not met for 'Email Address'.",
+        propertyName: 'EmailAddress',
+        attemptedValue: '-1',
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          PropertyName: 'Email Address',
+          PropertyValue: '-1'
+        }
       }
     }
   ]

@@ -22,7 +22,8 @@ namespace FairyBread.Tests
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
 
-        private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IFairyBreadOptions>? configureOptions = null)
+        private static async Task<IRequestExecutor> GetRequestExecutorAsync(
+            Action<IFairyBreadOptions>? configureOptions = null)
         {
             var services = new ServiceCollection();
             services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
@@ -35,7 +36,6 @@ namespace FairyBread.Tests
                     options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
                     configureOptions?.Invoke(options);
                 })
-                .AddErrorFilter<ValidationErrorFilter>()
                 .BuildRequestExecutorAsync();
         }
 

@@ -1,9 +1,8 @@
-﻿using FluentValidation;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using HotChocolate.Resolvers;
+using HotChocolate.Types;
 
 namespace FairyBread
 {
