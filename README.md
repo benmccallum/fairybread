@@ -82,12 +82,13 @@ public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScop
 }
 ```
 
-### Using MediatR for firing validation?
+### Using MediatR?
 
-If you're using [MediatR](https://github.com/jbogard/MediatR) for firing validation, no worries!
+If you want to let MediatR fire validation, you can set up:
+* FairyBread to skip validating `MediatR.IRequest` arguments, 
+* your MediatR pipeline to validate them and throw a `ValidationException`, and
+* an `IErrorFilter`(in HotChocolate) to handle it handles using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
 
-If your MediatR pipeline behaviour throws a `FluentValidation.ValidationException` you can still use FairyBread's
-`ValidationErrorFilter` as mentioned earlier to rewrite it on the way out into a friendlier error for the client.
 
 ### Where to next?
 
