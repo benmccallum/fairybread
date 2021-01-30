@@ -60,7 +60,6 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
-
         [Theory]
         [MemberData(nameof(Cases))]
         public async Task Mutation_Works(CaseData caseData)
@@ -97,6 +96,25 @@ namespace FairyBread.Tests
             // Assert
             var verifySettings = new VerifySettings();
             await Verifier.Verify(result, verifySettings);
+        }
+
+        [Fact]
+        public async Task Doesnt_Call_Field_Resolver_If_Invalid()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+            });
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            Assert.False(QueryType.WasFieldResolverCalled);
+            await Verifier.Verify(result);
         }
 
 
@@ -144,7 +162,13 @@ namespace FairyBread.Tests
 
         public class QueryType
         {
-            public string Read(FooInputDto foo, BarInputDto? bar) => $"{foo}; {bar}";
+            public static bool WasFieldResolverCalled = false;
+
+            public string Read(FooInputDto foo, BarInputDto? bar)
+            {
+                WasFieldResolverCalled = true;
+                return $"{foo}; {bar}";
+            }
         }
 
         public class MutationType
