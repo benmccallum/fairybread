@@ -75,8 +75,10 @@ namespace FairyBread
                 _validationErrorsHandler.Handle(context, invalidResults);
                 context.Result = null;
             }
-
-            await _next(context);
+            else
+            {
+                await _next(context);
+            }
         }
     }
 }
