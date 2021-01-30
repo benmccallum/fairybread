@@ -15,13 +15,14 @@ namespace FairyBread
             {
                 foreach (var failure in invalidResult.Errors)
                 {
-                    var error = BuildError(context, failure);
+                    var errorBuilder = CreateErrorBuilder(context, failure);
+                    var error = errorBuilder.Build();
                     context.ReportError(error);
                 }
             }
         }
 
-        protected virtual IError BuildError(
+        protected virtual IErrorBuilder CreateErrorBuilder(
             IMiddlewareContext context,
             ValidationFailure failure)
         {
@@ -34,8 +35,7 @@ namespace FairyBread
                 .SetExtension("propertyName", failure.PropertyName)
                 .SetExtension("attemptedValue", failure.AttemptedValue)
                 .SetExtension("severity", failure.Severity)
-                .SetExtension("formattedMessagePlaceholderValues", failure.FormattedMessagePlaceholderValues)
-                .Build();
+                .SetExtension("formattedMessagePlaceholderValues", failure.FormattedMessagePlaceholderValues);
         }
     }
 }

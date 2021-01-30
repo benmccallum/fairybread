@@ -59,9 +59,9 @@ namespace FairyBread.Tests
 
         public class CustomValidationErrorsHandler : DefaultValidationErrorsHandler
         {
-            protected override IError BuildError(IMiddlewareContext context, ValidationFailure failure) =>
-                base.BuildError(context, failure)
-                .WithMessage("lol");
+            protected override IErrorBuilder CreateErrorBuilder(IMiddlewareContext context, ValidationFailure failure) =>
+                base.CreateErrorBuilder(context, failure)
+                .SetMessage("lol");
         }
 
         [Fact]
