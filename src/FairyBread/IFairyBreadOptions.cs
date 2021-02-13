@@ -8,8 +8,17 @@ namespace FairyBread
 {
     public interface IFairyBreadOptions
     {
-        IEnumerable<Assembly> AssembliesToScanForValidators { get; set; }
+        /// <summary>
+        /// If set, FairyBread will look for validators only in these assemblies.
+        /// If not set, FairyBread will look for validators registered with DI.
+        /// </summary>
+        IEnumerable<Assembly>? AssembliesToScanForValidators { get; set; }
 
+        /// <summary>
+        /// If true, FairyBread will throw on startup if no validators are found.
+        /// This is on by default to avoid an accidental release with no validators
+        /// that continues to function silently but would obviously be very dangerous.
+        /// </summary>
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>

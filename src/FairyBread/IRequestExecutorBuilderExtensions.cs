@@ -18,7 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
             configureOptions?.Invoke(options);
             services.TryAddSingleton<IFairyBreadOptions>(options);
 
-            services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
+            services.TryAddSingleton<IValidatorProvider>(sp =>
+                new DefaultValidatorProvider(sp, services, sp.GetRequiredService<IFairyBreadOptions>()));
 
             services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
 

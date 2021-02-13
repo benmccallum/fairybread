@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using HotChocolate;
 using HotChocolate.Language;
@@ -11,7 +10,7 @@ namespace FairyBread
 {
     public class DefaultFairyBreadOptions : IFairyBreadOptions
     {
-        public virtual IEnumerable<Assembly> AssembliesToScanForValidators { get; set; } = Enumerable.Empty<Assembly>();
+        public virtual IEnumerable<Assembly>? AssembliesToScanForValidators { get; set; }
 
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 

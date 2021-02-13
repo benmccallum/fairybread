@@ -4,7 +4,7 @@
       Message: "'Some Integer' must be equal to '1'.",
       Code: 'FairyBread_ValidationError',
       Path: {
-        Name: 'write'
+        Name: 'read'
       },
       Extensions: {
         code: 'FairyBread_ValidationError',

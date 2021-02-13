@@ -14,18 +14,51 @@ namespace FairyBread
         protected static readonly Type HasOwnScopeInterfaceType = typeof(IRequiresOwnScopeValidator);
         protected readonly Dictionary<Type, List<ValidatorDescriptor>> Cache = new Dictionary<Type, List<ValidatorDescriptor>>();
 
-        public DefaultValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
+        public DefaultValidatorProvider(IServiceProvider serviceProvider, IServiceCollection services, IFairyBreadOptions options)
         {
             ServiceProvider = serviceProvider;
 
-            var validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToArray();
+            List<AssemblyScanner.AssemblyScanResult> validatorResults;
+
+            var useExplicitAssemblySearch = options.AssembliesToScanForValidators != null;
+            if (useExplicitAssemblySearch)
+            {
+                validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToList();
+            }
+            else
+            {
+                validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
+
+                var validatorInterface = typeof(IValidator);
+                var objectValidatorInterface = typeof(IValidator<object>);
+                var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
+
+                foreach (var service in services)
+                {
+                    if (!service.ServiceType.IsGenericType ||
+                        service.ServiceType.Name != objectValidatorInterface.Name ||
+                        service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
+                    {
+                        continue;
+                    }
+
+                    validatorResults.Add(
+                        new AssemblyScanner.AssemblyScanResult(
+                            service.ServiceType,
+                            service.ImplementationType));
+                }
+            }
 
             if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
             {
-                throw new Exception($"No validators were found in the provided " +
+                throw new Exception($"No validators were found by FairyBread." +
                     $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
-                    $"(with concrete type: {options.GetType().FullName}) which included: " +
-                    $"{string.Join(",", options.AssembliesToScanForValidators)}.");
+                    (useExplicitAssemblySearch
+                        ? $"was provided and no validators could be found in the provided assemblies: " +
+                            $"{string.Join(",", options.AssembliesToScanForValidators!)}."
+                        : $"was not provided and no validators could be found in your service registrations." +
+                            $"Ensure you're registering your FluentValidation validators.")
+                    );
             }
 
             foreach (var validatorResult in validatorResults)
@@ -58,7 +91,7 @@ namespace FairyBread
                 {
                     if (validatorDescriptor.RequiresOwnScope)
                     {
-                        var scope = ServiceProvider.CreateScope();
+                        var scope = ServiceProvider.CreateScope(); // resolved by middleware
                         var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
                         yield return new ResolvedValidator(validator, scope);
                     }
