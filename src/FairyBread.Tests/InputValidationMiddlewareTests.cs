@@ -60,6 +60,22 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+        [Fact]
+        public async Task Query_Doesnt_Validate_By_Default()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
+        }
+
+
         [Theory]
         [MemberData(nameof(Cases))]
         public async Task Mutation_Works(CaseData caseData)
@@ -76,6 +92,24 @@ namespace FairyBread.Tests
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
             await Verifier.Verify(result, verifySettings);
+        }
+
+        [Fact]
+        public async Task Mutation_Validates_By_Default()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"mutation {
+                write(
+                    foo: { someInteger: -1, someString: ""hello"" },
+                    bar: { emailAddress: ""invalid"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
         }
 
         [Fact]
