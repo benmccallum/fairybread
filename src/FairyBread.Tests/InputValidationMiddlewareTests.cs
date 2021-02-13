@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
+using HotChocolate.Configuration;
 using HotChocolate.Execution;
 using HotChocolate.Language;
 using HotChocolate.Types;
@@ -26,8 +27,8 @@ namespace FairyBread.Tests
             Action<IFairyBreadOptions>? configureOptions = null)
         {
             var services = new ServiceCollection();
-            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            return await services
+            
+            var builder = services
                 .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
@@ -35,7 +36,11 @@ namespace FairyBread.Tests
                 {
                     options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
                     configureOptions?.Invoke(options);
-                })
+                });
+
+            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+
+            return await builder
                 .BuildRequestExecutorAsync();
         }
 
@@ -58,6 +63,25 @@ namespace FairyBread.Tests
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
             await Verifier.Verify(result, verifySettings);
+        }
+
+        [Fact]
+        public async Task Auto_Validator_Scanning_Works()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                options.AssembliesToScanForValidators = null;
+            });
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
         }
 
         [Theory]

@@ -18,50 +18,69 @@ namespace FairyBread
         {
             ServiceProvider = serviceProvider;
 
-            var validatorResults = services
-                .Where(s => typeof(IValidator).IsAssignableFrom(s.ImplementationType))
-                .Select()
-                .Select(s => (s.ImplementationType, s.ImplementationType.GetGenericArguments()[0]))
-                .ToArray();
+            List<AssemblyScanner.AssemblyScanResult> validatorResults;
 
-            //List<Type> genTypes = new List<Type>();
-            //foreach (Type intType in t.GetInterfaces())
-            //{
-            //    if (intType.IsGenericType && intType.GetGenericTypeDefinition()
-            //        == typeof(IGeneric<>))
-            //    {
-            //        genTypes.Add(intType.GetGenericArguments()[0]);
-            //    }
-            //}
+            var useExplicitAssemblySearch = options.AssembliesToScanForValidators != null;
+            if (useExplicitAssemblySearch)
+            {
+                validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToList();
+            }
+            else
+            {
+                validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
 
-            //if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
-            //{
-            //    throw new Exception($"No validators were found in the provided " +
-            //        $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
-            //        $"(with concrete type: {options.GetType().FullName}) which included: " +
-            //        $"{string.Join(",", options.AssembliesToScanForValidators)}.");
-            //}
+                var validatorInterface = typeof(IValidator);
+                var objectValidatorInterface = typeof(IValidator<object>);
+                var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
 
-            //foreach (var validatorResult in validatorResults)
-            //{
-            //    var validatorType = validatorResult.ValidatorType;
-            //    if (validatorType.IsAbstract)
-            //    {
-            //        continue;
-            //    }
+                foreach (var service in services)
+                {
+                    if (!service.ServiceType.IsGenericType ||
+                        service.ServiceType.Name != objectValidatorInterface.Name ||
+                        service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
+                    {
+                        continue;
+                    }
 
-            //    var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
-            //    if (!Cache.TryGetValue(validatedType, out var validatorsForType))
-            //    {
-            //        Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
-            //    }
+                    validatorResults.Add(
+                        new AssemblyScanner.AssemblyScanResult(
+                            service.ServiceType,
+                            service.ImplementationType));
+                }
+            }
 
-            //    var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
+            if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
+            {
+                throw new Exception($"No validators were found by FairyBread." +
+                    $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
+                    (useExplicitAssemblySearch
+                        ? $"was provided and no validators could be found in the provided assemblies: " +
+                            $"{string.Join(",", options.AssembliesToScanForValidators!)}."
+                        : $"was not provided and no validators could be found in your service registrations." +
+                            $"Ensure you're registering your FluentValidation validators.")
+                    );
+            }
 
-            //    var validatorDescriptor = new ValidatorDescriptor(validatorType, requiresOwnScope);
+            foreach (var validatorResult in validatorResults)
+            {
+                var validatorType = validatorResult.ValidatorType;
+                if (validatorType.IsAbstract)
+                {
+                    continue;
+                }
 
-            //    validatorsForType.Add(validatorDescriptor);
-            //}
+                var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
+                if (!Cache.TryGetValue(validatedType, out var validatorsForType))
+                {
+                    Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
+                }
+
+                var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
+
+                var validatorDescriptor = new ValidatorDescriptor(validatorType, requiresOwnScope);
+
+                validatorsForType.Add(validatorDescriptor);
+            }
         }
 
         public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)

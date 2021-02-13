@@ -20,28 +20,20 @@ dotnet add package FairyBread
 
 Configure services.
 
-```c#
-// Add the FluentValidation validators
+```csharp
+// Add FluentValidation validators
 services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
 
-// Add GraphQL and FairyBread
+// Add FairyBread
 services
     .AddGraphQL()
-    ...
-    .AddFairyBread(options =>
-    {
-        options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-    });
+    .AddFairyBread();
 ```
 
-Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like you usually would on
-the CLR types that back your HotChocolate input types.
+Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like on your input types.
 
-```c#
-
+```csharp
 public class UserInput { ... }
-
-public class UserInputType : InputObjectType<UserInput> { ... }
 
 public class UserInputValidator : AbstractValidator<UserInput> { ... }
 
@@ -75,7 +67,7 @@ GraphQL resolvers are inherently multi-threaded; as such, you can run into issue
 
 With FairyBread, you might need to do this if one of your validators uses a `DbContext` (say to check if a username already exists on a create user mutation). Good news is, it's as easy as marking your validator with `IRequiresOwnScopeValidator` and we'll take care of the rest.
 
-```c# 
+```csharp
 public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScopeValidator
 {
     public UserInputValidator(SomeDbContext db) { ... } // db will be a unique instance for this validation operation
@@ -98,7 +90,7 @@ For more examples, please see the tests.
 
 FairyBread was built with customization in mind. At configuration time, you can tweak the default settings as needed:
 
-```c#
+```csharp
 services.AddFairyBread(options =>
 {
     options.AssembliesToScanForValidators = new[] { typeof(MyValidator).Assembly };
