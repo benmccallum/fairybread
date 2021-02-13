@@ -20,25 +20,6 @@
           PropertyValue: -1
         }
       }
-    },
-    {
-      Message: "The specified condition was not met for 'Email Address'.",
-      Code: 'FairyBread_ValidationError',
-      Path: {
-        Name: 'write'
-      },
-      Extensions: {
-        code: 'FairyBread_ValidationError',
-        errorCode: 'AsyncPredicateValidator',
-        errorMessage: "The specified condition was not met for 'Email Address'.",
-        propertyName: 'EmailAddress',
-        attemptedValue: 'invalid',
-        severity: 'Error',
-        formattedMessagePlaceholderValues: {
-          PropertyName: 'Email Address',
-          PropertyValue: 'invalid'
-        }
-      }
     }
   ]
 }
