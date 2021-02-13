@@ -14,40 +14,54 @@ namespace FairyBread
         protected static readonly Type HasOwnScopeInterfaceType = typeof(IRequiresOwnScopeValidator);
         protected readonly Dictionary<Type, List<ValidatorDescriptor>> Cache = new Dictionary<Type, List<ValidatorDescriptor>>();
 
-        public DefaultValidatorProvider(IServiceProvider serviceProvider, IFairyBreadOptions options)
+        public DefaultValidatorProvider(IServiceProvider serviceProvider, IServiceCollection services, IFairyBreadOptions options)
         {
             ServiceProvider = serviceProvider;
 
-            var validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToArray();
+            var validatorResults = services
+                .Where(s => typeof(IValidator).IsAssignableFrom(s.ImplementationType))
+                .Select()
+                .Select(s => (s.ImplementationType, s.ImplementationType.GetGenericArguments()[0]))
+                .ToArray();
 
-            if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
-            {
-                throw new Exception($"No validators were found in the provided " +
-                    $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
-                    $"(with concrete type: {options.GetType().FullName}) which included: " +
-                    $"{string.Join(",", options.AssembliesToScanForValidators)}.");
-            }
+            //List<Type> genTypes = new List<Type>();
+            //foreach (Type intType in t.GetInterfaces())
+            //{
+            //    if (intType.IsGenericType && intType.GetGenericTypeDefinition()
+            //        == typeof(IGeneric<>))
+            //    {
+            //        genTypes.Add(intType.GetGenericArguments()[0]);
+            //    }
+            //}
 
-            foreach (var validatorResult in validatorResults)
-            {
-                var validatorType = validatorResult.ValidatorType;
-                if (validatorType.IsAbstract)
-                {
-                    continue;
-                }
+            //if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
+            //{
+            //    throw new Exception($"No validators were found in the provided " +
+            //        $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
+            //        $"(with concrete type: {options.GetType().FullName}) which included: " +
+            //        $"{string.Join(",", options.AssembliesToScanForValidators)}.");
+            //}
 
-                var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
-                if (!Cache.TryGetValue(validatedType, out var validatorsForType))
-                {
-                    Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
-                }
+            //foreach (var validatorResult in validatorResults)
+            //{
+            //    var validatorType = validatorResult.ValidatorType;
+            //    if (validatorType.IsAbstract)
+            //    {
+            //        continue;
+            //    }
 
-                var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
+            //    var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
+            //    if (!Cache.TryGetValue(validatedType, out var validatorsForType))
+            //    {
+            //        Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
+            //    }
 
-                var validatorDescriptor = new ValidatorDescriptor(validatorType, requiresOwnScope);
+            //    var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
 
-                validatorsForType.Add(validatorDescriptor);
-            }
+            //    var validatorDescriptor = new ValidatorDescriptor(validatorType, requiresOwnScope);
+
+            //    validatorsForType.Add(validatorDescriptor);
+            //}
         }
 
         public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
@@ -58,7 +72,7 @@ namespace FairyBread
                 {
                     if (validatorDescriptor.RequiresOwnScope)
                     {
-                        var scope = ServiceProvider.CreateScope();
+                        var scope = ServiceProvider.CreateScope(); // resolved by middleware
                         var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
                         yield return new ResolvedValidator(validator, scope);
                     }
