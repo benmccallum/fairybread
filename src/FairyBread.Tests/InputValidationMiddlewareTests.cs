@@ -75,7 +75,6 @@ namespace FairyBread.Tests
             await Verifier.Verify(result);
         }
 
-
         [Theory]
         [MemberData(nameof(Cases))]
         public async Task Mutation_Works(CaseData caseData)
@@ -103,13 +102,37 @@ namespace FairyBread.Tests
             var query = @"mutation {
                 write(
                     foo: { someInteger: -1, someString: ""hello"" },
-                    bar: { emailAddress: ""invalid"" }) }";
+                    bar: { emailAddress: ""ben@lol.com"" }) }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
 
             // Assert
             await Verifier.Verify(result);
+        }
+
+        [Fact]
+        public async Task Multi_TopLevelFields_And_MultiRuns_Works()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+            });
+
+            var query = @"
+                query {
+                    read(foo: { someInteger: -1, someString: ""hello"" })
+                    read(foo: { someInteger: -1, someString: ""hello"" })
+                }";
+
+            // Act
+            var result1 = await executor.ExecuteAsync(query);
+            var result2 = await executor.ExecuteAsync(query);
+            var result3 = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(new { result1, result2, result3 });
         }
 
         [Fact]
@@ -150,7 +173,6 @@ namespace FairyBread.Tests
             Assert.False(QueryType.WasFieldResolverCalled);
             await Verifier.Verify(result);
         }
-
 
         // TODO: Unit tests for:
         // - cancellation
