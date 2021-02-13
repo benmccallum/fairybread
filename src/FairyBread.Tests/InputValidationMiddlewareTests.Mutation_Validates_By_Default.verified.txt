@@ -1,0 +1,44 @@
+{
+  Errors: [
+    {
+      Message: "'Some Integer' must be equal to '1'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'write'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'EqualValidator',
+        errorMessage: "'Some Integer' must be equal to '1'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: -1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: -1
+        }
+      }
+    },
+    {
+      Message: "The specified condition was not met for 'Email Address'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'write'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'AsyncPredicateValidator',
+        errorMessage: "The specified condition was not met for 'Email Address'.",
+        propertyName: 'EmailAddress',
+        attemptedValue: 'invalid',
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          PropertyName: 'Email Address',
+          PropertyValue: 'invalid'
+        }
+      }
+    }
+  ]
+}

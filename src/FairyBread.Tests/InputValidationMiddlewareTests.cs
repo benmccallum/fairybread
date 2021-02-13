@@ -66,6 +66,21 @@ namespace FairyBread.Tests
         }
 
         [Fact]
+        public async Task Query_Doesnt_Validate_By_Default()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
+        }
+
+        [Fact]
         public async Task Auto_Validator_Scanning_Works()
         {
             // Arrange
@@ -100,6 +115,48 @@ namespace FairyBread.Tests
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
             await Verifier.Verify(result, verifySettings);
+        }
+
+        [Fact]
+        public async Task Mutation_Validates_By_Default()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"mutation {
+                write(
+                    foo: { someInteger: -1, someString: ""hello"" },
+                    bar: { emailAddress: ""ben@lol.com"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
+        }
+
+        [Fact]
+        public async Task Multi_TopLevelFields_And_MultiRuns_Works()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+            });
+
+            var query = @"
+                query {
+                    read(foo: { someInteger: -1, someString: ""hello"" })
+                    read(foo: { someInteger: -1, someString: ""hello"" })
+                }";
+
+            // Act
+            var result1 = await executor.ExecuteAsync(query);
+            var result2 = await executor.ExecuteAsync(query);
+            var result3 = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(new { result1, result2, result3 });
         }
 
         [Fact]
@@ -140,7 +197,6 @@ namespace FairyBread.Tests
             Assert.False(QueryType.WasFieldResolverCalled);
             await Verifier.Verify(result);
         }
-
 
         // TODO: Unit tests for:
         // - cancellation
