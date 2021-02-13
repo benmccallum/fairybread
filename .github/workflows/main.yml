@@ -36,7 +36,7 @@ jobs:
         run: dotnet test src/
 
       - name: Publish FairyBread on version change
-        if: ${{ endsWith(github.ref, 'master') || endsWith(github.ref, 'main') }}
+        if: ${{ endsWith(github.ref, 'main') }}
         uses: rohith/publish-nuget@v2.5.5
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
