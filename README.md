@@ -73,7 +73,8 @@ With FairyBread, you might need to do this if one of your validators uses a `DbC
 ```csharp
 public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScopeValidator
 {
-    public UserInputValidator(SomeDbContext db) { ... } // db will be a unique instance for this validation operation
+    // db will be a unique instance for this validation operation
+    public UserInputValidator(SomeDbContext db) { ... } 
 }
 ```
 
@@ -126,8 +127,9 @@ We strive to match HotChocolate's supported target frameworks, though this might
 |          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
 |          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
 |          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
-|          v11 |               v9 |         v4 |      right here |
-|     v11.0.9* |               v9 |     v4.1.1 |      right here |
+|          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
+|     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
+|      v11.0.9 |               v9 |         v5 | right here |
 
 * Unexpected binary incompatibility / breaking change in HotChocolate
 

@@ -12,7 +12,7 @@
         }
       ],
       Exception: {
-        Message: "No validators were found by FairyBread.IFairyBreadOptions.AssembliesToScanForValidators was not provided and no validators could be found in your service registrations.Ensure you're registering your FluentValidation validators.",
+        Message: "No validators were found by FairyBread. Ensure you're registering your FluentValidation validators for DI.",
         Data: {},
         Source: 'FairyBread'
       }

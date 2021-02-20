@@ -19,7 +19,6 @@ namespace FairyBread
             ServiceProvider = serviceProvider;
 
             var validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
-            var validatorInterface = typeof(IValidator);
             var objectValidatorInterface = typeof(IValidator<object>);
             var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
 
@@ -47,10 +46,6 @@ namespace FairyBread
             foreach (var validatorResult in validatorResults)
             {
                 var validatorType = validatorResult.ValidatorType;
-                if (validatorType.IsAbstract)
-                {
-                    continue;
-                }
 
                 var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
                 if (!Cache.TryGetValue(validatedType, out var validatorsForType))
