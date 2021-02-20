@@ -10,8 +10,6 @@ namespace FairyBread
 {
     public class DefaultFairyBreadOptions : IFairyBreadOptions
     {
-        public virtual IEnumerable<Assembly>? AssembliesToScanForValidators { get; set; }
-
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
         /// <inheritdoc/>

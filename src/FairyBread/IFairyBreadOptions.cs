@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 
@@ -8,12 +6,6 @@ namespace FairyBread
 {
     public interface IFairyBreadOptions
     {
-        /// <summary>
-        /// If set, FairyBread will look for validators only in these assemblies.
-        /// If not set, FairyBread will look for validators registered with DI.
-        /// </summary>
-        IEnumerable<Assembly>? AssembliesToScanForValidators { get; set; }
-
         /// <summary>
         /// If true, FairyBread will throw on startup if no validators are found.
         /// This is on by default to avoid an accidental release with no validators

@@ -18,47 +18,30 @@ namespace FairyBread
         {
             ServiceProvider = serviceProvider;
 
-            List<AssemblyScanner.AssemblyScanResult> validatorResults;
+            var validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
+            var validatorInterface = typeof(IValidator);
+            var objectValidatorInterface = typeof(IValidator<object>);
+            var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
 
-            var useExplicitAssemblySearch = options.AssembliesToScanForValidators != null;
-            if (useExplicitAssemblySearch)
+            foreach (var service in services)
             {
-                validatorResults = AssemblyScanner.FindValidatorsInAssemblies(options.AssembliesToScanForValidators).ToList();
-            }
-            else
-            {
-                validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
-
-                var validatorInterface = typeof(IValidator);
-                var objectValidatorInterface = typeof(IValidator<object>);
-                var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
-
-                foreach (var service in services)
+                if (!service.ServiceType.IsGenericType ||
+                    service.ServiceType.Name != objectValidatorInterface.Name ||
+                    service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
                 {
-                    if (!service.ServiceType.IsGenericType ||
-                        service.ServiceType.Name != objectValidatorInterface.Name ||
-                        service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
-                    {
-                        continue;
-                    }
-
-                    validatorResults.Add(
-                        new AssemblyScanner.AssemblyScanResult(
-                            service.ServiceType,
-                            service.ImplementationType));
+                    continue;
                 }
+
+                validatorResults.Add(
+                    new AssemblyScanner.AssemblyScanResult(
+                        service.ServiceType,
+                        service.ImplementationType));
             }
 
             if (!validatorResults.Any() && options.ThrowIfNoValidatorsFound)
             {
-                throw new Exception($"No validators were found by FairyBread." +
-                    $"{nameof(IFairyBreadOptions)}.{nameof(IFairyBreadOptions.AssembliesToScanForValidators)} " +
-                    (useExplicitAssemblySearch
-                        ? $"was provided and no validators could be found in the provided assemblies: " +
-                            $"{string.Join(",", options.AssembliesToScanForValidators!)}."
-                        : $"was not provided and no validators could be found in your service registrations." +
-                            $"Ensure you're registering your FluentValidation validators.")
-                    );
+                throw new Exception($"No validators were found by FairyBread. " +
+                    $"Ensure you're registering your FluentValidation validators for DI.");
             }
 
             foreach (var validatorResult in validatorResults)

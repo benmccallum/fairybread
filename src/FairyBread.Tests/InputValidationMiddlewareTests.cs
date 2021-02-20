@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
-using HotChocolate.Configuration;
 using HotChocolate.Execution;
 using HotChocolate.Language;
 using HotChocolate.Types;
@@ -75,25 +74,6 @@ namespace FairyBread.Tests
         {
             // Arrange
             var executor = await GetRequestExecutorAsync();
-
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            await Verifier.Verify(result);
-        }
-
-        [Fact]
-        public async Task Auto_Validator_Scanning_Works()
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync(options =>
-            {
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-                options.AssembliesToScanForValidators = null;
-            });
 
             var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
 
@@ -226,33 +206,6 @@ namespace FairyBread.Tests
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(throwIfNoValidatorsFound);
             await Verifier.Verify(result, verifySettings);
-        }
-
-        [Fact]
-        public async Task Should_Respect_AssembliesToScanForValidators_Option()
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync(
-                options =>
-                {
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-                    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
-                },
-                services =>
-                {
-                    services.AddSingleton<FooInputDtoValidator>();
-                    services.AddSingleton<BarInputDtoValidator>();
-                    services.AddSingleton<BarInputDtoAsyncValidator>();
-                },
-                registerValidatorFromAssembly: false);
-
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            await Verifier.Verify(result);
         }
 
         // TODO: Unit tests for:
