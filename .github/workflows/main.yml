@@ -32,8 +32,14 @@ jobs:
         with:
           dotnet-version: "5.0.x"
 
-      - name: Run unit tests
-        run: dotnet test src/
+      - name: Run tests
+        run: dotnet test src/ /p:CollectCoverage=true /p:CoverletOutput=coverage/ /p:CoverletOutputFormat=lcov
+        
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          flags: integration
+          files: src/FairyBread.Tests/coverage/coverage.info
 
       - name: Publish FairyBread on version change
         if: ${{ endsWith(github.ref, 'main') }}
