@@ -62,10 +62,10 @@ namespace FairyBread.Tests
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(3)]
-        [InlineData(4)]
+        //[InlineData(1)]
+        //[InlineData(2)]
+        //[InlineData(3)]
+        //[InlineData(4)]
         [InlineData(5)]
         public async Task Query_Works(int id)
         {
@@ -228,6 +228,7 @@ namespace FairyBread.Tests
                 $"SomeInteger: {SomeInteger}, " +
                 $"SomeString: {SomeString}";
         }
+
         public class LolInputDtoValidator : AbstractValidator<LolInputDto>
         {
             public LolInputDtoValidator()
