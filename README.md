@@ -30,7 +30,7 @@ services
     .AddFairyBread();
 ```
 
-Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators like on your input types.
+Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators on your input types.
 
 ```csharp
 public class UserInput { ... }
@@ -81,7 +81,6 @@ If you want to let MediatR fire validation, you can set up:
 * your MediatR pipeline to validate them and throw a `ValidationException`, and
 * an `IErrorFilter`(in HotChocolate) to handle it handles using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
 
-
 ### Where to next?
 
 For more examples, please see the tests.
@@ -93,16 +92,15 @@ FairyBread was built with customization in mind. At configuration time, you can 
 ```csharp
 services.AddFairyBread(options =>
 {
-    options.AssembliesToScanForValidators = new[] { typeof(MyValidator).Assembly };
     options.ShouldValidate = (ctx, arg) => ...;
     options.ThrowIfNoValidatorsFound = true/false;
 });
 ```
 
-But it goes further than that. You can completely swap in your own options, validator provider, 
-validation errors result handler and so on to get the functionality you need by simply adding your own 
-implementation of the relevant interface before adding FairyBread. And you can use FairyBread's default
-and override singular methods if that makes life easier.
+Or, you can completely swap in your own options, validator provider, validation errors result handler and 
+so on to get the functionality you need by simply adding your own implementation of the relevant interface 
+before adding FairyBread. You can even subclass a default implementation, register it and override singular 
+methods if that makes life easier.
 
 Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a>
 for complete examples.

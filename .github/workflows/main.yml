@@ -32,12 +32,24 @@ jobs:
         with:
           dotnet-version: "5.0.x"
 
-      - name: run unit tests
+      - name: Run unit tests
         run: dotnet test src/
 
-      - name: publish FairyBread on version change
-        if: ${{ endsWith(github.ref, 'master') || endsWith(github.ref, 'main') }}
+      - name: Publish FairyBread on version change
+        if: ${{ endsWith(github.ref, 'main') }}
         uses: rohith/publish-nuget@v2.5.5
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
           TAG_COMMIT: true
+          
+      - name: Create Release
+        if: ${{ success() && steps.publish_nuget.outputs.VERSION }}
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.publish_nuget.outputs.VERSION }}
+          release_name: ${{ steps.publish_nuget.outputs.VERSION }}
+          draft: false
+          prerelease: ${{ contains(steps.publish_nuget.outputs.VERSION, 'preview') || contains(steps.publish_nuget.outputs.VERSION, 'rc') }}
