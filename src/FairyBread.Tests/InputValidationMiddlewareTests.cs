@@ -226,6 +226,28 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+        public async Task Should_Respect_AssembliesToScanForValidators_Option(bool throwIfNoValidatorsFound)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(
+                options =>
+                {
+                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                },
+                registerValidatorFromAssembly: false);
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(throwIfNoValidatorsFound);
+            await Verifier.Verify(result, verifySettings);
+        }
+
         // TODO: Unit tests for:
         // - cancellation
 
