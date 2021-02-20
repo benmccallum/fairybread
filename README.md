@@ -24,8 +24,8 @@ dotnet add package FairyBread
 Configure services.
 
 ```csharp
-// Add FluentValidation validators
-services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+// Add your FluentValidation validators
+services.AddValidatorsFromAssemblyContaining<CreateUserInputValidator>();
 
 // Add FairyBread
 services
@@ -38,10 +38,10 @@ Configure [FluentValidation](https://github.com/FluentValidation/FluentValidatio
 ```csharp
 public class UserInput { ... }
 
-public class UserInputValidator : AbstractValidator<UserInput> { ... }
+public class UserInputValidator : AbstractValidator<CreateUserInput> { ... }
 
 // An example GraphQL field in HotChocolate
-public Task CreateUser(UserInput userInput) { ... }
+public Task CreateUser(CreateUserInput userInput) { ... }
 ```
 
 ### When validation will fire
