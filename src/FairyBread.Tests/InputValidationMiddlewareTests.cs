@@ -25,10 +25,12 @@ namespace FairyBread.Tests
 
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
             Action<IFairyBreadOptions>? configureOptions = null,
+            Action<IServiceCollection>? configureServices = null,
             bool registerValidatorFromAssembly = true)
         {
             var services = new ServiceCollection();
-            
+            configureServices?.Invoke(services);
+
             var builder = services
                 .AddGraphQL()
                 .AddQueryType<QueryType>()
@@ -226,7 +228,8 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
-        public async Task Should_Respect_AssembliesToScanForValidators_Option(bool throwIfNoValidatorsFound)
+        [Fact]
+        public async Task Should_Respect_AssembliesToScanForValidators_Option()
         {
             // Arrange
             var executor = await GetRequestExecutorAsync(
@@ -234,6 +237,12 @@ namespace FairyBread.Tests
                 {
                     options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
                     options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
+                },
+                services =>
+                {
+                    services.AddSingleton<FooInputDtoValidator>();
+                    services.AddSingleton<BarInputDtoValidator>();
+                    services.AddSingleton<BarInputDtoAsyncValidator>();
                 },
                 registerValidatorFromAssembly: false);
 
@@ -243,9 +252,7 @@ namespace FairyBread.Tests
             var result = await executor.ExecuteAsync(query);
 
             // Assert
-            var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(throwIfNoValidatorsFound);
-            await Verifier.Verify(result, verifySettings);
+            await Verifier.Verify(result);
         }
 
         // TODO: Unit tests for:
@@ -342,12 +349,17 @@ namespace FairyBread.Tests
                 => $"EmailAddress: {EmailAddress}";
         }
 
-        public class BarInputDtoValidator : AbstractValidator<BarInputDto>
+        public abstract class BarInputDtoValidatorBase : AbstractValidator<BarInputDto>
         {
-            public BarInputDtoValidator()
+            public BarInputDtoValidatorBase()
             {
                 RuleFor(x => x.EmailAddress).NotNull();
             }
+        }
+
+        public class BarInputDtoValidator : BarInputDtoValidatorBase
+        {
+
         }
 
         public class BarInputDtoAsyncValidator : AbstractValidator<BarInputDto>
