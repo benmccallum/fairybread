@@ -43,6 +43,7 @@ jobs:
 
       - name: Publish FairyBread on version change
         if: ${{ endsWith(github.ref, 'main') }}
+        id: publish_nuget
         uses: rohith/publish-nuget@v2.5.5
         with:
           PROJECT_FILE_PATH: src/FairyBread/FairyBread.csproj
