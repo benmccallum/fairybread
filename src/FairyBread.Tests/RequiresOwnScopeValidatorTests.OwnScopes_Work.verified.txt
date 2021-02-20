@@ -1,0 +1,88 @@
+{
+  Errors: [
+    {
+      Message: "'Some Integer' must be greater than or equal to '50'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'read'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'GreaterThanOrEqualValidator',
+        errorMessage: "'Some Integer' must be greater than or equal to '50'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: 1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 50,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: 1
+        }
+      }
+    },
+    {
+      Message: "'Some Integer' must be greater than or equal to '100'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'read'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'GreaterThanOrEqualValidator',
+        errorMessage: "'Some Integer' must be greater than or equal to '100'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: 1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 100,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: 1
+        }
+      }
+    },
+    {
+      Message: "'Some Integer' must be greater than or equal to '999'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'read'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'GreaterThanOrEqualValidator',
+        errorMessage: "'Some Integer' must be greater than or equal to '999'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: 1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 999,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: 1
+        }
+      }
+    },
+    {
+      Message: "'Some Integer' must be greater than or equal to '9999'.",
+      Code: 'FairyBread_ValidationError',
+      Path: {
+        Name: 'read'
+      },
+      Extensions: {
+        code: 'FairyBread_ValidationError',
+        errorCode: 'GreaterThanOrEqualValidator',
+        errorMessage: "'Some Integer' must be greater than or equal to '9999'.",
+        propertyName: 'SomeInteger',
+        attemptedValue: 1,
+        severity: 'Error',
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 9999,
+          ComparisonProperty: '',
+          PropertyName: 'Some Integer',
+          PropertyValue: 1
+        }
+      }
+    }
+  ]
+}

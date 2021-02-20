@@ -10,10 +10,12 @@ using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using VerifyXunit;
 using Xunit;
 
 namespace FairyBread.Tests
 {
+    [UsesVerify]
     public class RequiresOwnScopeValidatorTests
     {
         private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
@@ -41,14 +43,15 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(services =>
             {
-                services.AddSingleton<IValidatorProvider, AssertingScopageValidatorProvider>();
+                services.AddSingleton<IValidatorProvider>(sp =>
+                    new AssertingScopageValidatorProvider(sp, services, sp.GetRequiredService<IFairyBreadOptions>()));
             });
 
-            // Act            
+            // Act
             var result = await executor.ExecuteAsync(Query);
 
             // Assert
-            // Done in CustomValidatorProvider
+            await Verifier.Verify(result);
         }
 
         [Fact]
@@ -64,11 +67,12 @@ namespace FairyBread.Tests
                     new ScopeMockingValidatorProvider(sp, services, sp.GetRequiredService<IFairyBreadOptions>(), scopeMock.Object));
             });
 
-            // Act            
+            // Act
             var result = await executor.ExecuteAsync(Query);
 
             // Assert
             scopeMock.Verify(x => x.Dispose(), Times.Once);
+            await Verifier.Verify(result);
         }
 
         public class AssertingScopageValidatorProvider : DefaultValidatorProvider
