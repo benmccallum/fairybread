@@ -24,7 +24,8 @@ namespace FairyBread.Tests
         }
 
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
-            Action<IFairyBreadOptions>? configureOptions = null)
+            Action<IFairyBreadOptions>? configureOptions = null,
+            bool registerValidatorFromAssembly = true)
         {
             var services = new ServiceCollection();
             
@@ -34,11 +35,13 @@ namespace FairyBread.Tests
                 .AddMutationType<MutationType>()
                 .AddFairyBread(options =>
                 {
-                    options.AssembliesToScanForValidators = new[] { typeof(FooInputDtoValidator).Assembly };
                     configureOptions?.Invoke(options);
                 });
 
-            services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+            if (registerValidatorFromAssembly)
+            {
+                services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
+            }
 
             return await builder
                 .BuildRequestExecutorAsync();
@@ -196,6 +199,31 @@ namespace FairyBread.Tests
             // Assert
             Assert.False(QueryType.WasFieldResolverCalled);
             await Verifier.Verify(result);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_ThrowIfNoValidatorsFound_Option(bool throwIfNoValidatorsFound)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(
+                options =>
+                {
+                    options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
+                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                },
+                registerValidatorFromAssembly: false);
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(throwIfNoValidatorsFound);
+            await Verifier.Verify(result, verifySettings);
         }
 
         // TODO: Unit tests for:

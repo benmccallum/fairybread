@@ -1,0 +1,21 @@
+{
+  Errors: [
+    {
+      Message: 'Unexpected Execution Error',
+      Path: {
+        Name: 'read'
+      },
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
+      Exception: {
+        Message: "No validators were found by FairyBread.IFairyBreadOptions.AssembliesToScanForValidators was not provided and no validators could be found in your service registrations.Ensure you're registering your FluentValidation validators.",
+        Data: {},
+        Source: 'FairyBread'
+      }
+    }
+  ]
+}
