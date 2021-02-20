@@ -124,6 +124,9 @@ We strive to match HotChocolate's supported target frameworks, though this might
 |          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
 |          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
 |          v11 |               v9 |         v4 |      right here |
+|     v11.0.9* |               v9 |     v4.1.1 |      right here |
+
+* Unexpected binary incompatibility / breaking change in HotChocolate
 
 ## What the heck is a fairy bread?
 
