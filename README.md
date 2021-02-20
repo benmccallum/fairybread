@@ -6,7 +6,10 @@
   <p>
 	  <a href="https://github.com/benmccallum/fairybread/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/benmccallum/fairybread.svg"></a>
 	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="Nuget version" src="https://img.shields.io/nuget/v/FairyBread"></a>
-	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/FairyBread"></a>
+	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/FairyBread"></a>	  
+      <a href="https://codecov.io/gh/benmccallum/FairyBread">
+        <img src="https://codecov.io/gh/benmccallum/FairyBread/branch/main/graph/badge.svg?token=HB3O7GR51M"/>
+      </a>    
   </p>
 </div>
 
