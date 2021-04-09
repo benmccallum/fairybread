@@ -120,16 +120,17 @@ which can bring breaking changes from time to time and require a major bump our 
 for FluentValidation.
 Compatibility is listed below.
 
-We strive to match HotChocolate's supported target frameworks, though this might not always be possible.
+We strive to match HotChocolate's supported .NET target frameworks, though this might not always be possible.
 
 | HotChocolate | FluentValidation | FairyBread | FairyBread docs |
 | ------------ | ---------------- | ---------- | --------------- |
 |          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
 |          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
 |          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
-|          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
-|     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
-|      v11.0.9 |               v9 |         v5 | right here |
+|          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
+|     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
+|      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
+|      v11.0.9 |              v10 |         v6 | right here |
 
 * Unexpected binary incompatibility / breaking change in HotChocolate
 
