@@ -43,8 +43,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(services =>
             {
-                services.AddSingleton<IValidatorProvider>(sp =>
-                    new AssertingScopageValidatorProvider(sp, services, sp.GetRequiredService<IFairyBreadOptions>()));
+                services.AddScoped<IValidatorProvider, AssertingScopageValidatorProvider>();
             });
 
             // Act
@@ -63,8 +62,8 @@ namespace FairyBread.Tests
 
             var executor = await GetRequestExecutorAsync(services =>
             {
-                services.AddSingleton<IValidatorProvider>(sp =>
-                    new ScopeMockingValidatorProvider(sp, services, sp.GetRequiredService<IFairyBreadOptions>(), scopeMock.Object));
+                services.AddScoped<IValidatorProvider>(sp =>
+                    new ScopeMockingValidatorProvider(sp, sp.GetRequiredService<IValidatorRegistry>(), scopeMock.Object));
             });
 
             // Act
@@ -77,8 +76,8 @@ namespace FairyBread.Tests
 
         public class AssertingScopageValidatorProvider : DefaultValidatorProvider
         {
-            public AssertingScopageValidatorProvider(IServiceProvider serviceProvider, IServiceCollection services, IFairyBreadOptions options)
-                : base(serviceProvider, services, options) { }
+            public AssertingScopageValidatorProvider(IServiceProvider serviceProvider, IValidatorRegistry validatorRegistry)
+                : base(serviceProvider, validatorRegistry) { }
 
             public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
             {
@@ -108,8 +107,8 @@ namespace FairyBread.Tests
         {
             private readonly IServiceScope _mockScope;
 
-            public ScopeMockingValidatorProvider(IServiceProvider serviceProvider, IServiceCollection services, IFairyBreadOptions options, IServiceScope mockScope)
-                : base(serviceProvider, services, options)
+            public ScopeMockingValidatorProvider(IServiceProvider serviceProvider, IValidatorRegistry validatorRegistry, IServiceScope mockScope)
+                : base(serviceProvider, validatorRegistry)
             {
                 _mockScope = mockScope;
             }
