@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddSingleton<IValidatorRegistry>(sp =>
                 new DefaultValidatorRegistry(services, sp.GetRequiredService<IFairyBreadOptions>()));
-            services.TryAddScoped<IValidatorProvider, DefaultValidatorProvider>();
+            services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
 
             services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
 

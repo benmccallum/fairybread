@@ -136,31 +136,10 @@ namespace FairyBread.Tests
                 }";
 
             // Act
-            IExecutionResult result1;
-            using (executor.Services.CreateScope())
-            {
-                result1 = await executor.ExecuteAsync(query);
-            }
+            var result1 = await executor.ExecuteAsync(query);
+            var result2 = await executor.ExecuteAsync(query);
+            var result3 = await executor.ExecuteAsync(query);
 
-            IExecutionResult result2;
-            using (executor.Services.CreateScope())
-            {
-                executor = await GetRequestExecutorAsync(options =>
-                {
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-                });
-                result2 = await executor.ExecuteAsync(query);
-            }
-
-            IExecutionResult result3;
-            using (executor.Services.CreateScope())
-            {
-                executor = await GetRequestExecutorAsync(options =>
-                {
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
-                });
-                result3 = await executor.ExecuteAsync(query);
-            }
 
             // Assert
             await Verifier.Verify(new { result1, result2, result3 });
