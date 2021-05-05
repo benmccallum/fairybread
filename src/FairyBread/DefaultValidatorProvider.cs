@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluentValidation;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
@@ -9,14 +8,11 @@ namespace FairyBread
 {
     public class DefaultValidatorProvider : IValidatorProvider
     {
-        protected readonly IServiceProvider ServiceProvider;
         protected readonly IValidatorRegistry ValidatorRegistry;
 
         public DefaultValidatorProvider(
-            IServiceProvider serviceProvider,
             IValidatorRegistry validatorRegistry)
         {
-            ServiceProvider = serviceProvider;
             ValidatorRegistry = validatorRegistry;
         }
 
@@ -28,13 +24,13 @@ namespace FairyBread
                 {
                     if (validatorDescriptor.RequiresOwnScope)
                     {
-                        var scope = ServiceProvider.CreateScope(); // disposed by middleware
+                        var scope = context.Services.CreateScope(); // disposed by middleware
                         var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
                         yield return new ResolvedValidator(validator, scope);
                     }
                     else
                     {
-                        var validator = (IValidator)ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
+                        var validator = (IValidator)context.Services.GetRequiredService(validatorDescriptor.ValidatorType);
                         yield return new ResolvedValidator(validator);
                     }
                 }

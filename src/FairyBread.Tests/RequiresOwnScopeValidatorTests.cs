@@ -63,7 +63,7 @@ namespace FairyBread.Tests
             var executor = await GetRequestExecutorAsync(services =>
             {
                 services.AddScoped<IValidatorProvider>(sp =>
-                    new ScopeMockingValidatorProvider(sp, sp.GetRequiredService<IValidatorRegistry>(), scopeMock.Object));
+                    new ScopeMockingValidatorProvider(sp.GetRequiredService<IValidatorRegistry>(), scopeMock.Object));
             });
 
             // Act
@@ -76,8 +76,8 @@ namespace FairyBread.Tests
 
         public class AssertingScopageValidatorProvider : DefaultValidatorProvider
         {
-            public AssertingScopageValidatorProvider(IServiceProvider serviceProvider, IValidatorRegistry validatorRegistry)
-                : base(serviceProvider, validatorRegistry) { }
+            public AssertingScopageValidatorProvider(IValidatorRegistry validatorRegistry)
+                : base(validatorRegistry) { }
 
             public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
             {
@@ -107,8 +107,8 @@ namespace FairyBread.Tests
         {
             private readonly IServiceScope _mockScope;
 
-            public ScopeMockingValidatorProvider(IServiceProvider serviceProvider, IValidatorRegistry validatorRegistry, IServiceScope mockScope)
-                : base(serviceProvider, validatorRegistry)
+            public ScopeMockingValidatorProvider(IValidatorRegistry validatorRegistry, IServiceScope mockScope)
+                : base(validatorRegistry)
             {
                 _mockScope = mockScope;
             }

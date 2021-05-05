@@ -39,7 +39,10 @@ namespace FairyBread
                     continue;
                 }
 
-                var resolvedValidators = _validatorProvider.GetValidators(context, argument);
+                var resolvedValidators = _validatorProvider
+                    .GetValidators(context, argument)
+                    .ToArray();
+
                 try
                 {
                     var value = context.ArgumentValue<object?>(argument.Name);
