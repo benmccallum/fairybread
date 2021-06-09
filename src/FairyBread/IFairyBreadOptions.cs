@@ -14,6 +14,12 @@ namespace FairyBread
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>
+        /// If true, FairyBread will allow setting the GraphQL result in custom
+        /// ValidationErrorsHandlers.
+        /// </summary>
+        bool AllowReturnResult { get; set; }
+
+        /// <summary>
         /// Function used to determine if an argument should be validated by
         /// FairyBread's <see cref="InputValidationMiddleware"/>.
         /// The default implementation is
