@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Language;
+using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using VerifyTests;
@@ -209,6 +211,39 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_SetNullResultOnValidationError_Option(bool setNullResultOnValidationError)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync(
+                options =>
+                {
+                    options.SetNullResultOnValidationError = setNullResultOnValidationError;
+                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                },
+                services =>
+                {
+                    // Support those wanting to write data to context.Result in a custom
+                    // `IValidationErrorsHandler` implementation
+                    if (!setNullResultOnValidationError)
+                    {
+                        services.AddSingleton<IValidationErrorsHandler, CustomValidationErrorsHandler>();
+                    }
+                });
+
+            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(setNullResultOnValidationError);
+            await Verifier.Verify(result, verifySettings);
+        }
+
         // TODO: Unit tests for:
         // - cancellation
 
@@ -323,6 +358,14 @@ namespace FairyBread.Tests
                 RuleFor(x => x.EmailAddress)
                     // TODO: Cancellation unit test
                     .MustAsync((val, cancellationToken) => Task.FromResult(val == "ben@lol.com"));
+            }
+        }
+
+        public class CustomValidationErrorsHandler : IValidationErrorsHandler
+        {
+            public void Handle(IMiddlewareContext context, IEnumerable<ValidationResult> invalidResults)
+            {
+                context.Result = "Custom set result on error";
             }
         }
     }
