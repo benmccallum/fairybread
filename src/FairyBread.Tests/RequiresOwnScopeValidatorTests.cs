@@ -83,17 +83,17 @@ namespace FairyBread.Tests
             {
                 var validators = base.GetValidators(context, argument);
 
-                var standardValidator = validators.Where(v => v.Validator is StandardValidator).Single();
-                var anotherStandardValidator = validators.Where(v => v.Validator is AnotherStandardValidator).Single();
+                var standardValidator = validators.Single(v => v.Validator is StandardValidator);
+                var anotherStandardValidator = validators.Single(v => v.Validator is AnotherStandardValidator);
                 Assert.Null(standardValidator.Scope);
                 Assert.Null(anotherStandardValidator.Scope);
                 Assert.Equal(standardValidator.Scope, anotherStandardValidator.Scope);
 
-                var ownScopeValidator = validators.Where(v => v.Validator is RequiresOwnScopeValidator).Single();
+                var ownScopeValidator = validators.Single(v => v.Validator is RequiresOwnScopeValidator);
                 Assert.NotNull(ownScopeValidator.Scope);
                 Assert.NotEqual(standardValidator.Scope, ownScopeValidator.Scope);
 
-                var anotherOwnScopeValidator = validators.Where(v => v.Validator is AnotherRequiresOwnScopeValidator).Single();
+                var anotherOwnScopeValidator = validators.Single(v => v.Validator is AnotherRequiresOwnScopeValidator);
                 Assert.NotNull(anotherOwnScopeValidator.Scope);
                 Assert.NotEqual(standardValidator.Scope, anotherOwnScopeValidator.Scope);
 
