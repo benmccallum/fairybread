@@ -11,6 +11,9 @@ namespace FairyBread
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
         /// <inheritdoc/>
+        public virtual bool SetNullResultOnValidationError { get; set; } = true;
+
+        /// <inheritdoc/>
         public virtual Func<IMiddlewareContext, IInputField, bool> ShouldValidate { get; set; }
             = DefaultImplementations.ShouldValidate;
 

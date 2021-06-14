@@ -14,6 +14,12 @@ namespace FairyBread
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>
+        /// If true, FairyBread will set the current field's <c>IResolverContext.Result</c> 
+        /// to <c>null</c> when a validation error occurs.
+        /// </summary>
+        bool SetNullResultOnValidationError { get; set; }
+
+        /// <summary>
         /// Function used to determine if an argument should be validated by
         /// FairyBread's <see cref="InputValidationMiddleware"/>.
         /// The default implementation is
