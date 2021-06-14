@@ -77,7 +77,7 @@ namespace FairyBread
             {
                 _validationErrorsHandler.Handle(context, invalidResults);
 
-                if(!_options.AllowReturnResult)
+                if (_options.SetNullResultOnValidationError)
                 {
                     context.Result = null;
                 }

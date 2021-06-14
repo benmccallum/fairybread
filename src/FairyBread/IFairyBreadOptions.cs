@@ -14,10 +14,10 @@ namespace FairyBread
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>
-        /// If true, FairyBread will allow setting the GraphQL result in custom
-        /// ValidationErrorsHandlers.
+        /// If true, FairyBread will set the current field's <c>IResolverContext.Result</c> 
+        /// to <c>null</c> when a validation error occurs.
         /// </summary>
-        bool AllowReturnResult { get; set; }
+        bool SetNullResultOnValidationError { get; set; }
 
         /// <summary>
         /// Function used to determine if an argument should be validated by
