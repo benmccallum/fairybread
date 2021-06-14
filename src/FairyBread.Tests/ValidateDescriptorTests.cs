@@ -125,7 +125,7 @@ namespace FairyBread.Tests
                     .Argument("foo", argDesc => argDesc
                         .Type(typeof(FooInputDto))
                         .UseValidation())
-                    .Resolver(x => "lol");
+                    .Resolver(_ => "lol");
             }
         }
 
@@ -153,7 +153,7 @@ namespace FairyBread.Tests
                     .Argument("foo", argDesc => argDesc
                         .Type(typeof(FooInputDto))
                         .UseValidation())
-                    .Resolver(x => "lol");
+                    .Resolver(_ => "lol");
             }
         }
 

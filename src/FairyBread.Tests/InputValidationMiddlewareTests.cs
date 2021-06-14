@@ -57,7 +57,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(options =>
             {
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
             });
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
@@ -128,7 +128,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(options =>
             {
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
             });
 
             var query = @"
@@ -154,7 +154,7 @@ namespace FairyBread.Tests
             var caseData = (CaseData)Cases().First()[0];
             var executor = await GetRequestExecutorAsync(options =>
             {
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
             });
 
             var query = "query { read(foo: " + caseData.FooInput + ") }";
@@ -173,7 +173,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync(options =>
             {
-                options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
             });
 
             var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
@@ -196,7 +196,7 @@ namespace FairyBread.Tests
                 options =>
                 {
                     options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
                 },
                 registerValidatorFromAssembly: false);
 
@@ -221,7 +221,7 @@ namespace FairyBread.Tests
                 options =>
                 {
                     options.SetNullResultOnValidationError = setNullResultOnValidationError;
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
                 },
                 services =>
                 {
@@ -357,7 +357,7 @@ namespace FairyBread.Tests
             {
                 RuleFor(x => x.EmailAddress)
                     // TODO: Cancellation unit test
-                    .MustAsync((val, cancellationToken) => Task.FromResult(val == "ben@lol.com"));
+                    .MustAsync((val, _) => Task.FromResult(val == "ben@lol.com"));
             }
         }
 
