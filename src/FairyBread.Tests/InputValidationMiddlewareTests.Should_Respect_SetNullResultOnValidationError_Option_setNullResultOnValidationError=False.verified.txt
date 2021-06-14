@@ -1,5 +1,5 @@
-{
+﻿{
   Data: {
-    read: 'Custom set result on error'
+    read: Custom set result on error
   }
 }

@@ -1,9 +1,9 @@
-{
+﻿{
   Errors: [
     {
-      Message: 'Unexpected Execution Error',
+      Message: Unexpected Execution Error,
       Path: {
-        Name: 'read'
+        Name: read
       },
       Locations: [
         {
@@ -12,9 +12,9 @@
         }
       ],
       Exception: {
-        Message: "No validators were found by FairyBread. Ensure you're registering your FluentValidation validators for DI.",
-        Data: {},
-        Source: 'FairyBread'
+        $type: Exception,
+        Type: Exception,
+        Message: No validators were found by FairyBread. Ensure you're registering your FluentValidation validators for DI.
       }
     }
   ]

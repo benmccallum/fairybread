@@ -1,22 +1,22 @@
-{
+﻿{
   Errors: [
     {
-      Message: "'Some Integer' must be equal to '1'.",
-      Code: 'FairyBread_ValidationError',
+      Message: 'Some Integer' must be equal to '1'.,
+      Code: FairyBread_ValidationError,
       Path: {
-        Name: 'writeWithUseValidateOnArgument'
+        Name: writeWithUseValidateOnArgument
       },
       Extensions: {
-        code: 'FairyBread_ValidationError',
-        errorCode: 'EqualValidator',
-        errorMessage: "'Some Integer' must be equal to '1'.",
-        propertyName: 'SomeInteger',
+        code: FairyBread_ValidationError,
+        errorCode: EqualValidator,
+        errorMessage: 'Some Integer' must be equal to '1'.,
+        propertyName: SomeInteger,
         attemptedValue: -1,
-        severity: 'Error',
+        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonValue: 1,
-          ComparisonProperty: '',
-          PropertyName: 'Some Integer',
+          ComparisonProperty: ,
+          PropertyName: Some Integer,
           PropertyValue: -1
         }
       }
