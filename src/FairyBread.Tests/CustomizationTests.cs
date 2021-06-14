@@ -33,7 +33,7 @@ namespace FairyBread.Tests
                 .AddMutationType<MutationType>()
                 .AddFairyBread(options =>
                 {
-                    options.ShouldValidate = (ctx, arg) => ctx.Operation.Operation == OperationType.Query;
+                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
                 })
                 .BuildRequestExecutorAsync();
         }
