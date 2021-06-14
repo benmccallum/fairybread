@@ -81,7 +81,7 @@ namespace FairyBread.Tests
 
             public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
             {
-                var validators = base.GetValidators(context, argument);
+                var validators = base.GetValidators(context, argument).ToList();
 
                 var standardValidator = validators.Single(v => v.Validator is StandardValidator);
                 var anotherStandardValidator = validators.Single(v => v.Validator is AnotherStandardValidator);
