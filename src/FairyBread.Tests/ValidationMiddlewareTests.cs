@@ -130,7 +130,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync();
 
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+            var query = @"query { someResolver(foo: { someInteger: -1, someString: ""hello"" }) }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
@@ -234,6 +234,11 @@ namespace FairyBread.Tests
             public static bool WasFieldResolverCalled { get; private set; }
 
             public string Read(FooInputDto foo, BarInputDto? bar)
+            {
+                return $"{foo}; {bar}";
+            }
+
+            public string SomeResolver(FooInputDto foo, BarInputDto? bar)
             {
                 WasFieldResolverCalled = true;
                 return $"{foo}; {bar}";
