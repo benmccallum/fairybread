@@ -16,9 +16,9 @@ using Xunit;
 namespace FairyBread.Tests
 {
     [UsesVerify]
-    public class InputValidationMiddlewareTests
+    public class ValidationMiddlewareTests
     {
-        static InputValidationMiddlewareTests()
+        static ValidationMiddlewareTests()
         {
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
