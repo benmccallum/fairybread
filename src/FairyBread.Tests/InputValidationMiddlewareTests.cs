@@ -6,7 +6,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Language;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -172,7 +171,7 @@ namespace FairyBread.Tests
             var executor = await GetRequestExecutorAsync(options =>
             {
                 options.ShouldValidateArgument = (o, t, a)
-                    => a.Parameter!.ParameterType != typeof(FooInputDto);
+                    => a.Parameter is { } p && p.ParameterType != typeof(FooInputDto);
             });
 
             var query = @"mutation {
