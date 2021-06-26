@@ -7,20 +7,18 @@ using HotChocolate.Resolvers;
 
 namespace FairyBread
 {
-    public class InputValidationMiddleware
+    internal class ValidationMiddleware
     {
         private readonly FieldDelegate _next;
-        private readonly IFairyBreadOptions _options;
         private readonly IValidatorProvider _validatorProvider;
         private readonly IValidationErrorsHandler _validationErrorsHandler;
 
-        public InputValidationMiddleware(FieldDelegate next,
-            IFairyBreadOptions options,
+        public ValidationMiddleware(
+            FieldDelegate next,
             IValidatorProvider validatorProvider,
             IValidationErrorsHandler validationErrorsHandler)
         {
             _next = next;
-            _options = options;
             _validatorProvider = validatorProvider;
             _validationErrorsHandler = validationErrorsHandler;
         }
@@ -34,7 +32,11 @@ namespace FairyBread
             foreach (var argument in arguments)
             {
                 if (argument == null ||
-                    !_options.ShouldValidate(context, argument))
+                    !argument.ContextData.TryGetValue(
+                        WellKnownContextData.ShouldValidate,
+                        out var shouldValidateRaw) ||
+                    shouldValidateRaw is not bool shouldValidate ||
+                    !shouldValidate)
                 {
                     continue;
                 }
@@ -76,16 +78,10 @@ namespace FairyBread
             if (invalidResults.Any())
             {
                 _validationErrorsHandler.Handle(context, invalidResults);
+                return;
+            }
 
-                if (_options.SetNullResultOnValidationError)
-                {
-                    context.Result = null;
-                }
-            }
-            else
-            {
-                await _next(context);
-            }
+            await _next(context);
         }
     }
 }

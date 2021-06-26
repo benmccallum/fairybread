@@ -55,10 +55,7 @@ namespace FairyBread.Tests
         public async Task Query_Works(CaseData caseData)
         {
             // Arrange
-            var executor = await GetRequestExecutorAsync(options =>
-            {
-                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-            });
+            var executor = await GetRequestExecutorAsync();
 
             var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
@@ -69,21 +66,6 @@ namespace FairyBread.Tests
             var verifySettings = new VerifySettings();
             verifySettings.UseParameters(caseData);
             await Verifier.Verify(result, verifySettings);
-        }
-
-        [Fact]
-        public async Task Query_Doesnt_Validate_By_Default()
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync();
-
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            await Verifier.Verify(result);
         }
 
         [Theory]
@@ -105,31 +87,10 @@ namespace FairyBread.Tests
         }
 
         [Fact]
-        public async Task Mutation_Validates_By_Default()
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync();
-
-            var query = @"mutation {
-                write(
-                    foo: { someInteger: -1, someString: ""hello"" },
-                    bar: { emailAddress: ""ben@lol.com"" }) }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            await Verifier.Verify(result);
-        }
-
-        [Fact]
         public async Task Multi_TopLevelFields_And_MultiRuns_Works()
         {
             // Arrange
-            var executor = await GetRequestExecutorAsync(options =>
-            {
-                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-            });
+            var executor = await GetRequestExecutorAsync();
 
             var query = @"
                 query {
@@ -152,10 +113,7 @@ namespace FairyBread.Tests
         {
             // Arrange
             var caseData = (CaseData)Cases().First()[0];
-            var executor = await GetRequestExecutorAsync(options =>
-            {
-                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-            });
+            var executor = await GetRequestExecutorAsync();
 
             var query = "query { read(foo: " + caseData.FooInput + ") }";
 
@@ -171,10 +129,7 @@ namespace FairyBread.Tests
         public async Task Doesnt_Call_Field_Resolver_If_Invalid()
         {
             // Arrange
-            var executor = await GetRequestExecutorAsync(options =>
-            {
-                options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-            });
+            var executor = await GetRequestExecutorAsync();
 
             var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
 
@@ -196,7 +151,6 @@ namespace FairyBread.Tests
                 options =>
                 {
                     options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
-                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
                 },
                 registerValidatorFromAssembly: false);
 
@@ -211,37 +165,26 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public async Task Should_Respect_SetNullResultOnValidationError_Option(bool setNullResultOnValidationError)
+        [Fact]
+        public async Task Should_Respect_ShouldValidateArgument_Option()
         {
             // Arrange
-            var executor = await GetRequestExecutorAsync(
-                options =>
-                {
-                    options.SetNullResultOnValidationError = setNullResultOnValidationError;
-                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-                },
-                services =>
-                {
-                    // Support those wanting to write data to context.Result in a custom
-                    // `IValidationErrorsHandler` implementation
-                    if (!setNullResultOnValidationError)
-                    {
-                        services.AddSingleton<IValidationErrorsHandler, CustomValidationErrorsHandler>();
-                    }
-                });
+            var executor = await GetRequestExecutorAsync(options =>
+            {
+                options.ShouldValidateArgument = (o, t, a)
+                    => a.Parameter!.ParameterType != typeof(FooInputDto);
+            });
 
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
+            var query = @"mutation {
+                write(
+                    foo: { someInteger: -1, someString: ""hello"" },
+                    bar: { emailAddress: ""ben@lol.com"" }) }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
 
             // Assert
-            var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(setNullResultOnValidationError);
-            await Verifier.Verify(result, verifySettings);
+            await Verifier.Verify(result);
         }
 
         // TODO: Unit tests for:
@@ -286,9 +229,10 @@ namespace FairyBread.Tests
             }
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public class QueryType
         {
-            public static bool WasFieldResolverCalled = false;
+            public static bool WasFieldResolverCalled { get; private set; }
 
             public string Read(FooInputDto foo, BarInputDto? bar)
             {

@@ -6,7 +6,6 @@ using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Language;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,10 +30,7 @@ namespace FairyBread.Tests
                 .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .AddFairyBread(options =>
-                {
-                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-                })
+                .AddFairyBread()
                 .BuildRequestExecutorAsync();
         }
 
@@ -90,6 +86,7 @@ namespace FairyBread.Tests
                     : base.GetValidators(context, argument);
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public class QueryType
         {
             public string Read(FooInputDto foo) => $"{foo};";

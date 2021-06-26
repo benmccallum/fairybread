@@ -1,5 +1,0 @@
-﻿{
-  Data: {
-    write: SomeInteger: -1, SomeString: hello;
-  }
-}

@@ -1,6 +1,5 @@
 ﻿using System;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
+using HotChocolate.Types.Descriptors.Definitions;
 
 namespace FairyBread
 {
@@ -8,23 +7,17 @@ namespace FairyBread
     {
         /// <summary>
         /// If true, FairyBread will throw on startup if no validators are found.
-        /// This is on by default to avoid an accidental release with no validators
+        /// This is <c>true</c> by default to avoid an accidental release with no validators
         /// that continues to function silently but would obviously be very dangerous.
         /// </summary>
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>
-        /// If true, FairyBread will set the current field's <c>IResolverContext.Result</c>
-        /// to <c>null</c> when a validation error occurs.
+        /// A function that evaluates an argument during schema building.
+        /// If it returns true, the input validation middleware will be added to this field,
+        /// else it won't and this field's arguments will not be validated.
+        /// The default implementation always returns <c>true</c>.
         /// </summary>
-        bool SetNullResultOnValidationError { get; set; }
-
-        /// <summary>
-        /// Function used to determine if an argument should be validated by
-        /// FairyBread's <see cref="InputValidationMiddleware"/>.
-        /// The default implementation is
-        /// <see cref="DefaultFairyBreadOptions.DefaultImplementations.ShouldValidate(IMiddlewareContext, IInputField)"/>
-        /// </summary>
-        Func<IMiddlewareContext, IInputField, bool> ShouldValidate { get; set; }
+        Func<ObjectTypeDefinition, ObjectFieldDefinition, ArgumentDefinition, bool> ShouldValidateArgument { get; set; }
     }
 }

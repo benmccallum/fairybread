@@ -30,10 +30,7 @@ namespace FairyBread.Tests
                 .AddGraphQL()
                 .AddQueryType<QueryType>()
                 .AddMutationType<MutationType>()
-                .AddFairyBread(options =>
-                {
-                    options.ShouldValidate = (ctx, _) => ctx.Operation.Operation == OperationType.Query;
-                })
+                .AddFairyBread()
                 .BuildRequestExecutorAsync();
         }
 
@@ -107,18 +104,24 @@ namespace FairyBread.Tests
         {
             private readonly IServiceScope _mockScope;
 
-            public ScopeMockingValidatorProvider(IValidatorRegistry validatorRegistry, IServiceScope mockScope)
+            public ScopeMockingValidatorProvider(
+                IValidatorRegistry validatorRegistry,
+                IServiceScope mockScope)
                 : base(validatorRegistry)
             {
                 _mockScope = mockScope;
             }
 
-            public override IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
+            public override IEnumerable<ResolvedValidator> GetValidators(
+                IMiddlewareContext context, IInputField argument)
             {
-                yield return new ResolvedValidator(new RequiresOwnScopeValidator(), _mockScope);
+                yield return new ResolvedValidator(
+                    new RequiresOwnScopeValidator(),
+                    _mockScope);
             }
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public class QueryType
         {
             public string Read(FooInputDto foo) => $"{foo};";
@@ -158,7 +161,8 @@ namespace FairyBread.Tests
             }
         }
 
-        public class RequiresOwnScopeValidator : AbstractValidator<FooInputDto>, IRequiresOwnScopeValidator
+        public class RequiresOwnScopeValidator
+            : AbstractValidator<FooInputDto>, IRequiresOwnScopeValidator
         {
             public RequiresOwnScopeValidator()
             {
@@ -167,7 +171,8 @@ namespace FairyBread.Tests
             }
         }
 
-        public class AnotherRequiresOwnScopeValidator : AbstractValidator<FooInputDto>, IRequiresOwnScopeValidator
+        public class AnotherRequiresOwnScopeValidator
+            : AbstractValidator<FooInputDto>, IRequiresOwnScopeValidator
         {
             public AnotherRequiresOwnScopeValidator()
             {

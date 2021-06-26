@@ -24,8 +24,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
 
-            // Execution
-            requestExecutorBuilder.UseField<InputValidationMiddleware>();
+            // Executor builder
+            requestExecutorBuilder.TryAddTypeInterceptor<ValidationMiddlewareInjector>();
 
             return requestExecutorBuilder;
         }

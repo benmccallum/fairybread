@@ -35,6 +35,7 @@ services
 
 Configure [FluentValidation](https://github.com/FluentValidation/FluentValidation) validators on your input types.
 
+
 ```csharp
 public class UserInput { ... }
 
@@ -43,22 +44,6 @@ public class UserInputValidator : AbstractValidator<CreateUserInput> { ... }
 // An example GraphQL field in HotChocolate
 public Task CreateUser(CreateUserInput userInput) { ... }
 ```
-
-### When validation will fire
-
-By default, FairyBread will validate any argument that:
-* is an object type in a mutation operation,
-* is manually opted-in at the field level with:
-    * `[Validate]` on the resolver method argument in pure code first
-    * `.UseValidation()` on the argument definition in code first
-* is manually opted-in at the input type level with:
-    * `[Validate]` on the CLR backing type in pure code first
-    * `.UseValidation()` on the InputObjectType descriptor in code first
-
-> Note: by default, query operations are notably excluded. This is mostly for performance reasons.
-
-If the default doesn't suit you, you can always change it by configuring `IFairyBreadOptions.ShouldValidate`. See [Customization](#Customization).
-Some of the default implementations are defined publicly on the default options class so they can be re-used and composed to form your own implementation.
 
 ### How validation errors will be handled
 
@@ -91,23 +76,22 @@ For more examples, please see the tests.
 
 ## Customization
 
-FairyBread was built with customization in mind. At configuration time, you can tweak the default settings as needed:
+FairyBread was built with customization in mind.
+
+You can tweak the default settings as needed:
 
 ```csharp
 services.AddFairyBread(options =>
 {
-    options.ShouldValidate = (ctx, arg) => ...;
+    options.ShouldValidateArgument = (objTypeDef, fieldTypeDef, argTypeDef) => ...;
     options.ThrowIfNoValidatorsFound = true/false;
 });
 ```
 
-Or, you can completely swap in your own options, validator provider, validation errors result handler and 
-so on to get the functionality you need by simply adding your own implementation of the relevant interface 
-before adding FairyBread. You can even subclass a default implementation, register it and override singular 
-methods if that makes life easier.
+You can completely swap in your own concrete implementations of bits with DI.
+These could be based on the default implementations whose methods can be overridden.
 
-Check out <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a>
-for complete examples.
+See <a href="src/FairyBread.Tests/CustomizationTests.cs">CustomizationTests.cs</a>.
 
 ## Backlog
 
