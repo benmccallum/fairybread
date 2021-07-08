@@ -15,6 +15,9 @@
 
 ## Getting started
 
+| :exclamation::exclamation: These are the docs for version 7 which is still in preview and simplifies the required setup. It will RC soon, it's table. For a new setup you should use it and follow the instructions below. But if you want the docs for v6 (current stable), please go to [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch. :exclamation::exclamation:
+|-----------------------------------------|
+
 Install a [compatible version](#Compatibility).
 
 ```bash
@@ -114,7 +117,9 @@ We strive to match HotChocolate's supported .NET target frameworks, though this 
 |          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
 |     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
 |      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
-|      v11.0.9 |              v10 |         v6 | right here |
+|      v11.0.9 |              v10 |         v6 | [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch |
+|      v11.0.9 |              v10 |         v7 | right here |
+
 
 * Unexpected binary incompatibility / breaking change in HotChocolate
 
