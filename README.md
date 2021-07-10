@@ -15,7 +15,7 @@
 
 ## Getting started
 
-| :exclamation::exclamation: These are the docs for version 7 which is still in preview and simplifies the required setup. It will RC soon, it's table. For a new setup you should use it and follow the instructions below. But if you want the docs for v6 (current stable), please go to [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch. :exclamation::exclamation:
+| :exclamation::exclamation: These are the docs for version 7 which is now RC. It simplifies the required setup. For a new setup, use it and follow the instructions below. For v6, see [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main). :exclamation::exclamation:
 |-----------------------------------------|
 
 Install a [compatible version](#Compatibility).
