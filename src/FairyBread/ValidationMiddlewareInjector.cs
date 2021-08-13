@@ -44,7 +44,9 @@ namespace FairyBread
                             .Create<ValidationMiddleware>();
                     }
 
-                    fieldDef.MiddlewareComponents.Insert(0, _validationFieldMiddleware);
+                    fieldDef.MiddlewareDefinitions.Insert(
+                        0,
+                        new FieldMiddlewareDefinition(_validationFieldMiddleware));
                 }
             }
         }
