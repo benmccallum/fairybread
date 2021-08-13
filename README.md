@@ -115,7 +115,8 @@ We strive to match HotChocolate's supported .NET target frameworks, though this 
 |     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
 |      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
 |      v11.0.9 |              v10 |         v6 | [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch |
-|      v11.0.9 |              v10 |         v7 | right here |
+|      v11.0.9 |              v10 |         v7 | right here (for now) |
+|      v12.0.0 |              v10 |         v8 | right here |
 
 
 * Unexpected binary incompatibility / breaking change in HotChocolate
