@@ -17,9 +17,9 @@
     <PackageIconUrl>https://github.com/benmccallum/fairybread/raw/master/logo-400x400.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/benmccallum/fairybread/blob/master/LICENSE</PackageLicenseUrl>
 
-    <Version>8.0.0-preview.1</Version>
+    <Version>8.0.0-preview.2</Version>
 
-    <HotChocolateVersion>12.0.0-preview.29</HotChocolateVersion>
+    <HotChocolateVersion>12.0.0</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net5.0; netcoreapp3.1; netstandard2.0</LibraryTargetFrameworks>
     <TestTargetFrameworks>net5.0; netcoreapp3.1; netcoreapp2.1</TestTargetFrameworks>
