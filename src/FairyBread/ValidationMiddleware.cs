@@ -25,7 +25,7 @@ namespace FairyBread
 
         public async Task InvokeAsync(IMiddlewareContext context)
         {
-            var arguments = context.Field.Arguments;
+            var arguments = context.Selection.Field.Arguments;
 
             var invalidResults = new List<ValidationResult>();
 
