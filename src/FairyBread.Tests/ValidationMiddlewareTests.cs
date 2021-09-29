@@ -331,6 +331,14 @@ namespace FairyBread.Tests
                 return string.Join(", ", foos.Select(f => f.ToString()));
             }
 
+            public string ReadWithExplicitValidation(
+                [Validate(typeof(PositiveIntValidator))]
+                int foo,
+                int bar)
+            {
+                return $"{foo} {bar}";
+            }
+
             public string SomeResolver(FooInputDto foo, BarInputDto? bar)
             {
                 WasFieldResolverCalled = true;
@@ -415,6 +423,14 @@ namespace FairyBread.Tests
                 RuleFor(x => x.EmailAddress)
                     // TODO: Cancellation unit test
                     .MustAsync((val, _) => Task.FromResult(val == "ben@lol.com"));
+            }
+        }
+
+        public class PositiveIntValidator : AbstractValidator<int>, IExplicitUsageOnlyValidator
+        {
+            public PositiveIntValidator()
+            {
+                RuleFor(x => x).NotNull().GreaterThan(0);
             }
         }
 

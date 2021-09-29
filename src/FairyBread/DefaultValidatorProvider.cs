@@ -18,21 +18,40 @@ namespace FairyBread
 
         public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
         {
-            if (ValidatorRegistry.Cache.TryGetValue(argument.RuntimeType, out var validatorDescriptors))
+            var validators = new List<ResolvedValidator>();
+
+            if (ValidatorRegistry.CacheByArgType.TryGetValue(argument.RuntimeType, out var validatorDescriptors) &&
+                validatorDescriptors is not null)
             {
-                foreach (var validatorDescriptor in validatorDescriptors)
+                ProcessDescriptors(context, validators, validatorDescriptors);
+            }
+
+            if (ValidatorRegistry.CacheByFieldCoord.TryGetValue(argument.Coordinate, out validatorDescriptors) &&
+                validatorDescriptors is not null)
+            {
+                ProcessDescriptors(context, validators, validatorDescriptors);
+            }
+
+            return validators;
+        }
+
+        private static void ProcessDescriptors(
+            IMiddlewareContext context,
+            List<ResolvedValidator> validators,
+            List<ValidatorDescriptor> validatorDescriptors)
+        {
+            foreach (var validatorDescriptor in validatorDescriptors)
+            {
+                if (validatorDescriptor.RequiresOwnScope)
                 {
-                    if (validatorDescriptor.RequiresOwnScope)
-                    {
-                        var scope = context.Services.CreateScope(); // disposed by middleware
-                        var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
-                        yield return new ResolvedValidator(validator, scope);
-                    }
-                    else
-                    {
-                        var validator = (IValidator)context.Services.GetRequiredService(validatorDescriptor.ValidatorType);
-                        yield return new ResolvedValidator(validator);
-                    }
+                    var scope = context.Services.CreateScope(); // disposed by middleware
+                    var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
+                    validators.Add(new ResolvedValidator(validator, scope));
+                }
+                else
+                {
+                    var validator = (IValidator)context.Services.GetRequiredService(validatorDescriptor.ValidatorType);
+                    validators.Add(new ResolvedValidator(validator));
                 }
             }
         }

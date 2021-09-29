@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FairyBread
@@ -13,13 +14,15 @@ namespace FairyBread
         public DefaultValidatorRegistry(IServiceCollection services, IFairyBreadOptions options)
         {
             var validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
-            var objectValidatorInterface = typeof(IValidator<object>);
-            var underlyingValidatorType = objectValidatorInterface.GetGenericTypeDefinition().UnderlyingSystemType;
+            var objectValidatorInterfaceType = typeof(IValidator<object>);
+            var explicitUsageOnlyValidatorInterfaceType = typeof(IExplicitUsageOnlyValidator);
+            var underlyingValidatorType = objectValidatorInterfaceType.GetGenericTypeDefinition().UnderlyingSystemType;
 
             foreach (var service in services)
             {
                 if (!service.ServiceType.IsGenericType ||
-                    service.ServiceType.Name != objectValidatorInterface.Name ||
+                    service.ServiceType.Name != objectValidatorInterfaceType.Name ||
+                    explicitUsageOnlyValidatorInterfaceType.IsAssignableFrom(service.ServiceType) ||
                     service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
                 {
                     continue;
@@ -42,9 +45,9 @@ namespace FairyBread
                 var validatorType = validatorResult.ValidatorType;
 
                 var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
-                if (!Cache.TryGetValue(validatedType, out var validatorsForType))
+                if (!CacheByArgType.TryGetValue(validatedType, out var validatorsForType))
                 {
-                    Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
+                    CacheByArgType[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
                 }
 
                 var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
@@ -55,7 +58,8 @@ namespace FairyBread
             }
         }
 
-        public Dictionary<Type, List<ValidatorDescriptor>> Cache { get; } = new();
+        public Dictionary<Type, List<ValidatorDescriptor>> CacheByArgType { get; } = new();
+        public Dictionary<FieldReference, List<ValidatorDescriptor>> CacheByFieldCoord { get; } = new();
 
         public bool ShouldBeResolvedInOwnScope(Type validatorType)
             => _hasOwnScopeInterfaceType.IsAssignableFrom(validatorType);
