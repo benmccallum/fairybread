@@ -19,6 +19,7 @@
 
     <Version>8.0.0-preview.2</Version>
 
+    <FluentValidationVersion>12.0.0</FluentValidationVersion>
     <HotChocolateVersion>12.0.0</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net5.0; netcoreapp3.1; netstandard2.0</LibraryTargetFrameworks>
