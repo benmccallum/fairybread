@@ -242,7 +242,7 @@ namespace FairyBread.Tests
 
             // Assert
             var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(caseData);
+            verifySettings.UseParameters(caseData.CaseId);
             await Verifier.Verify(result, verifySettings);
         }
 
@@ -260,7 +260,7 @@ namespace FairyBread.Tests
 
             // Assert
             var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(caseData);
+            verifySettings.UseParameters(caseData.CaseId);
             await Verifier.Verify(result, verifySettings);
         }
 
