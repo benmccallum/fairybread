@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="fairybread" src="logo.svg" height="200px">
   <p>
-    Input validation for HotChocolate.
+    Input validation for Hot Chocolate.
   </p>
   <p>
 	  <a href="https://github.com/benmccallum/fairybread/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/benmccallum/fairybread.svg"></a>
@@ -41,7 +41,7 @@ public class UserInput { ... }
 
 public class UserInputValidator : AbstractValidator<CreateUserInput> { ... }
 
-// An example GraphQL field in HotChocolate
+// An example GraphQL field in Hot Chocolate
 public Task CreateUser(CreateUserInput userInput) { ... }
 ```
 
@@ -68,7 +68,7 @@ public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScop
 If you want to let MediatR fire validation, you can set up:
 * FairyBread to skip validating `MediatR.IRequest` arguments, 
 * your MediatR pipeline to validate them and throw a `ValidationException`, and
-* an `IErrorFilter`(in HotChocolate) to handle it handles using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
+* an `IErrorFilter`(in Hot Chocolate) to handle it handles using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
 
 ### Where to next?
 
@@ -104,7 +104,7 @@ which can bring breaking changes from time to time and require a major bump our 
 for FluentValidation.
 Compatibility is listed below.
 
-We strive to match HotChocolate's supported .NET target frameworks, though this might not always be possible.
+We strive to match Hot Chocolate's supported .NET target frameworks, though this might not always be possible.
 
 | HotChocolate | FluentValidation | FairyBread | FairyBread docs |
 | ------------ | ---------------- | ---------- | --------------- |
@@ -115,11 +115,11 @@ We strive to match HotChocolate's supported .NET target frameworks, though this 
 |     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
 |      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
 |      v11.0.9 |              v10 |         v6 | [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch |
-|      v11.0.9 |              v10 |         v7 | right here (for now) |
-|      v12.0.0 |              v10 |         v8 | right here |
+|      v11.0.9 |              v10 |         v7 | [/v7/main](https://github.com/benmccallum/fairybread/tree/v7/main) branch |
+|      v12.0.1 |              v10 |         v8 | right here |
 
 
-* Unexpected binary incompatibility / breaking change in HotChocolate
+\* Denotes unexpected binary incompatibility / breaking change in Hot Chocolate
 
 ## What the heck is a fairy bread?
 
