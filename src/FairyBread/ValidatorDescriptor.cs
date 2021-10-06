@@ -19,6 +19,13 @@ namespace FairyBread
         public bool RequiresOwnScope { get; }
 
         /// <summary>
+        /// Does the validator inherit <see cref="IExplicitUsageOnlyValidator"/>? 
+        /// If so, this means it should be only executed when explicitly set on an argument
+        /// (rather than implicitly given the type it can validate).
+        /// </summary>
+        public bool ExplicitUsageOnly { get; }
+
+        /// <summary>
         /// Instantiates a new <see cref="ValidatorDescriptor"/>.
         /// </summary>
         /// <param name="validatorType">The validator.</param>

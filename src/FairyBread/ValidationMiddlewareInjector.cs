@@ -51,9 +51,4 @@ namespace FairyBread
             }
         }
     }
-
-    internal static class WellKnownContextData
-    {
-        public const string ShouldValidate = "FairyBread.ShouldValidate";
-    }
 }

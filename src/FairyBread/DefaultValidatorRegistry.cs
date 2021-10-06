@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
+using HotChocolate;
 using HotChocolate.Resolvers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,7 +23,7 @@ namespace FairyBread
             {
                 if (!service.ServiceType.IsGenericType ||
                     service.ServiceType.Name != objectValidatorInterfaceType.Name ||
-                    explicitUsageOnlyValidatorInterfaceType.IsAssignableFrom(service.ServiceType) ||
+                    explicitUsageOnlyValidatorInterfaceType.IsAssignableFrom(service.ImplementationType) ||
                     service.ServiceType.GetGenericTypeDefinition() != underlyingValidatorType)
                 {
                     continue;
@@ -59,7 +60,7 @@ namespace FairyBread
         }
 
         public Dictionary<Type, List<ValidatorDescriptor>> CacheByArgType { get; } = new();
-        public Dictionary<FieldReference, List<ValidatorDescriptor>> CacheByFieldCoord { get; } = new();
+        public Dictionary<FieldCoordinate, List<ValidatorDescriptor>> CacheByFieldCoord { get; } = new();
 
         public bool ShouldBeResolvedInOwnScope(Type validatorType)
             => _hasOwnScopeInterfaceType.IsAssignableFrom(validatorType);

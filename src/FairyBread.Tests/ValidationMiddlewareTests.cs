@@ -186,6 +186,24 @@ namespace FairyBread.Tests
             await Verifier.Verify(result);
         }
 
+        [Fact]
+        public async Task Should_Respect_ValidateAttribute()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"
+                query {
+                    readWithExplicitValidation(foo: -1, bar: -1)
+                }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
+        }
+
         // TODO: Unit tests for:
         // - cancellation
 
@@ -332,9 +350,14 @@ namespace FairyBread.Tests
             }
 
             public string ReadWithExplicitValidation(
-                [Validate(typeof(PositiveIntValidator))]
-                int foo,
-                int bar)
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
+                int fooInt,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
+                int barInt,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
+                FooInputDto foo,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
+                BarInputDto bar)
             {
                 return $"{foo} {bar}";
             }
@@ -436,7 +459,7 @@ namespace FairyBread.Tests
 
         public class CustomValidationErrorsHandler : IValidationErrorsHandler
         {
-            public void Handle(IMiddlewareContext context, IEnumerable<ValidationResult> invalidResults)
+            public void Handle(IMiddlewareContext context, IEnumerable<ArgumentValidationResult> invalidResults)
             {
                 context.Result = "Custom set result on error";
             }

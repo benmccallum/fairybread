@@ -1,0 +1,16 @@
+﻿{
+  defaultAttr: {
+    ValidatorTypes: [
+      ValidateAttributeTests,
+      ValidateAttributeTests
+    ],
+    RunImplicitValidators: true,
+    TypeId: ValidateAttribute
+  },
+  overrideAttr: {
+    ValidatorTypes: [
+      ValidateAttributeTests
+    ],
+    TypeId: ValidateAttribute
+  }
+}

@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
 using HotChocolate.Resolvers;
 
 namespace FairyBread
@@ -27,7 +26,7 @@ namespace FairyBread
         {
             var arguments = context.Selection.Field.Arguments;
 
-            var invalidResults = new List<ValidationResult>();
+            var invalidResults = new List<ArgumentValidationResult>();
 
             foreach (var argument in arguments)
             {
@@ -62,7 +61,8 @@ namespace FairyBread
                         if (validationResult != null &&
                             !validationResult.IsValid)
                         {
-                            invalidResults.Add(validationResult);
+                            invalidResults.Add(
+                                new ArgumentValidationResult(argument.Name, validationResult));
                         }
                     }
                 }

@@ -1,0 +1,25 @@
+﻿{
+  Errors: [
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidation
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: foo,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: null,
+          PropertyValue: -1
+        }
+      }
+    }
+  ]
+}
