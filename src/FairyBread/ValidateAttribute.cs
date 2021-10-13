@@ -32,7 +32,7 @@ namespace FairyBread
                 return;
             }
 
-            descriptor.Extend().OnBeforeCompletion((completionContext, argDef) =>
+            descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
             {
                 if (attr.ValidatorTypes.Length != attr.ValidatorTypes.Distinct().Count())
                 {

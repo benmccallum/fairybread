@@ -41,14 +41,18 @@ namespace FairyBread
                     $"Ensure you're registering your FluentValidation validators for DI.");
             }
 
+            var cacheByArgRuntimeType = new Dictionary<Type, List<ValidatorDescriptor>>();
+
             foreach (var validatorResult in validatorResults)
             {
+                // TODO: options.ThrowIfDuplicateValidatorsFound
+
                 var validatorType = validatorResult.ValidatorType;
 
                 var validatedType = validatorResult.InterfaceType.GenericTypeArguments.Single();
-                if (!CacheByArgType.TryGetValue(validatedType, out var validatorsForType))
+                if (!cacheByArgRuntimeType.TryGetValue(validatedType, out var validatorsForType))
                 {
-                    CacheByArgType[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
+                    cacheByArgRuntimeType[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
                 }
 
                 var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
@@ -58,9 +62,6 @@ namespace FairyBread
                 validatorsForType.Add(validatorDescriptor);
             }
         }
-
-        public Dictionary<Type, List<ValidatorDescriptor>> CacheByArgType { get; } = new();
-        public Dictionary<FieldCoordinate, List<ValidatorDescriptor>> CacheByFieldCoord { get; } = new();
 
         public bool ShouldBeResolvedInOwnScope(Type validatorType)
             => _hasOwnScopeInterfaceType.IsAssignableFrom(validatorType);
