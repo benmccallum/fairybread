@@ -1,0 +1,346 @@
+﻿{
+  Errors: [
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        propertyName: A,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        propertyName: B,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        propertyName: A,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        propertyName: B,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        propertyName: A,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        propertyName: B,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsC
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsB
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        propertyName: ,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    }
+  ]
+}
