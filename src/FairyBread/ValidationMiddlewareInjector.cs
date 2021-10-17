@@ -15,13 +15,10 @@ namespace FairyBread
         private FieldMiddleware? _validationFieldMiddleware;
 
         private static readonly string _runtimeTypeCrawlErrorMsg =
-            "FairyBread could not determine runtime type of field argument to decide whether or not to " +
-            "add the validation middleware. If you encounter this exception, you can turn " +
-            $"this off with the {nameof(IFairyBreadOptions.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning)}" +
-            $" option and  FairyBread will prune where it can still and the problem argument will always get the validation " +
-            $"middleware. Or, less ideal, you can turn off pruning entirely with " +
-            $"{nameof(IFairyBreadOptions.PruneMiddlewarePlacement)}. " +
-            "In either case, please report the issue in GitHub.";
+            "FairyBread could not determine runtime type of field argument to decide whether " +
+            "or not to add the validation middleware. If you encounter this exception, set the " +
+            $"{nameof(IFairyBreadOptions.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement)} " +
+            $"option to false and report the issue on GitHub. FairyBread will still optimize middleware placement where it can.";
 
         public override void OnBeforeCompleteType(
             ITypeCompletionContext completionContext,
@@ -40,30 +37,37 @@ namespace FairyBread
 
             foreach (var fieldDef in objTypeDef.Fields)
             {
+                // Don't add validation middleware unless:
+                // 1. we have args
                 var needsValidationMiddleware = false;
 
                 foreach (var argDef in fieldDef.Arguments)
                 {
-                    if (options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))
+                    // 2. the argument should be validated according to options func
+                    if (!options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))
                     {
-                        // If we know what the arg's runtime type is and we don't have a validator for
-                        // it, don't add the validation field middleware unnecessarily
+                        continue;
+                    }
+
+                    // 3. the arg actually has a validator for it's runtime type
+                    if (options.OptimizeMiddlewarePlacement)
+                    {
                         var argRuntimeType = TryGetArgRuntimeType(argDef);
                         if (argRuntimeType is null)
                         {
-                            if (options.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning)
+                            if (options.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement)
                             {
-                                throw new ApplicationException(_runtimeTypeCrawlErrorMsg);
+                                throw new Exception(_runtimeTypeCrawlErrorMsg);
                             }
                         }
                         else if (!validatorRegistry.Cache.ContainsKey(argRuntimeType))
                         {
                             continue;
                         }
-
-                        needsValidationMiddleware = true;
-                        argDef.ContextData[WellKnownContextData.ShouldValidate] = true;
                     }
+
+                    needsValidationMiddleware = true;
+                    argDef.ContextData[WellKnownContextData.ShouldValidate] = true;
                 }
 
                 if (needsValidationMiddleware)
@@ -88,13 +92,13 @@ namespace FairyBread
 
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                return GetRuntimeType(extTypeRef.Type);
+                return TryGetRuntimeType(extTypeRef.Type);
             }
 
             return null;
         }
 
-        private static Type? GetRuntimeType(IExtendedType extType)
+        private static Type? TryGetRuntimeType(IExtendedType extType)
         {
             // Array (though not sure what produces this scenario as seems to always be list)
             if (extType.IsArray)
@@ -104,7 +108,7 @@ namespace FairyBread
                     return null;
                 }
 
-                var elementRuntimeType = GetRuntimeType(extType.ElementType);
+                var elementRuntimeType = TryGetRuntimeType(extType.ElementType);
                 if (elementRuntimeType is null)
                 {
                     return null;
@@ -121,7 +125,7 @@ namespace FairyBread
                     return null;
                 }
 
-                var elementRuntimeType = GetRuntimeType(extType.ElementType);
+                var elementRuntimeType = TryGetRuntimeType(extType.ElementType);
                 if (elementRuntimeType is null)
                 {
                     return null;

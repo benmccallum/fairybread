@@ -144,38 +144,6 @@ namespace FairyBread.Tests
             await Verifier.Verify(result);
         }
 
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public async Task Should_Respect_ThrowIfNoValidatorsFound_Option(bool throwIfNoValidatorsFound)
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync(
-                options =>
-                {
-                    options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
-                },
-                registerValidators: false);
-
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
-
-            // Act
-            if (throwIfNoValidatorsFound)
-            {
-                var ex = await Should.ThrowAsync<Exception>(async () => await executor.ExecuteAsync(query));
-                ex.Message.ShouldContain("No validators were found by FairyBread");
-            }
-            else
-            {
-                var result = await executor.ExecuteAsync(query);
-
-                // Assert
-                var verifySettings = new VerifySettings();
-                verifySettings.UseParameters(throwIfNoValidatorsFound);
-                await Verifier.Verify(result, verifySettings);
-            }
-        }
-
         [Fact]
         public async Task Should_Respect_ShouldValidateArgument_Option()
         {

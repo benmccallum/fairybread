@@ -54,10 +54,9 @@ namespace FairyBread
                             continue;
                         }
 
-                        var validationContext = new ValidationContext<object?>(value);
-
                         foreach (var resolvedValidator in resolvedValidators)
-                        {   
+                        {
+                            var validationContext = new ValidationContext<object?>(value);
                             var validationResult = await resolvedValidator.Validator.ValidateAsync(
                                 validationContext,
                                 context.RequestAborted);

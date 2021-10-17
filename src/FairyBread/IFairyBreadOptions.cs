@@ -15,25 +15,23 @@ namespace FairyBread
         /// <summary>
         /// If true, FairyBread will only add the validation middleware onto fields
         /// if it finds at least one validator that would be run given the argument's runtime type.
-        /// In most cases this should be left on, but it's tunable as an escape hatch if
-        /// pruning is causing issues.
+        /// In most cases this should be left on, but it's tunable as an escape hatch if it's causing issues.
         /// </summary>
-        bool PruneMiddlewarePlacement { get; }
+        bool OptimizeMiddlewarePlacement { get; }
 
         /// <summary>
-        /// During pruning, if for some reason FairyBread can't determine the argument's
+        /// During middleware placement, if for some reason FairyBread can't determine the argument's
         /// runtime type, if this option is true, FairyBread will throw. This is mostly to
-        /// help find gaps in the pruning process. If you encounter an exception, you can turn
-        /// this off as FairyBread will prune where it can still and the problem argument will
-        /// always get the validation middleware. Or, less ideal, you can turn off pruning entirely
-        /// with <see cref="PruneMiddlewarePlacement"/>. In either case, please repor the issue in GitHub.
+        /// help find gaps in the optimization process. If you encounter an exception, you can turn
+        /// this off as FairyBread will optimize where it can still and the problem argument will just
+        /// always get the validation middleware. Or, less ideal, you can turn off optimization entirely
+        /// with <see cref="OptimizeMiddlewarePlacement"/>. In either case, please repor the issue in GitHub.
         /// </summary>
-        bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning { get; }
+        bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement { get; }
 
         /// <summary>
         /// A function that evaluates an argument during schema building.
-        /// If it returns true, the input validation middleware will be added to this field,
-        /// else it won't and this field's arguments will not be validated.
+        /// If it returns true, validation will occur on this argument at runtime, else it won't.
         /// The default implementation always returns <c>true</c>.
         /// </summary>
         Func<ObjectTypeDefinition, ObjectFieldDefinition, ArgumentDefinition, bool> ShouldValidateArgument { get; set; }
