@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
 using VerifyTests;
@@ -28,12 +25,14 @@ namespace FairyBread.Tests
 
             if (registerValidators)
             {
-                services.AddTransient<IValidator<int>, IntValidator>();
-                services.AddTransient<IValidator<int?>, NullableIntValidator>();
-                services.AddTransient<IValidator<bool>, BoolValidator>();
-                services.AddTransient<IValidator<bool?>, NullableBoolValidator>();
-                services.AddTransient<IValidator<TestInput>, TestInputValidator>();
-                //services.AddValidatorsFromAssembly(typeof(ValidationMiddlewareInjectorTests).Assembly);
+                services.AddValidator<IntValidator, int>();
+                services.AddValidator<NullableIntValidator, int?>();
+                services.AddValidator<BoolValidator, bool>();
+                services.AddValidator<NullableBoolValidator, bool?>();
+                services.AddValidator<TestInputValidator, TestInput>();
+                services.AddValidator<ArrayOfNullableIntValidator, int?[]>();
+                services.AddValidator<ListOfNullableIntValidator, List<int?>>();
+                services.AddValidator<ListOfListOfNullableIntValidator, List<List<int?>>>();
             }
 
             var builder = services
@@ -60,7 +59,9 @@ namespace FairyBread.Tests
                 configureOptions: options =>
                 {
                     if (!registerValidators)
+                    {
                         options.ThrowIfNoValidatorsFound = false;
+                    }
                 });
             
             var query = "query { " +
@@ -74,6 +75,11 @@ namespace FairyBread.Tests
                 "objectArgA(input: { a: 0, b: false }) " +
                 "objectArgB(input: { a: 0, b: false }) " +
                 "objectArgC(input: { a: 0, b: false }) " +
+                "arrayArgA(items: [0, 0]) " +
+                "listArgA(items: [0, 0]) " +
+                "listArgB(items: [0, 0]) " +
+                "listArgC(items: [0, 0]) " +
+                "listOfListArgC(items: [[0, 0], [0, 0]]) " +
                 "}";
 
             // Act
@@ -96,6 +102,10 @@ namespace FairyBread.Tests
             public string NullableScalarArgsA(int? a, bool? b) => $"{a} | {b}";
 
             public string ObjectArgA(TestInput input) => input.ToString();
+
+            public string ArrayArgA(int?[] items) => string.Join(", ", items);
+
+            public string ListArgA(List<int?> items) => string.Join(", ", items);
         }
 
         public class QueryIType
@@ -142,11 +152,30 @@ namespace FairyBread.Tests
                     .Argument("input", arg => arg.Type<TestInputType>())
                     .Type<StringType>()
                     .Resolver(ctx => "hello");
+
+                descriptor
+                    .Field("listArgB")
+                    .Argument("items", arg => arg.Type<NonNullType<ListType<IntType>>>())
+                    .Type<StringType>()
+                    .ResolveWith<QueryIType>(x => x.ListArgResolver(default!));
+
+                descriptor
+                    .Field("listArgC")
+                    .Argument("items", arg => arg.Type<NonNullType<ListType<IntType>>>())
+                    .Type<StringType>()
+                    .Resolver(ctx => "hello");
+
+                descriptor
+                    .Field("listOfListArgC")
+                    .Argument("items", arg => arg.Type<NonNullType<ListType<NonNullType<ListType<IntType>>>>>())
+                    .Type<StringType>()
+                    .Resolver(ctx => "hello");
             }
 
             public string ScalarArgsBResolver(int a, bool b) => $"{a} | {b}";
             public string NullableScalarArgsBResolver(int? a, bool? b) => $"{a?.ToString() ?? "null"} | {b?.ToString() ?? "null"}";
             public string ObjArgResolver(TestInput input) => input.ToString();
+            public string ListArgResolver(List<int> items) => string.Join(",", items);
         }
 
 
@@ -202,6 +231,32 @@ namespace FairyBread.Tests
             {
                 RuleFor(x => x.A).NotEmpty();
                 RuleFor(x => x.B).NotEmpty();
+            }
+        }
+
+        public class ArrayOfNullableIntValidator : AbstractValidator<int?[]>
+        {
+            public ArrayOfNullableIntValidator()
+            {
+                RuleForEach(x => x).NotEmpty().GreaterThan(0); // TODO: Log FluentValidation issue as GreaterThan(0) shouldn't be required...
+            }
+        }
+
+        public class ListOfNullableIntValidator : AbstractValidator<List<int?>>
+        {
+            public ListOfNullableIntValidator()
+            {
+                RuleForEach(x => x).NotEmpty().GreaterThan(0); // TODO: Log FluentValidation issue as GreaterThan(0) shouldn't be required...
+            }
+        }
+
+        public class ListOfListOfNullableIntValidator : AbstractValidator<List<List<int?>>>
+        {
+            public ListOfListOfNullableIntValidator(
+                ListOfNullableIntValidator innerValidator)
+            {
+                RuleForEach(x => x)
+                    .SetValidator(innerValidator);
             }
         }
     }

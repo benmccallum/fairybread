@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HotChocolate.Configuration;
+using HotChocolate.Internal;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
@@ -12,6 +13,15 @@ namespace FairyBread
     internal class ValidationMiddlewareInjector : TypeInterceptor
     {
         private FieldMiddleware? _validationFieldMiddleware;
+
+        private static readonly string _runtimeTypeCrawlErrorMsg =
+            "FairyBread could not determine runtime type of field argument to decide whether or not to " +
+            "add the validation middleware. If you encounter this exception, you can turn " +
+            $"this off with the {nameof(IFairyBreadOptions.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning)}" +
+            $" option and  FairyBread will prune where it can still and the problem argument will always get the validation " +
+            $"middleware. Or, less ideal, you can turn off pruning entirely with " +
+            $"{nameof(IFairyBreadOptions.PruneMiddlewarePlacement)}. " +
+            "In either case, please report the issue in GitHub.";
 
         public override void OnBeforeCompleteType(
             ITypeCompletionContext completionContext,
@@ -38,8 +48,15 @@ namespace FairyBread
                     {
                         // If we know what the arg's runtime type is and we don't have a validator for
                         // it, don't add the validation field middleware unnecessarily
-                        if (TryGetArgRuntimeType(argDef) is { } argRuntimeType &&
-                            !validatorRegistry.Cache.ContainsKey(argRuntimeType))
+                        var argRuntimeType = TryGetArgRuntimeType(argDef);
+                        if (argRuntimeType is null)
+                        {
+                            if (options.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning)
+                            {
+                                throw new ApplicationException(_runtimeTypeCrawlErrorMsg);
+                            }
+                        }
+                        else if (!validatorRegistry.Cache.ContainsKey(argRuntimeType))
                         {
                             continue;
                         }
@@ -71,62 +88,85 @@ namespace FairyBread
 
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                // Could be a list
-                if (extTypeRef.Type.IsArray)
-                {
-
-                }
-
-                if (extTypeRef.Type.IsList)
-                {
-
-                }
-
-                if (extTypeRef.Type.IsSchemaType)
-                {
-                    if (extTypeRef.Type.IsNullable)
-                    {
-                        //throw new NotImplementedException();
-                    }
-                }
-
-                if (typeof(InputObjectType).IsAssignableFrom(extTypeRef.Type.Type))
-                {
-                    var currBaseType = extTypeRef.Type.Type.BaseType;
-                    while (currBaseType is not null &&
-                        currBaseType.BaseType != typeof(InputObjectType))
-                    {
-                        currBaseType = currBaseType.BaseType;
-                    }
-
-                    return currBaseType!.GenericTypeArguments[0];
-                }
-
-                if (typeof(ScalarType).IsAssignableFrom(extTypeRef.Type.Type))
-                {
-                    var currBaseType = extTypeRef.Type.Type.BaseType;
-                    while (currBaseType is not null &&
-                        currBaseType.BaseType != typeof(ScalarType))
-                    {
-                        currBaseType = currBaseType.BaseType;
-                    }
-
-                    if (currBaseType is null)
-                    {
-                        return null;
-                    }
-
-                    argRuntimeType = currBaseType.GenericTypeArguments[0];
-                    if (argRuntimeType.IsValueType && extTypeRef.Type.IsNullable)
-                    {
-                        return typeof(Nullable<>).MakeGenericType(argRuntimeType);
-                    }
-
-                    return argRuntimeType;
-                }
+                return GetRuntimeType(extTypeRef.Type);
             }
 
-            // Hmmf...
+            return null;
+        }
+
+        private static Type? GetRuntimeType(IExtendedType extType)
+        {
+            // Array (though not sure what produces this scenario as seems to always be list)
+            if (extType.IsArray)
+            {
+                if (extType.ElementType is null)
+                {
+                    return null;
+                }
+
+                var elementRuntimeType = GetRuntimeType(extType.ElementType);
+                if (elementRuntimeType is null)
+                {
+                    return null;
+                }
+
+                return Array.CreateInstance(elementRuntimeType, 0).GetType();
+            }
+
+            // List
+            if (extType.IsList)
+            {
+                if (extType.ElementType is null)
+                {
+                    return null;
+                }
+
+                var elementRuntimeType = GetRuntimeType(extType.ElementType);
+                if (elementRuntimeType is null)
+                {
+                    return null;
+                }
+
+                return typeof(List<>).MakeGenericType(elementRuntimeType);
+            }
+
+            // Input object
+            if (typeof(InputObjectType).IsAssignableFrom(extType))
+            {
+                var currBaseType = extType.Type.BaseType;
+                while (currBaseType is not null &&
+                    currBaseType.BaseType != typeof(InputObjectType))
+                {
+                    currBaseType = currBaseType.BaseType;
+                }
+
+                return currBaseType!.GenericTypeArguments[0];
+            }
+
+            // Singular scalar
+            if (typeof(ScalarType).IsAssignableFrom(extType))
+            {
+                var currBaseType = extType.Type.BaseType;
+                while (currBaseType is not null &&
+                    currBaseType.BaseType != typeof(ScalarType))
+                {
+                    currBaseType = currBaseType.BaseType;
+                }
+
+                if (currBaseType is null)
+                {
+                    return null;
+                }
+
+                var argRuntimeType = currBaseType.GenericTypeArguments[0];
+                if (argRuntimeType.IsValueType && extType.IsNullable)
+                {
+                    return typeof(Nullable<>).MakeGenericType(argRuntimeType);
+                }
+
+                return argRuntimeType;
+            }
+
             return null;
         }
     }

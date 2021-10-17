@@ -9,6 +9,12 @@ namespace FairyBread
         public virtual bool ThrowIfNoValidatorsFound { get; set; } = true;
 
         /// <inheritdoc/>
+        public bool PruneMiddlewarePlacement { get; set; } = true;
+
+        /// <inheritdoc/>
+        public bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedDuringPruning { get; set; } = true;
+
+        /// <inheritdoc/>
         public Func<ObjectTypeDefinition, ObjectFieldDefinition, ArgumentDefinition, bool> ShouldValidateArgument { get; set; }
             = (o, f, a) => true;
     }
