@@ -9,6 +9,7 @@ using HotChocolate.Execution;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -26,24 +27,27 @@ namespace FairyBread.Tests
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
             Action<IFairyBreadOptions>? configureOptions = null,
             Action<IServiceCollection>? configureServices = null,
-            bool registerValidatorFromAssembly = true)
+            bool registerValidators = true)
         {
             var services = new ServiceCollection();
             configureServices?.Invoke(services);
 
+            if (registerValidators)
+            {
+                services.AddValidator<FooInputDtoValidator, FooInputDto>();
+                services.AddValidator<BarInputDtoValidator, BarInputDto>();
+                services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
+                services.AddValidator<NullableIntValidator, int?>();
+            }
+
             var builder = services
                 .AddGraphQL()
-                .AddQueryType<QueryType>()
+                .AddQueryType<Query>()
                 .AddMutationType<Mutation>()
                 .AddFairyBread(options =>
                 {
                     configureOptions?.Invoke(options);
                 });
-
-            if (registerValidatorFromAssembly)
-            {
-                services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            }
 
             return await builder
                 .BuildRequestExecutorAsync();
@@ -56,11 +60,7 @@ namespace FairyBread.Tests
             // Arrange
             var executor = await GetRequestExecutorAsync();
 
-            var query = "query { " +
-                "read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ")" +
-                "someResolverAddedViaDescriptor(arg1: 0, arg2: { val: 1 })" +
-                "someResolverAddedViaDescriptor2(argA: 0, argB: { val: 1 })" +
-                "}";
+            var query = "query { read(foo: " + caseData.FooInput + ", bar: " + caseData.BarInput + ") }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
@@ -155,17 +155,25 @@ namespace FairyBread.Tests
                 {
                     options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
                 },
-                registerValidatorFromAssembly: false);
+                registerValidators: false);
 
             var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
 
             // Act
-            var result = await executor.ExecuteAsync(query);
+            if (throwIfNoValidatorsFound)
+            {
+                var ex = await Should.ThrowAsync<Exception>(async () => await executor.ExecuteAsync(query));
+                ex.Message.ShouldContain("No validators were found by FairyBread");
+            }
+            else
+            {
+                var result = await executor.ExecuteAsync(query);
 
-            // Assert
-            var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(throwIfNoValidatorsFound);
-            await Verifier.Verify(result, verifySettings);
+                // Assert
+                var verifySettings = new VerifySettings();
+                verifySettings.UseParameters(throwIfNoValidatorsFound);
+                await Verifier.Verify(result, verifySettings);
+            }
         }
 
         [Fact]
@@ -201,21 +209,21 @@ namespace FairyBread.Tests
                 // Happy days
                 new CaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }", @"{ emailAddress: ""ben@lol.com"" }")
             };
-            //yield return new object[]
-            //{
-            //    // Sync error
-            //    new CaseData(caseId++, @"{ someInteger: -1, someString: ""hello"" }", @"{ emailAddress: ""ben@lol.com"" }")
-            //};
-            //yield return new object[]
-            //{
-            //    // Async error
-            //    new CaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }", @"{ emailAddress: ""-1"" }")
-            //};
-            //yield return new object[]
-            //{
-            //    // Multiple sync errors and async error
-            //    new CaseData(caseId++, @"{ someInteger: -1, someString: ""-1"" }", @"{ emailAddress: ""-1"" }")
-            //};
+            yield return new object[]
+            {
+                // Sync error
+                new CaseData(caseId++, @"{ someInteger: -1, someString: ""hello"" }", @"{ emailAddress: ""ben@lol.com"" }")
+            };
+            yield return new object[]
+            {
+                // Async error
+                new CaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }", @"{ emailAddress: ""-1"" }")
+            };
+            yield return new object[]
+            {
+                // Multiple sync errors and async error
+                new CaseData(caseId++, @"{ someInteger: -1, someString: ""-1"" }", @"{ emailAddress: ""-1"" }")
+            };
         }
 
         public class CaseData
@@ -257,61 +265,6 @@ namespace FairyBread.Tests
             {
                 return count.ToString();
             }
-        }
-
-        public class QueryType
-            : ObjectType<Query>
-        {
-            protected override void Configure(IObjectTypeDescriptor<Query> descriptor)
-            {
-                descriptor
-                    .Field("someResolverAddedViaDescriptor")
-                    .Argument("arg1", arg => arg.Type<IntType>())
-                    .Argument("arg2", arg => arg.Type<XyzInputType>())
-                    .Type<StringType>()
-                    .ResolveWith<QueryType>(x => x.ArgAddedViaDescriptorResolver(default, default!));
-
-                descriptor
-                    .Field("someResolverAddedViaDescriptor2")
-                    .Argument("argA", arg => arg.Type<IntType>())
-                    .Argument("argB", arg => arg.Type<XyzInputType>())
-                    .Type<StringType>()
-                    .Resolver(ctx => "hello");
-
-                //descriptor
-                //    .Field("someResolverAddedViaDescriptor3")
-                //    .Argument("argA", arg => arg.Type<NonNullType<BooleanType>>())
-                //    .Argument("argB", arg => arg.Type<NonNullType<XyzInputType>>())
-                //    .Type<StringType>()
-                //    .Resolver(ctx => "hello");
-                //
-                //descriptor
-                //    .Field("someResolverAddedViaDescriptor4")
-                //    .Argument("argA", arg => arg.Type<ListType<BooleanType>>())
-                //    .Argument("argB", arg => arg.Type<ListType<XyzInputType>>())
-                //    .Type<StringType>()
-                //    .Resolver(ctx => "hello");
-                //
-                //descriptor
-                //    .Field("someResolverAddedViaDescriptor5")
-                //    .Argument("argA", arg => arg.Type<ListType<ListType<BooleanType>>>())
-                //    .Argument("argB", arg => arg.Type<ListType<ListType<XyzInputType>>>())
-                //    .Type<StringType>()
-                //    .Resolver(ctx => "hello");
-            }
-
-            public string ArgAddedViaDescriptorResolver(bool arg1, XyzInput arg2)
-                => $"{arg1}...{arg2.Val}";
-        }
-
-        public class XyzInput
-        {
-            public int Val { get; set; }
-        }
-
-        public class XyzInputType : InputObjectType<XyzInput>
-        {
-
         }
 
         public class Mutation
