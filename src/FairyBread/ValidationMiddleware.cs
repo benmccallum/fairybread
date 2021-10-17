@@ -28,7 +28,7 @@ namespace FairyBread
             var arguments = context.Selection.Field.Arguments;
 
             var invalidResults = new List<ValidationResult>();
-
+            
             foreach (var argument in arguments)
             {
                 if (argument == null ||
@@ -44,33 +44,35 @@ namespace FairyBread
                 var resolvedValidators = _validatorProvider
                     .GetValidators(context, argument)
                     .ToArray();
-
-                try
+                if (resolvedValidators.Length > 0)
                 {
-                    var value = context.ArgumentValue<object?>(argument.Name);
-                    if (value == null)
+                    try
                     {
-                        continue;
-                    }
-
-                    foreach (var resolvedValidator in resolvedValidators)
-                    {
-                        var validationContext = new ValidationContext<object?>(value);
-                        var validationResult = await resolvedValidator.Validator.ValidateAsync(
-                            validationContext,
-                            context.RequestAborted);
-                        if (validationResult != null &&
-                            !validationResult.IsValid)
+                        var value = context.ArgumentValue<object?>(argument.Name);
+                        if (value == null)
                         {
-                            invalidResults.Add(validationResult);
+                            continue;
+                        }
+
+                        foreach (var resolvedValidator in resolvedValidators)
+                        {
+                            var validationContext = new ValidationContext<object?>(value);
+                            var validationResult = await resolvedValidator.Validator.ValidateAsync(
+                                validationContext,
+                                context.RequestAborted);
+                            if (validationResult != null &&
+                                !validationResult.IsValid)
+                            {
+                                invalidResults.Add(validationResult);
+                            }
                         }
                     }
-                }
-                finally
-                {
-                    foreach (var resolvedValidator in resolvedValidators)
+                    finally
                     {
-                        resolvedValidator.Scope?.Dispose();
+                        foreach (var resolvedValidator in resolvedValidators)
+                        {
+                            resolvedValidator.Scope?.Dispose();
+                        }
                     }
                 }
             }

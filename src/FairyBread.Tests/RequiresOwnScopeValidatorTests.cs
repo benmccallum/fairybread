@@ -23,7 +23,12 @@ namespace FairyBread.Tests
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(Action<IServiceCollection> preBuildProviderAction)
         {
             var services = new ServiceCollection();
-            services.AddValidatorsFromAssemblyContaining<RequiresOwnScopeValidator>();
+
+            services.AddValidator<StandardValidator, FooInputDto>();
+            services.AddValidator<AnotherStandardValidator, FooInputDto>();
+            services.AddValidator<RequiresOwnScopeValidator, FooInputDto>();
+            services.AddValidator<AnotherRequiresOwnScopeValidator, FooInputDto>();
+
             preBuildProviderAction?.Invoke(services);
 
             return await services

@@ -9,6 +9,7 @@ using HotChocolate.Execution;
 using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -26,24 +27,29 @@ namespace FairyBread.Tests
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
             Action<IFairyBreadOptions>? configureOptions = null,
             Action<IServiceCollection>? configureServices = null,
-            bool registerValidatorFromAssembly = true)
+            bool registerValidators = true)
         {
             var services = new ServiceCollection();
             configureServices?.Invoke(services);
 
+            if (registerValidators)
+            {
+                services.AddValidator<FooInputDtoValidator, FooInputDto>();
+                services.AddValidator<ArrayOfFooInputDtoValidator, FooInputDto[]>();
+                services.AddValidator<ListOfFooInputDtoValidator, List<FooInputDto>>();
+                services.AddValidator<BarInputDtoValidator, BarInputDto>();
+                services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
+                services.AddValidator<NullableIntValidator, int?>();
+            }
+
             var builder = services
                 .AddGraphQL()
-                .AddQueryType<QueryType>()
-                .AddMutationType<MutationType>()
+                .AddQueryType<Query>()
+                .AddMutationType<Mutation>()
                 .AddFairyBread(options =>
                 {
                     configureOptions?.Invoke(options);
                 });
-
-            if (registerValidatorFromAssembly)
-            {
-                services.AddValidatorsFromAssemblyContaining<FooInputDtoValidator>();
-            }
 
             return await builder
                 .BuildRequestExecutorAsync();
@@ -136,32 +142,8 @@ namespace FairyBread.Tests
             var result = await executor.ExecuteAsync(query);
 
             // Assert
-            Assert.False(QueryType.WasFieldResolverCalled);
+            Assert.False(Query.WasFieldResolverCalled);
             await Verifier.Verify(result);
-        }
-
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public async Task Should_Respect_ThrowIfNoValidatorsFound_Option(bool throwIfNoValidatorsFound)
-        {
-            // Arrange
-            var executor = await GetRequestExecutorAsync(
-                options =>
-                {
-                    options.ThrowIfNoValidatorsFound = throwIfNoValidatorsFound;
-                },
-                registerValidatorFromAssembly: false);
-
-            var query = @"query { read(foo: { someInteger: -1, someString: ""hello"" }) }";
-
-            // Act
-            var result = await executor.ExecuteAsync(query);
-
-            // Assert
-            var verifySettings = new VerifySettings();
-            verifySettings.UseParameters(throwIfNoValidatorsFound);
-            await Verifier.Verify(result, verifySettings);
         }
 
         [Fact]
@@ -284,17 +266,17 @@ namespace FairyBread.Tests
             };
             yield return new object[]
             {
-                // Happy days, implied array
+                // Error, implied array
                 new CollectionCaseData(caseId++, @"{ someInteger: -1, someString: ""hello"" }")
             };
             yield return new object[]
             {
-                // Happy days, explicit array
+                // Error, explicit array
                 new CollectionCaseData(caseId++, @"[{ someInteger: -1, someString: ""hello"" }]")
             };
             yield return new object[]
             {
-                // Happy days, multiple items
+                // Error, multiple items
                 new CollectionCaseData(caseId++, @"[{ someInteger: -1, someString: ""hello"" }, { someInteger: -1, someString: ""hello"" }]")
             };
         }
@@ -312,7 +294,7 @@ namespace FairyBread.Tests
         }
 
 #pragma warning disable CA1822 // Mark members as static
-        public class QueryType
+        public class Query
         {
             public static bool WasFieldResolverCalled { get; private set; }
 
@@ -336,9 +318,19 @@ namespace FairyBread.Tests
                 WasFieldResolverCalled = true;
                 return $"{foo}; {bar}";
             }
+
+            public string IntResolver(int count)
+            {
+                return count.ToString();
+            }
+
+            public string NullableIntResolver(int? count)
+            {
+                return count?.ToString() ?? "null";
+            }
         }
 
-        public class MutationType
+        public class Mutation
         {
             public string Write(FooInputDto foo, BarInputDto bar) => $"{foo}; {bar}";
         }
@@ -423,6 +415,16 @@ namespace FairyBread.Tests
             public void Handle(IMiddlewareContext context, IEnumerable<ValidationResult> invalidResults)
             {
                 context.Result = "Custom set result on error";
+            }
+        }
+
+        public class NullableIntValidator : AbstractValidator<int?>
+        {
+            public NullableIntValidator()
+            {
+                RuleFor(x => x)
+                    //.Null()
+                    .GreaterThan(0).When(x => x is not null);
             }
         }
     }
