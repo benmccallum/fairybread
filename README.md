@@ -15,9 +15,6 @@
 
 ## Getting started
 
-| :exclamation::exclamation: These are the docs for version 7 which is now RC. It simplifies the required setup. For a new setup, use it and follow the instructions below. For v6, see [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main). :exclamation::exclamation:
-|-----------------------------------------|
-
 Install a [compatible version](#Compatibility).
 
 ```bash
