@@ -52,7 +52,7 @@ namespace FairyBread
                     // 3. the arg actually has a validator for it's runtime type
                     if (options.OptimizeMiddlewarePlacement)
                     {
-                        var (allowUnknown, argRuntimeType) = TryGetArgRuntimeType(argDef);
+                        var (allowUnknown, argRuntimeType) = TryGetArgRuntimeType(objTypeDef, fieldDef, argDef);
                         if (argRuntimeType is null)
                         {
                             if (!allowUnknown &&
@@ -86,21 +86,36 @@ namespace FairyBread
             }
         }
 
-        private static (bool AllowUnknown, Type? Type) TryGetArgRuntimeType(ArgumentDefinition argDef)
+        private static (bool AllowUnknown, Type? Type) TryGetArgRuntimeType(
+            ObjectTypeDefinition objTypeDef,
+            ObjectFieldDefinition fieldDef,
+            ArgumentDefinition argDef)
         {
             if (argDef.Parameter?.ParameterType is { } argRuntimeType)
             {
                 return (false, argRuntimeType);
             }
 
-            if (argDef.Type is SyntaxTypeReference synTypeRef)
+            if (argDef.Type is SyntaxTypeReference)
             {
                 return (true, null);
             }
 
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                return (false, TryGetRuntimeType(extTypeRef.Type));
+                try
+                {
+                    return (false, TryGetRuntimeType(extTypeRef.Type));
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(
+                        $"Problem getting runtime type for argument '{argDef.Name}' " +
+                        $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'. " +
+                        $"Disable {nameof(IFairyBreadOptions.OptimizeMiddlewarePlacement)} in " +
+                        $"options and report the issue on GitHub.",
+                        ex);
+                }
             }
 
             return (false, null);
