@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,8 @@ namespace FairyBread.Tests
                 .AddGraphQL()
                 .AddQueryType<QueryIType>()
                 .AddType<TestInputType>()
+                .AddSorting()
+                .AddFiltering()
                 .AddFairyBread(options =>
                 {
                     configureOptions?.Invoke(options);
@@ -80,6 +83,7 @@ namespace FairyBread.Tests
                 "listArgB(items: [0, 0]) " +
                 "listArgC(items: [0, 0]) " +
                 "listOfListArgC(items: [[0, 0], [0, 0]]) " +
+                "filterSortAndPagingArgs(first: 10) { nodes { a } }" +
                 "}";
 
             // Act
@@ -106,6 +110,11 @@ namespace FairyBread.Tests
             public string ArrayArgA(int?[] items) => string.Join(", ", items);
 
             public string ListArgA(List<int?> items) => string.Join(", ", items);
+
+            [UsePaging]
+            [UseFiltering]
+            [UseSorting]
+            public IEnumerable<FooI> GetFilterSortAndPagingArgs() => new FooI[] { new FooI() };
         }
 
         public class QueryIType
@@ -178,6 +187,10 @@ namespace FairyBread.Tests
             public string ListArgResolver(List<int> items) => string.Join(",", items);
         }
 
+        public class FooI
+        {
+            public string A { get; set; } = "A";
+        }
 
         public class TestInput
         {

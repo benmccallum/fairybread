@@ -13,21 +13,11 @@ namespace FairyBread
         bool ThrowIfNoValidatorsFound { get; set; }
 
         /// <summary>
-        /// If true, FairyBread will only add the validation middleware onto fields
-        /// if it finds at least one validator that would be run given the argument's runtime type.
+        /// If true, FairyBread will only add the validation middleware onto fields with an
+        /// argument whose runtime type can be determined and whose runtime type has a validator.
         /// In most cases this should be left on, but it's tunable as an escape hatch if it's causing issues.
         /// </summary>
         bool OptimizeMiddlewarePlacement { get; }
-
-        /// <summary>
-        /// During middleware placement, if for some reason FairyBread can't determine the argument's
-        /// runtime type, if this option is true, FairyBread will throw. This is mostly to
-        /// help find gaps in the optimization process. If you encounter an exception, you can turn
-        /// this off as FairyBread will optimize where it can still and the problem argument will just
-        /// always get the validation middleware. Or, less ideal, you can turn off optimization entirely
-        /// with <see cref="OptimizeMiddlewarePlacement"/>. In either case, please repor the issue in GitHub.
-        /// </summary>
-        bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement { get; }
 
         /// <summary>
         /// A function that evaluates an argument during schema building.

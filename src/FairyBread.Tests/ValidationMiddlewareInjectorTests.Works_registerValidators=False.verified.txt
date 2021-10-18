@@ -14,6 +14,13 @@
     listArgA: 0, 0,
     listArgB: 0,0,
     listArgC: hello,
-    listOfListArgC: hello
+    listOfListArgC: hello,
+    filterSortAndPagingArgs: {
+      nodes: [
+        {
+          a: A
+        }
+      ]
+    }
   }
 }

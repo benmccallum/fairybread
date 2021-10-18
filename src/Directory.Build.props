@@ -17,7 +17,7 @@
     <PackageIconUrl>https://github.com/benmccallum/fairybread/raw/master/logo-400x400.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/benmccallum/fairybread/blob/master/LICENSE</PackageLicenseUrl>
 
-    <Version>8.0.0-rc.3</Version>
+    <Version>8.0.0-rc.4</Version>
 
     <HotChocolateVersion>12.0.1</HotChocolateVersion>
 
