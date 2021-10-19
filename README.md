@@ -109,16 +109,15 @@ We strive to match Hot Chocolate's supported .NET target frameworks, though this
 
 | HotChocolate | FluentValidation | FairyBread | FairyBread docs |
 | ------------ | ---------------- | ---------- | --------------- |
-|          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
-|          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
-|          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
-|          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
-|     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
-|      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
-|      v11.0.9 |              v10 |         v6 | [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch |
-|      v11.0.9 |              v10 |         v7 | [/v7/main](https://github.com/benmccallum/fairybread/tree/v7/main) branch |
 |      v12.0.1 |              v10 |         v8 | right here |
-
+|      v11.0.9 |              v10 |         v7 | [/v7/main](https://github.com/benmccallum/fairybread/tree/v7/main) branch |
+|      v11.0.9 |              v10 |         v6 | [/v6/main](https://github.com/benmccallum/fairybread/tree/v6/main) branch |
+|      v11.0.9 |               v9 |         v5 | [/v5/main](https://github.com/benmccallum/fairybread/tree/v5/main) branch |
+|     v11.0.9* |               v9 |     v4.1.1 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
+|          v11 |               v9 |         v4 | [/v4/main](https://github.com/benmccallum/fairybread/tree/v4/main) branch |
+|          v11 |               v9 |         v3 | [/v3/main](https://github.com/benmccallum/fairybread/tree/v3/main) branch |
+|          v11 |               v8 |         v2 | [/v2/main](https://github.com/benmccallum/fairybread/tree/v2/main) branch |
+|          v10 |               v8 |         v1 | [/v1/main](https://github.com/benmccallum/fairybread/tree/v1/main) branch |
 
 \* Denotes unexpected binary incompatibility / breaking change in Hot Chocolate
 
