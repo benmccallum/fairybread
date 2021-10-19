@@ -12,9 +12,6 @@ namespace FairyBread
         public bool OptimizeMiddlewarePlacement { get; set; } = true;
 
         /// <inheritdoc/>
-        public bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement { get; set; } = true;
-
-        /// <inheritdoc/>
         public Func<ObjectTypeDefinition, ObjectFieldDefinition, ArgumentDefinition, bool> ShouldValidateArgument { get; set; }
             = (o, f, a) => true;
     }
