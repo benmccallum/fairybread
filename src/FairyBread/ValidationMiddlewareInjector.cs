@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Internal;
@@ -46,20 +47,30 @@ namespace FairyBread
                         continue;
                     }
 
-                    // 3. the arg actually has a validator for its runtime type
-                    // (note: if we can't figure out the runtime type, doesn't add)
-                    if (options.OptimizeMiddlewarePlacement)
+                    // 3. there's validators for it
+                    List<ValidatorDescriptor> validatorDescs;
+                    try
                     {
-                        var argRuntimeType = TryGetArgRuntimeType(objTypeDef, fieldDef, argDef);
-                        if (argRuntimeType is null ||
-                            !validatorRegistry.Cache.ContainsKey(argRuntimeType))
+                        validatorDescs = DetermineValidatorsForArg(validatorRegistry, argDef);
+                        if (validatorDescs.Count < 1)
                         {
                             continue;
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(
+                            $"Problem getting runtime type for argument '{argDef.Name}' " +
+                            $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'.",
+                            ex);
+                    }
 
+                    // TODO: Set validatordescriptors on the context data for easier retrieval later
+                    // in the validator provider, which would now just need to loop over those
+                    validatorDescs.TrimExcess();
+                    //validators.ToReadOnlyList();
                     needsValidationMiddleware = true;
-                    argDef.ContextData[WellKnownContextData.ShouldValidate] = true;
+                    argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs;
                 }
 
                 if (needsValidationMiddleware)
@@ -75,36 +86,66 @@ namespace FairyBread
             }
         }
 
-        private static Type? TryGetArgRuntimeType(
-            ObjectTypeDefinition objTypeDef,
-            ObjectFieldDefinition fieldDef,
+        private static List<ValidatorDescriptor> DetermineValidatorsForArg(
+            IValidatorRegistry validatorRegistry,
             ArgumentDefinition argDef)
+        {
+            var validators = new List<ValidatorDescriptor>();
+
+            // Grab explicit attribute/s
+            ValidateAttribute? validateAttr = null;
+            if (argDef.ContextData.TryGetValue(WellKnownContextData.ValidateAttribute, out var rawAttr) &&
+                rawAttr is ValidateAttribute validateAttribute)
+            {
+                validateAttr = validateAttribute;
+
+                // Remove now we're done with marker
+                argDef.ContextData.Remove(WellKnownContextData.ValidateAttribute);
+            }
+
+            // Include implicit validator/s first (if allowed)            
+            if (validateAttr is null || validateAttr.RunImplicitValidators)
+            {
+                // And if we can figure out the arg's runtime type
+                var argRuntimeType = TryGetArgRuntimeType(argDef);
+                if (argRuntimeType is not null)
+                {
+                    if (validatorRegistry.Cache.TryGetValue(argRuntimeType, out var implicitValidators) &&
+                        implicitValidators is not null)
+                    {
+                        validators.AddRange(implicitValidators);
+                    }
+                }
+            }
+
+            // Include explicit validator/s (that aren't already added implicitly)
+            if (validateAttr is not null)
+            {
+                foreach (var validatorType in validateAttr.ValidatorTypes)
+                {
+                    if (validators.Any(v => v.ValidatorType == validatorType))
+                    {
+                        continue;
+                    }
+
+                    var requiresOwnScope = validatorRegistry.ShouldBeResolvedInOwnScope(validatorType);
+                    validators.Add(new ValidatorDescriptor(validatorType, requiresOwnScope));
+                }
+            }
+
+            return validators;
+        }
+
+        private static Type? TryGetArgRuntimeType(ArgumentDefinition argDef)
         {
             if (argDef.Parameter?.ParameterType is { } argRuntimeType)
             {
                 return argRuntimeType;
             }
 
-            //if (argDef.Type is SyntaxTypeReference)
-            //{
-            //    return null;
-            //}
-
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                try
-                {
-                    return TryGetRuntimeType(extTypeRef.Type);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(
-                        $"Problem getting runtime type for argument '{argDef.Name}' " +
-                        $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'. " +
-                        $"Disable {nameof(IFairyBreadOptions.OptimizeMiddlewarePlacement)} in " +
-                        $"options and report the issue on GitHub.",
-                        ex);
-                }
+                return TryGetRuntimeType(extTypeRef.Type);
             }
 
             return null;
@@ -191,57 +232,6 @@ namespace FairyBread
             }
 
             return null;
-        }
-
-        private static IReadOnlyList<ValidatorDescriptor> DetermineValidatorsForArg(
-            ObjectTypeDefinition objTypeDef,
-            ObjectFieldDefinition fieldDef,
-            ArgumentDefinition argDef)
-        {
-            // Explicit validate attribute
-            ValidateAttribute? validateAttr = null;
-            if (argDef.ContextData.TryGetValue(WellKnownContextData.ValidateAttribute, out var rawAttr) &&
-                rawAttr is ValidateAttribute valAttr)
-            {
-                validateAttr = valAttr;
-                var isInited = ValidatorRegistry.CacheByFieldCoord.ContainsKey(argument.Coordinate);
-                if (!isInited)
-                {
-                    var validatorDescriptors =
-                        ValidatorRegistry.CacheByFieldCoord[argument.Coordinate] =
-                        new List<ValidatorDescriptor>();
-
-                    // Unravel them into the cache
-                    foreach (var validatorType in validateAttr.ValidatorTypes)
-                    {
-                        // TODO: v8.0.0, if validator has already been resolved in implicit validators, don't add it again
-                        // (In case someone has added an explicit one without realising it'd already be picked up implicitly)
-
-                        var requiresOwnScope = ValidatorRegistry.ShouldBeResolvedInOwnScope(validatorType);
-                        validatorDescriptors.Add(new ValidatorDescriptor(validatorType, requiresOwnScope));
-                    }
-                }
-
-                // Clear now we're done with marker
-                argDef.ContextData[WellKnownContextData.ValidateAttribute] = null;
-            }
-
-            // Implicit validator/s
-            if (validateAttr is null || validateAttr.RunImplicitValidators)
-            {
-                if (ValidatorRegistry.CacheByArgType.TryGetValue(argument.RuntimeType, out var validatorDescriptors) &&
-                    validatorDescriptors is not null)
-                {
-                    ProcessDescriptors(context, validators, validatorDescriptors);
-                }
-            }
-
-            // Explicit validator/s
-            if (validateAttr is not null)
-            {
-                var validatorDescriptors = ValidatorRegistry.CacheByFieldCoord[argument.Coordinate];
-                ProcessDescriptors(context, validators, validatorDescriptors);
-            }
         }
     }
 }

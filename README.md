@@ -85,7 +85,6 @@ services.AddFairyBread(options =>
 {
     options.ShouldValidateArgument = (objTypeDef, fieldTypeDef, argTypeDef) => ...;
     options.ThrowIfNoValidatorsFound = true/false;
-	options.OptimizeMiddlewarePlacement = true/false;
 });
 ```
 

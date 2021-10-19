@@ -31,12 +31,7 @@ namespace FairyBread
 
             foreach (var argument in arguments)
             {
-                if (argument == null ||
-                    !argument.ContextData.TryGetValue(
-                        WellKnownContextData.ShouldValidate,
-                        out var shouldValidateRaw) ||
-                    shouldValidateRaw is not bool shouldValidate ||
-                    !shouldValidate)
+                if (argument == null)
                 {
                     continue;
                 }

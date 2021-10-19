@@ -170,6 +170,7 @@ namespace FairyBread.Tests
 
         // TODO: Unit tests for:
         // - cancellation
+        // - does adding validators after fairybread still work ok?
 
         public static IEnumerable<object[]> Cases()
         {
