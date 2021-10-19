@@ -14,12 +14,6 @@ namespace FairyBread
     {
         private FieldMiddleware? _validationFieldMiddleware;
 
-        private static readonly string _runtimeTypeCrawlErrorMsg =
-            "FairyBread could not determine runtime type of field argument to decide whether " +
-            "or not to add the validation middleware. If you encounter this exception, set the " +
-            $"{nameof(IFairyBreadOptions.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement)} " +
-            $"option to false and report the issue on GitHub. FairyBread will still optimize middleware placement where it can.";
-
         public override void OnBeforeCompleteType(
             ITypeCompletionContext completionContext,
             DefinitionBase? definition,
@@ -49,18 +43,13 @@ namespace FairyBread
                         continue;
                     }
 
-                    // 3. the arg actually has a validator for it's runtime type
+                    // 3. the arg actually has a validator for its runtime type
+                    // (note: if we can't figure out the runtime type, doesn't add)
                     if (options.OptimizeMiddlewarePlacement)
                     {
-                        var argRuntimeType = TryGetArgRuntimeType(argDef);
-                        if (argRuntimeType is null)
-                        {
-                            if (options.ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement)
-                            {
-                                throw new Exception(_runtimeTypeCrawlErrorMsg);
-                            }
-                        }
-                        else if (!validatorRegistry.Cache.ContainsKey(argRuntimeType))
+                        var argRuntimeType = TryGetArgRuntimeType(objTypeDef, fieldDef, argDef);
+                        if (argRuntimeType is null ||
+                            !validatorRegistry.Cache.ContainsKey(argRuntimeType))
                         {
                             continue;
                         }
@@ -83,16 +72,36 @@ namespace FairyBread
             }
         }
 
-        private static Type? TryGetArgRuntimeType(ArgumentDefinition argDef)
+        private static Type? TryGetArgRuntimeType(
+            ObjectTypeDefinition objTypeDef,
+            ObjectFieldDefinition fieldDef,
+            ArgumentDefinition argDef)
         {
             if (argDef.Parameter?.ParameterType is { } argRuntimeType)
             {
                 return argRuntimeType;
             }
 
+            //if (argDef.Type is SyntaxTypeReference)
+            //{
+            //    return null;
+            //}
+
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                return TryGetRuntimeType(extTypeRef.Type);
+                try
+                {
+                    return TryGetRuntimeType(extTypeRef.Type);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(
+                        $"Problem getting runtime type for argument '{argDef.Name}' " +
+                        $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'. " +
+                        $"Disable {nameof(IFairyBreadOptions.OptimizeMiddlewarePlacement)} in " +
+                        $"options and report the issue on GitHub.",
+                        ex);
+                }
             }
 
             return null;
@@ -139,9 +148,15 @@ namespace FairyBread
             {
                 var currBaseType = extType.Type.BaseType;
                 while (currBaseType is not null &&
-                    currBaseType.BaseType != typeof(InputObjectType))
+                    (!currBaseType.IsGenericType ||
+                    currBaseType.GetGenericTypeDefinition() != typeof(InputObjectType<>)))
                 {
                     currBaseType = currBaseType.BaseType;
+                }
+
+                if (currBaseType is null)
+                {
+                    return null;
                 }
 
                 return currBaseType!.GenericTypeArguments[0];
@@ -152,7 +167,8 @@ namespace FairyBread
             {
                 var currBaseType = extType.Type.BaseType;
                 while (currBaseType is not null &&
-                    currBaseType.BaseType != typeof(ScalarType))
+                    (!currBaseType.IsGenericType ||
+                    currBaseType.GetGenericTypeDefinition() != typeof(ScalarType<>)))
                 {
                     currBaseType = currBaseType.BaseType;
                 }

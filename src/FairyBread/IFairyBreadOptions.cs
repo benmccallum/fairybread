@@ -20,16 +20,6 @@ namespace FairyBread
         bool OptimizeMiddlewarePlacement { get; }
 
         /// <summary>
-        /// During middleware placement, if for some reason FairyBread can't determine the argument's
-        /// runtime type, if this option is true, FairyBread will throw. This is mostly to
-        /// help find gaps in the optimization process. If you encounter an exception, you can turn
-        /// this off as FairyBread will optimize where it can still and the problem argument will just
-        /// always get the validation middleware. Or, less ideal, you can turn off optimization entirely
-        /// with <see cref="OptimizeMiddlewarePlacement"/>. In either case, please repor the issue in GitHub.
-        /// </summary>
-        bool ThrowIfArgumentRuntimeTypeCouldNotBeDeterminedWhileOptimizingMiddlewarePlacement { get; }
-
-        /// <summary>
         /// A function that evaluates an argument during schema building.
         /// If it returns true, validation will occur on this argument at runtime, else it won't.
         /// The default implementation always returns <c>true</c>.

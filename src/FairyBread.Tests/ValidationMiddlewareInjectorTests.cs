@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +40,8 @@ namespace FairyBread.Tests
                 .AddGraphQL()
                 .AddQueryType<QueryIType>()
                 .AddType<TestInputType>()
+                .AddSorting()
+                .AddFiltering()
                 .AddFairyBread(options =>
                 {
                     configureOptions?.Invoke(options);
@@ -63,7 +66,7 @@ namespace FairyBread.Tests
                         options.ThrowIfNoValidatorsFound = false;
                     }
                 });
-            
+
             var query = "query { " +
                 "noArgs " +
                 "scalarArgsA(a: 0, b: false) " +
@@ -80,6 +83,7 @@ namespace FairyBread.Tests
                 "listArgB(items: [0, 0]) " +
                 "listArgC(items: [0, 0]) " +
                 "listOfListArgC(items: [[0, 0], [0, 0]]) " +
+                "filterSortAndPagingArgs(first: 10) { nodes { a } }" +
                 "}";
 
             // Act
@@ -106,6 +110,11 @@ namespace FairyBread.Tests
             public string ArrayArgA(int?[] items) => string.Join(", ", items);
 
             public string ListArgA(List<int?> items) => string.Join(", ", items);
+
+            [UsePaging]
+            [UseFiltering]
+            [UseSorting]
+            public IEnumerable<FooI> GetFilterSortAndPagingArgs() => new FooI[] { new FooI() };
         }
 
         public class QueryIType
@@ -125,21 +134,21 @@ namespace FairyBread.Tests
                     .Argument("a", arg => arg.Type<NonNullType<IntType>>())
                     .Argument("b", arg => arg.Type<NonNullType<BooleanType>>())
                     .Type<StringType>()
-                    .Resolver(ctx => "hello");
+                    .Resolve(ctx => "hello");
 
                 descriptor
                     .Field("nullableScalarArgsB")
                     .Argument("a", arg => arg.Type<IntType>())
                     .Argument("b", arg => arg.Type<BooleanType>())
                     .Type<StringType>()
-                    .ResolveWith<QueryIType>(x => x.NullableScalarArgsBResolver(default, default));;
+                    .ResolveWith<QueryIType>(x => x.NullableScalarArgsBResolver(default, default)); ;
 
                 descriptor
                     .Field("nullableScalarArgsC")
                     .Argument("a", arg => arg.Type<IntType>())
                     .Argument("b", arg => arg.Type<BooleanType>())
                     .Type<StringType>()
-                    .Resolver(ctx => "hello");
+                    .Resolve(ctx => "hello");
 
                 descriptor
                     .Field("objectArgB")
@@ -151,7 +160,7 @@ namespace FairyBread.Tests
                     .Field("objectArgC")
                     .Argument("input", arg => arg.Type<TestInputType>())
                     .Type<StringType>()
-                    .Resolver(ctx => "hello");
+                    .Resolve(ctx => "hello");
 
                 descriptor
                     .Field("listArgB")
@@ -163,13 +172,13 @@ namespace FairyBread.Tests
                     .Field("listArgC")
                     .Argument("items", arg => arg.Type<NonNullType<ListType<IntType>>>())
                     .Type<StringType>()
-                    .Resolver(ctx => "hello");
+                    .Resolve(ctx => "hello");
 
                 descriptor
                     .Field("listOfListArgC")
                     .Argument("items", arg => arg.Type<NonNullType<ListType<NonNullType<ListType<IntType>>>>>())
                     .Type<StringType>()
-                    .Resolver(ctx => "hello");
+                    .Resolve(ctx => "hello");
             }
 
             public string ScalarArgsBResolver(int a, bool b) => $"{a} | {b}";
@@ -178,6 +187,10 @@ namespace FairyBread.Tests
             public string ListArgResolver(List<int> items) => string.Join(",", items);
         }
 
+        public class FooI
+        {
+            public string A { get; set; } = "A";
+        }
 
         public class TestInput
         {
