@@ -38,6 +38,8 @@ namespace FairyBread.Tests
                 services.AddValidator<BarInputDtoValidator, BarInputDto>();
                 services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
                 services.AddValidator<NullableIntValidator, int?>();
+                services.AddValidator<ArrayOfFooInputDtoValidator, FooInputDto[]>();
+                services.AddValidator<ListOfFooInputDtoValidator, List<FooInputDto>>();
             }
 
             var builder = services
@@ -208,6 +210,89 @@ namespace FairyBread.Tests
             }
         }
 
+        [Theory]
+        [MemberData(nameof(CollectionCases))]
+        public async Task Query_Array_Works(CollectionCaseData caseData)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = "query { readWithArrayArg(foos: " + caseData.FoosInput + ") }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(caseData.CaseId);
+            await Verifier.Verify(result, verifySettings);
+        }
+
+        [Theory]
+        [MemberData(nameof(CollectionCases))]
+        public async Task Query_List_Works(CollectionCaseData caseData)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = "query { readWithListArg(foos: " + caseData.FoosInput + ") }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            var verifySettings = new VerifySettings();
+            verifySettings.UseParameters(caseData.CaseId);
+            await Verifier.Verify(result, verifySettings);
+        }
+
+        public static IEnumerable<object[]> CollectionCases()
+        {
+            var caseId = 1;
+            yield return new object[]
+            {
+                // Happy days, implied array
+                new CollectionCaseData(caseId++, @"{ someInteger: 1, someString: ""hello"" }")
+            };
+            yield return new object[]
+            {
+                // Happy days, explicit array
+                new CollectionCaseData(caseId++, @"[{ someInteger: 1, someString: ""hello"" }]")
+            };
+            yield return new object[]
+            {
+                // Happy days, multiple items
+                new CollectionCaseData(caseId++, @"[{ someInteger: 1, someString: ""hello"" }, { someInteger: 1, someString: ""hello"" }]")
+            };
+            yield return new object[]
+            {
+                // Happy days, implied array
+                new CollectionCaseData(caseId++, @"{ someInteger: -1, someString: ""hello"" }")
+            };
+            yield return new object[]
+            {
+                // Happy days, explicit array
+                new CollectionCaseData(caseId++, @"[{ someInteger: -1, someString: ""hello"" }]")
+            };
+            yield return new object[]
+            {
+                // Happy days, multiple items
+                new CollectionCaseData(caseId++, @"[{ someInteger: -1, someString: ""hello"" }, { someInteger: -1, someString: ""hello"" }]")
+            };
+        }
+
+        public class CollectionCaseData
+        {
+            public string CaseId { get; set; }
+            public string FoosInput { get; set; }
+
+            public CollectionCaseData(int caseId, string foosInput)
+            {
+                CaseId = caseId.ToString();
+                FoosInput = foosInput;
+            }
+        }
+
 #pragma warning disable CA1822 // Mark members as static
         public class Query
         {
@@ -232,6 +317,16 @@ namespace FairyBread.Tests
             public string NullableIntResolver(int? count)
             {
                 return count.ToString();
+            }
+
+            public string ReadWithArrayArg(FooInputDto[] foos)
+            {
+                return string.Join(", ", foos.Select(f => f.ToString()));
+            }
+
+            public string ReadWithListArg(List<FooInputDto> foos)
+            {
+                return string.Join(", ", foos.Select(f => f.ToString()));
             }
         }
 
@@ -314,6 +409,22 @@ namespace FairyBread.Tests
                 RuleFor(x => x)
                     //.Null()
                     .GreaterThan(0).When(x => x is not null);
+            }
+        }
+
+        public class ArrayOfFooInputDtoValidator : AbstractValidator<FooInputDto[]>
+        {
+            public ArrayOfFooInputDtoValidator()
+            {
+                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
+            }
+        }
+
+        public class ListOfFooInputDtoValidator : AbstractValidator<List<FooInputDto>>
+        {
+            public ListOfFooInputDtoValidator()
+            {
+                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
             }
         }
     }

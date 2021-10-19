@@ -95,6 +95,24 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+        [Fact]
+        public async Task Should_Respect_ValidateAttribute()
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var query = @"
+                query {
+                    readWithExplicitValidation(foo: -1, bar: -1)
+                }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result);
+        }
+
 #pragma warning disable CA1822 // Mark members as static
         public class QueryI
         {
@@ -115,6 +133,19 @@ namespace FairyBread.Tests
             [UseFiltering]
             [UseSorting]
             public IEnumerable<FooI> GetFilterSortAndPagingArgs() => new FooI[] { new FooI() };
+
+            public string ReadWithExplicitValidation(
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
+                int fooInt,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
+                int barInt,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
+                FooInputDto foo,
+                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
+                BarInputDto bar)
+            {
+                return $"{foo} {bar}";
+            }
         }
 
         public class QueryIType
@@ -270,6 +301,14 @@ namespace FairyBread.Tests
             {
                 RuleForEach(x => x)
                     .SetValidator(innerValidator);
+            }
+        }
+
+        public class PositiveIntValidator : AbstractValidator<int>, IExplicitUsageOnlyValidator
+        {
+            public PositiveIntValidator()
+            {
+                RuleFor(x => x).NotNull().GreaterThan(0);
             }
         }
     }

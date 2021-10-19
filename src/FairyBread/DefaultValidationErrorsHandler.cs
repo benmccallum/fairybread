@@ -9,13 +9,13 @@ namespace FairyBread
     {
         public virtual void Handle(
             IMiddlewareContext context,
-            IEnumerable<ValidationResult> invalidResults)
+            IEnumerable<ArgumentValidationResult> invalidResults)
         {
             foreach (var invalidResult in invalidResults)
             {
-                foreach (var failure in invalidResult.Errors)
+                foreach (var failure in invalidResult.Result.Errors)
                 {
-                    var errorBuilder = CreateErrorBuilder(context, failure);
+                    var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, failure);
                     var error = errorBuilder.Build();
                     context.ReportError(error);
                 }
@@ -24,18 +24,27 @@ namespace FairyBread
 
         protected virtual IErrorBuilder CreateErrorBuilder(
             IMiddlewareContext context,
+            string argumentName,
             ValidationFailure failure)
         {
-            return ErrorBuilder.New()
+            var builder = ErrorBuilder.New()
                 .SetPath(context.Path)
                 .SetMessage(failure.ErrorMessage)
                 .SetCode("FairyBread_ValidationError")
+                .SetExtension("argumentName", argumentName)
                 .SetExtension("errorCode", failure.ErrorCode)
                 .SetExtension("errorMessage", failure.ErrorMessage)
-                .SetExtension("propertyName", failure.PropertyName)
                 .SetExtension("attemptedValue", failure.AttemptedValue)
                 .SetExtension("severity", failure.Severity)
                 .SetExtension("formattedMessagePlaceholderValues", failure.FormattedMessagePlaceholderValues);
+
+            if (!string.IsNullOrWhiteSpace(failure.PropertyName))
+            {
+                builder = builder
+                    .SetExtension("propertyName", failure.PropertyName);
+            }
+
+            return builder;
         }
     }
 }

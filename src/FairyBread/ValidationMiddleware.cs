@@ -27,8 +27,8 @@ namespace FairyBread
         {
             var arguments = context.Field.Arguments;
 
-            var invalidResults = new List<ValidationResult>();
-            
+            var invalidResults = new List<ArgumentValidationResult>();
+
             foreach (var argument in arguments)
             {
                 if (argument == null ||
@@ -63,7 +63,8 @@ namespace FairyBread
                             if (validationResult != null &&
                                 !validationResult.IsValid)
                             {
-                                invalidResults.Add(validationResult);
+                                invalidResults.Add(
+                                    new ArgumentValidationResult(argument.Name, validationResult));
                             }
                         }
                     }
