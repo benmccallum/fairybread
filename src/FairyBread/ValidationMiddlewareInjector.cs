@@ -65,6 +65,15 @@ namespace FairyBread
                             ex);
                     }
 
+                    // Cleanup context now we're done with these
+                    foreach (var key in argDef.ContextData.Keys)
+                    {
+                        if (key.StartsWith(WellKnownContextData.Prefix))
+                        {
+                            argDef.ContextData.Remove(key);
+                        }
+                    }
+
                     // TODO: Set validatordescriptors on the context data for easier retrieval later
                     // in the validator provider, which would now just need to loop over those
                     validatorDescs.TrimExcess();
@@ -90,21 +99,16 @@ namespace FairyBread
             IValidatorRegistry validatorRegistry,
             ArgumentDefinition argDef)
         {
-            var validators = new List<ValidatorDescriptor>();
-
-            // Grab explicit attribute/s
-            ValidateAttribute? validateAttr = null;
-            if (argDef.ContextData.TryGetValue(WellKnownContextData.ValidateAttribute, out var rawAttr) &&
-                rawAttr is ValidateAttribute validateAttribute)
+            // If validation is explicitly disabled, return none so validation middleware won't be added
+            if (argDef.ContextData.ContainsKey(WellKnownContextData.DontValidate))
             {
-                validateAttr = validateAttribute;
-
-                // Remove now we're done with marker
-                argDef.ContextData.Remove(WellKnownContextData.ValidateAttribute);
+                return new List<ValidatorDescriptor>(0);
             }
 
-            // Include implicit validator/s first (if allowed)            
-            if (validateAttr is null || validateAttr.RunImplicitValidators)
+            var validators = new List<ValidatorDescriptor>();
+
+            // Include implicit validator/s first (if allowed)
+            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DontRunImplicitValidators))
             {
                 // And if we can figure out the arg's runtime type
                 var argRuntimeType = TryGetArgRuntimeType(argDef);
@@ -119,9 +123,10 @@ namespace FairyBread
             }
 
             // Include explicit validator/s (that aren't already added implicitly)
-            if (validateAttr is not null)
+            if (argDef.ContextData.TryGetValue(WellKnownContextData.ExplicitValidatorTypes, out var explicitValidatorTypesRaw) &&
+                explicitValidatorTypesRaw is IEnumerable<Type> explicitValidatorTypes)
             {
-                foreach (var validatorType in validateAttr.ValidatorTypes)
+                foreach (var validatorType in explicitValidatorTypes)
                 {
                     if (validators.Any(v => v.ValidatorType == validatorType))
                     {

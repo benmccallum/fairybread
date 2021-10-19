@@ -43,7 +43,7 @@ namespace FairyBread
 
                 // TODO: Validate that validator is of correct type
 
-                argDef.ContextData[WellKnownContextData.ValidateAttribute] = attr;
+                argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = attr.ValidatorTypes;
             });
         }
     }
