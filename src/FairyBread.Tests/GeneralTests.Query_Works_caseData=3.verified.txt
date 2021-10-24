@@ -9,6 +9,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: bar,
+        validatorName: BarInputDtoAsyncValidator,
         errorCode: AsyncPredicateValidator,
         errorMessage: The specified condition was not met for 'Email Address'.,
         attemptedValue: -1,

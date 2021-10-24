@@ -9,6 +9,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: StandardValidator,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '50'.,
         attemptedValue: 1,
@@ -31,6 +32,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: AnotherStandardValidator,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '100'.,
         attemptedValue: 1,
@@ -53,6 +55,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: RequiresOwnScopeValidator,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '999'.,
         attemptedValue: 1,
@@ -75,6 +78,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: AnotherRequiresOwnScopeValidator,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '9999'.,
         attemptedValue: 1,

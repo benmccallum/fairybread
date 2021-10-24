@@ -8,8 +8,6 @@ namespace FairyBread
 {
     public class DefaultValidatorRegistry : IValidatorRegistry
     {
-        private static readonly Type _hasOwnScopeInterfaceType = typeof(IRequiresOwnScopeValidator);
-
         public DefaultValidatorRegistry(IServiceCollection services, IFairyBreadOptions options)
         {
             var validatorResults = new List<AssemblyScanner.AssemblyScanResult>();
@@ -47,17 +45,16 @@ namespace FairyBread
                     Cache[validatedType] = validatorsForType = new List<ValidatorDescriptor>();
                 }
 
-                var requiresOwnScope = ShouldBeResolvedInOwnScope(validatorType);
+                var validatorDescriptor = new ValidatorDescriptor(validatorType);
 
-                var validatorDescriptor = new ValidatorDescriptor(validatorType, requiresOwnScope);
-
-                validatorsForType.Add(validatorDescriptor);
+                if (!validatorDescriptor.ExplicitUsageOnly)
+                {
+                    validatorsForType.Add(validatorDescriptor);
+                }
             }
         }
 
         public Dictionary<Type, List<ValidatorDescriptor>> Cache { get; } = new();
 
-        public bool ShouldBeResolvedInOwnScope(Type validatorType)
-            => _hasOwnScopeInterfaceType.IsAssignableFrom(validatorType);
     }
 }

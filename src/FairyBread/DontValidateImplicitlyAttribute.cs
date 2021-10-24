@@ -5,6 +5,11 @@ using HotChocolate.Types.Descriptors;
 
 namespace FairyBread
 {
+    /// <summary>
+    /// Instructs FairyBread to not run any validators that
+    /// are implicitly associated with the annotated argument's type.
+    /// Explicit validators will still be run.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public class DontValidateImplicitlyAttribute : ArgumentDescriptorAttribute
     {
@@ -15,7 +20,7 @@ namespace FairyBread
         {
             descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
             {
-                argDef.ContextData[WellKnownContextData.DontValidate] = true;
+                argDef.ContextData[WellKnownContextData.DontValidateImplicitly] = true;
             });
         }
     }

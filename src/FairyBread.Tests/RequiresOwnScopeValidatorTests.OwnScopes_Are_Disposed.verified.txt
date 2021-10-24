@@ -9,6 +9,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: RequiresOwnScopeValidator,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '999'.,
         attemptedValue: 1,

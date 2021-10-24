@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Resolvers;
@@ -15,7 +16,7 @@ namespace FairyBread
             {
                 foreach (var failure in invalidResult.Result.Errors)
                 {
-                    var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, failure);
+                    var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, invalidResult.Validator, failure);
                     var error = errorBuilder.Build();
                     context.ReportError(error);
                 }
@@ -25,6 +26,7 @@ namespace FairyBread
         protected virtual IErrorBuilder CreateErrorBuilder(
             IMiddlewareContext context,
             string argumentName,
+            IValidator validator,
             ValidationFailure failure)
         {
             var builder = ErrorBuilder.New()
@@ -32,6 +34,7 @@ namespace FairyBread
                 .SetMessage(failure.ErrorMessage)
                 .SetCode("FairyBread_ValidationError")
                 .SetExtension("argumentName", argumentName)
+                .SetExtension("validatorName", validator.GetType().Name)
                 .SetExtension("errorCode", failure.ErrorCode)
                 .SetExtension("errorMessage", failure.ErrorMessage)
                 .SetExtension("attemptedValue", failure.AttemptedValue)

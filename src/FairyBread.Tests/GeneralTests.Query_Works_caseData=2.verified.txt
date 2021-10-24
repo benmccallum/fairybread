@@ -9,6 +9,7 @@
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
+        validatorName: FooInputDtoValidator,
         errorCode: EqualValidator,
         errorMessage: 'Some Integer' must be equal to '1'.,
         attemptedValue: -1,

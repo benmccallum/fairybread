@@ -97,37 +97,40 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
-        [Fact]
-        public async Task Should_Respect_ExplicitValidationAttributes()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_ExplicitValidationAttributes(bool valid)
         {
             // Arrange
             var executor = await GetRequestExecutorAsync();
 
+            var args = valid
+                ? @"fooInt: 1,
+                    barInt: 1,
+                    lolInt: 1,
+                    fooInput: { a: 1, b: true },
+                    barInput: { a: 1, b: true },
+                    lolInput: { a: 1, b: true },
+                    dblInput: { a: 1, b: true }"
+                : @"fooInt: -1,
+                    barInt: -1,
+                    lolInt: -1,
+                    fooInput: { a: 0, b: false },
+                    barInput: { a: 0, b: false },
+                    lolInput: { a: 0, b: false },
+                    dblInput: { a: 0, b: false }";
+
             var query = @"
                 query {
-                    ok: readWithExplicitValidation(
-                        fooInt: 1,
-                        barInt: 1,
-                        lolInt: 1,
-                        fooInput: { a: 1, b: true },
-                        barInput: { a: 1, b: true },
-                        lolInput: { a: 1, b: true },
-                        dblInput: { a: 1, b: true }),
-                    wrong: readWithExplicitValidation(
-                        fooInt: -1,
-                        barInt: -1,
-                        lolInt: -1,
-                        fooInput: { a: 0, b: false },
-                        barInput: { a: 0, b: false },
-                        lolInput: { a: 0, b: false },
-                        dblInput: { a: 0, b: false })
+                    readWithExplicitValidation(" + args + @")
                 }";
 
             // Act
             var result = await executor.ExecuteAsync(query);
 
             // Assert
-            await Verifier.Verify(result);
+            await Verifier.Verify(result).UseParameters(valid);
         }
 
 #pragma warning disable CA1822 // Mark members as static

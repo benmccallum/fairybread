@@ -28,11 +28,11 @@ namespace FairyBread
         /// <summary>
         /// Instantiates a new <see cref="ValidatorDescriptor"/>.
         /// </summary>
-        /// <param name="validatorType">The validator.</param>
-        public ValidatorDescriptor(Type validatorType, bool requiresOwnScope)
+        public ValidatorDescriptor(Type validatorType)
         {
             ValidatorType = validatorType;
-            RequiresOwnScope = requiresOwnScope;
+            RequiresOwnScope = WellKnownTypes.IRequiresOwnScopeValidator.IsAssignableFrom(validatorType);
+            ExplicitUsageOnly = WellKnownTypes.IExplicitUsageOnlyValidator.IsAssignableFrom(validatorType);
         }
     }
 }

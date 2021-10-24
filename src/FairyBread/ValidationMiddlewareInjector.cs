@@ -105,7 +105,7 @@ namespace FairyBread
             var validators = new List<ValidatorDescriptor>();
 
             // Include implicit validator/s first (if allowed)
-            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DontRunImplicitValidators))
+            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DontValidateImplicitly))
             {
                 // And if we can figure out the arg's runtime type
                 var argRuntimeType = TryGetArgRuntimeType(argDef);
@@ -130,8 +130,7 @@ namespace FairyBread
                         continue;
                     }
 
-                    var requiresOwnScope = validatorRegistry.ShouldBeResolvedInOwnScope(validatorType);
-                    validators.Add(new ValidatorDescriptor(validatorType, requiresOwnScope));
+                    validators.Add(new ValidatorDescriptor(validatorType));
                 }
             }
 

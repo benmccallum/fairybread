@@ -7,8 +7,8 @@
         public const string DontValidate =
             Prefix + ".DontValidate";
 
-        public const string DontRunImplicitValidators =
-            Prefix + ".DontRunImplicitValidators";
+        public const string DontValidateImplicitly =
+            Prefix + ".DontValidateImplicitly";
 
         public const string ExplicitValidatorTypes =
             Prefix + ".ExplicitValidatorTypes";

@@ -6,6 +6,10 @@ using HotChocolate.Types.Descriptors;
 
 namespace FairyBread
 {
+
+    /// <summary>
+    /// Instructs FairyBread to run the given validators for the annotated argument.
+    /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public class ValidateAttribute : ArgumentDescriptorAttribute
     {
@@ -37,7 +41,7 @@ namespace FairyBread
 
                 // TODO: Validate that validator is of correct type
 
-                argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = attr.ValidatorTypes;
+                argDef.ContextData[WellKnownContextData.ExplicitValidatorTypes] = attr.ValidatorTypes;
             });
         }
     }

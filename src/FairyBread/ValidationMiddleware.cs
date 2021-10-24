@@ -61,7 +61,7 @@ namespace FairyBread
                                 invalidResults.Add(
                                     new ArgumentValidationResult(
                                         argument.Name,
-                                        resolvedValidator.Validator.GetType().Name,
+                                        resolvedValidator.Validator,
                                         validationResult));
                             }
                         }
