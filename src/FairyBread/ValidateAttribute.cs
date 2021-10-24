@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentValidation;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 
@@ -8,7 +10,7 @@ namespace FairyBread
 {
 
     /// <summary>
-    /// Instructs FairyBread to run the given validators for the annotated argument.
+    /// Instructs FairyBread to add the given validator/s for the annotated argument.
     /// </summary>
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
     public class ValidateAttribute : ArgumentDescriptorAttribute
@@ -30,19 +32,49 @@ namespace FairyBread
                 return;
             }
 
+            descriptor.ValidateWith(attr.ValidatorTypes);
+        }
+    }
+
+    public static class ValidateArgumentDescriptorExtensions
+    {
+        /// <summary>
+        /// Instructs FairyBread to add the given validator to the argument.
+        /// </summary>
+        public static IArgumentDescriptor ValidateWith<TValidator>(
+            this IArgumentDescriptor descriptor)
+            where TValidator : IValidator
+        {
+            return descriptor.ValidateWith(typeof(TValidator));
+        }
+
+        /// <summary>
+        /// Instructs FairyBread to add the given validator/s to the argument.
+        /// </summary>
+        public static IArgumentDescriptor ValidateWith(
+            this IArgumentDescriptor descriptor,
+            params Type[] validatorTypes)
+        {
             descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
             {
-                if (attr.ValidatorTypes.Length != attr.ValidatorTypes.Distinct().Count())
+                if (!argDef.ContextData.TryGetValue(WellKnownContextData.ExplicitValidatorTypes, out var explicitValidatorTypesRaw) ||
+                    explicitValidatorTypesRaw is not List<Type> explicitValidatorTypes)
                 {
-                    throw new Exception("Duplicate validators added. Likely a mistake.");
-                    // TODO: Report this better using below?
-                    //completionContext.ReportError()
+                    argDef.ContextData[WellKnownContextData.ExplicitValidatorTypes]
+                        = new List<Type>(validatorTypes.Distinct());
+                    return;
                 }
 
-                // TODO: Validate that validator is of correct type
-
-                argDef.ContextData[WellKnownContextData.ExplicitValidatorTypes] = attr.ValidatorTypes;
+                foreach (var validatorType in validatorTypes)
+                {
+                    if (!explicitValidatorTypes.Contains(validatorType))
+                    {
+                        explicitValidatorTypes.Add(validatorType);
+                    }
+                }
             });
+
+            return descriptor;
         }
     }
 }

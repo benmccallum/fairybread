@@ -133,6 +133,42 @@ namespace FairyBread.Tests
             await Verifier.Verify(result).UseParameters(valid);
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_ExplicitValidationFluent(bool valid)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var args = valid
+                ? @"fooInt: 1,
+                    barInt: 1,
+                    lolInt: 1,
+                    fooInput: { a: 1, b: true },
+                    barInput: { a: 1, b: true },
+                    lolInput: { a: 1, b: true },
+                    dblInput: { a: 1, b: true }"
+                : @"fooInt: -1,
+                    barInt: -1,
+                    lolInt: -1,
+                    fooInput: { a: 0, b: false },
+                    barInput: { a: 0, b: false },
+                    lolInput: { a: 0, b: false },
+                    dblInput: { a: 0, b: false }";
+
+            var query = @"
+                query {
+                    readWithExplicitValidationFluent(" + args + @")
+                }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result).UseParameters(valid);
+        }
+
 #pragma warning disable CA1822 // Mark members as static
         public class QueryI
         {
@@ -246,6 +282,24 @@ namespace FairyBread.Tests
                     .Argument("items", arg => arg.Type<NonNullType<ListType<NonNullType<ListType<IntType>>>>>())
                     .Type<StringType>()
                     .Resolve(ctx => "hello");
+
+                descriptor
+                    .Field("readWithExplicitValidationFluent")
+                    // Should validate explicitly
+                    .Argument("fooInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>())
+                    // Shouldn't validate implicitly
+                    .Argument("barInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidateImplicitly())
+                    // Shouldn't validate
+                    .Argument("lolInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidate())
+                    // Should validate explicitly
+                    .Argument("fooInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>())
+                    // Shouldn't validate implicitly
+                    .Argument("barInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidateImplicitly())
+                    // Shouldn't validate
+                    .Argument("lolInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidate())
+                    // Shouldn't add an implicitly added validator again
+                    .Argument("dblInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputValidator>())
+                    .ResolveWith<QueryI>(q => q.ReadWithExplicitValidation(default, default, default, default!, default!, default!, default!));
             }
 
             public string ScalarArgsBResolver(int a, bool b) => $"{a} | {b}";

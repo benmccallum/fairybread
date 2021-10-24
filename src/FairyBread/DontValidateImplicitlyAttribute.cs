@@ -18,10 +18,26 @@ namespace FairyBread
             IArgumentDescriptor descriptor,
             ParameterInfo parameter)
         {
+            descriptor.DontValidateImplicitly();
+        }
+    }
+
+    public static class DontValidateImplicitlyArgumentDescriptorExtensions
+    {
+        /// <summary>
+        /// Instructs FairyBread to not run any validators that
+        /// are implicitly associated with this argument's runtime type.
+        /// Explicit validators will still be run.
+        /// </summary>
+        public static IArgumentDescriptor DontValidateImplicitly(
+            this IArgumentDescriptor descriptor)
+        {
             descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
             {
                 argDef.ContextData[WellKnownContextData.DontValidateImplicitly] = true;
             });
+
+            return descriptor;
         }
     }
 }
