@@ -74,12 +74,9 @@ namespace FairyBread
                         }
                     }
 
-                    // TODO: Set validatordescriptors on the context data for easier retrieval later
-                    // in the validator provider, which would now just need to loop over those
                     validatorDescs.TrimExcess();
-                    //validators.ToReadOnlyList();
                     needsValidationMiddleware = true;
-                    argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs;
+                    argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.AsReadOnly();
                 }
 
                 if (needsValidationMiddleware)

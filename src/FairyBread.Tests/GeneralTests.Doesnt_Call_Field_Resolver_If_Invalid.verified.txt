@@ -1,23 +1,23 @@
 ﻿{
   Errors: [
     {
-      Message: 'Some Integer' must be greater than or equal to '999'.,
+      Message: 'Some Integer' must be equal to '1'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: read
+        Name: someResolver
       },
       Extensions: {
         code: FairyBread_ValidationError,
         argumentName: foo,
-        errorCode: GreaterThanOrEqualValidator,
-        errorMessage: 'Some Integer' must be greater than or equal to '999'.,
-        attemptedValue: 1,
+        errorCode: EqualValidator,
+        errorMessage: 'Some Integer' must be equal to '1'.,
+        attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 999,
+          ComparisonValue: 1,
           ComparisonProperty: ,
           PropertyName: Some Integer,
-          PropertyValue: 1
+          PropertyValue: -1
         },
         propertyName: SomeInteger
       }

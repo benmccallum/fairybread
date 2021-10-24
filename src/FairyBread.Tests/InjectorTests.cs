@@ -14,7 +14,7 @@ using Xunit;
 namespace FairyBread.Tests
 {
     [UsesVerify]
-    public class ValidationMiddlewareInjectorTests
+    public class InjectorTests
     {
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
             Action<IFairyBreadOptions>? configureOptions = null,
@@ -34,6 +34,8 @@ namespace FairyBread.Tests
                 services.AddValidator<ArrayOfNullableIntValidator, int?[]>();
                 services.AddValidator<ListOfNullableIntValidator, List<int?>>();
                 services.AddValidator<ListOfListOfNullableIntValidator, List<List<int?>>>();
+                services.AddValidator<PositiveIntValidator, int>();
+                services.AddValidator<TestInputExplicitValidator, TestInput>();
             }
 
             var builder = services
@@ -96,14 +98,29 @@ namespace FairyBread.Tests
         }
 
         [Fact]
-        public async Task Should_Respect_ValidateAttribute()
+        public async Task Should_Respect_ExplicitValidationAttributes()
         {
             // Arrange
             var executor = await GetRequestExecutorAsync();
 
             var query = @"
                 query {
-                    readWithExplicitValidation(foo: -1, bar: -1)
+                    ok: readWithExplicitValidation(
+                        fooInt: 1,
+                        barInt: 1,
+                        lolInt: 1,
+                        fooInput: { a: 1, b: true },
+                        barInput: { a: 1, b: true },
+                        lolInput: { a: 1, b: true },
+                        dblInput: { a: 1, b: true }),
+                    wrong: readWithExplicitValidation(
+                        fooInt: -1,
+                        barInt: -1,
+                        lolInt: -1,
+                        fooInput: { a: 0, b: false },
+                        barInput: { a: 0, b: false },
+                        lolInput: { a: 0, b: false },
+                        dblInput: { a: 0, b: false })
                 }";
 
             // Act
@@ -117,7 +134,6 @@ namespace FairyBread.Tests
         public class QueryI
         {
             public string NoArgs => "foo";
-
 
             public string ScalarArgsA(int a, bool b) => $"{a} | {b}";
 
@@ -135,16 +151,33 @@ namespace FairyBread.Tests
             public IEnumerable<FooI> GetFilterSortAndPagingArgs() => new FooI[] { new FooI() };
 
             public string ReadWithExplicitValidation(
-                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
+                // Should validate explicitly
+                [Validate(typeof(PositiveIntValidator))]
                 int fooInt,
-                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
+                // Shouldn't validate implicitly
+                [Validate(typeof(PositiveIntValidator))]
+                [DontValidateImplicitly]
                 int barInt,
-                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = true)]
-                FooInputDto foo,
-                [Validate(typeof(PositiveIntValidator), RunImplicitValidators = false)]
-                BarInputDto bar)
+                // Shouldn't validate
+                [Validate(typeof(PositiveIntValidator))]
+                [DontValidate]
+                int lolInt,
+                // Should validate explicitly
+                [Validate(typeof(TestInputExplicitValidator))]
+                TestInput fooInput,
+                // Shouldn't validate implicitly
+                [Validate(typeof(TestInputExplicitValidator))]
+                [DontValidateImplicitly]
+                TestInput barInput,
+                // Shouldn't validate
+                [Validate(typeof(TestInputExplicitValidator))]
+                [DontValidate]
+                TestInput lolInput,
+                // Shouldn't add an implicitly added validator again
+                [Validate(typeof(TestInputValidator))]
+                TestInput dblInput)
             {
-                return $"{foo} {bar}";
+                return $"{fooInt} {barInt} {lolInt} {fooInput} {barInput} {lolInput}";
             }
         }
 
@@ -275,6 +308,14 @@ namespace FairyBread.Tests
             {
                 RuleFor(x => x.A).NotEmpty();
                 RuleFor(x => x.B).NotEmpty();
+            }
+        }
+
+        public class TestInputExplicitValidator : AbstractValidator<TestInput>, IExplicitUsageOnlyValidator
+        {
+            public TestInputExplicitValidator()
+            {
+                RuleFor(x => x.A).NotNull().GreaterThan(0).WithMessage("Explicit validator error msg.");
             }
         }
 

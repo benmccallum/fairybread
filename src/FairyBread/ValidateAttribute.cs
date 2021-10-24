@@ -11,12 +11,6 @@ namespace FairyBread
     {
         public Type[] ValidatorTypes;
 
-        /// <summary>
-        /// If true (default), implicit validators will still be
-        /// run for the targeted argument.
-        /// </summary>
-        public bool RunImplicitValidators { get; set; } = true;
-
         public ValidateAttribute(params Type[] validatorTypes)
         {
             ValidatorTypes = validatorTypes;

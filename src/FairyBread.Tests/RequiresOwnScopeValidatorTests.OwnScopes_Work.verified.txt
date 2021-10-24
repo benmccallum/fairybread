@@ -8,9 +8,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '50'.,
-        propertyName: SomeInteger,
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -18,7 +18,8 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: 1
-        }
+        },
+        propertyName: SomeInteger
       }
     },
     {
@@ -29,9 +30,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '100'.,
-        propertyName: SomeInteger,
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -39,7 +40,8 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: 1
-        }
+        },
+        propertyName: SomeInteger
       }
     },
     {
@@ -50,9 +52,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '999'.,
-        propertyName: SomeInteger,
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -60,7 +62,8 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: 1
-        }
+        },
+        propertyName: SomeInteger
       }
     },
     {
@@ -71,9 +74,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '9999'.,
-        propertyName: SomeInteger,
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -81,7 +84,8 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: 1
-        }
+        },
+        propertyName: SomeInteger
       }
     }
   ]

@@ -8,9 +8,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[0][0],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -19,7 +19,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[0][0]
       }
     },
     {
@@ -30,9 +31,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[0][1],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -41,7 +42,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[0][1]
       }
     },
     {
@@ -52,9 +54,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[1][0],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -63,7 +65,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[1][0]
       }
     },
     {
@@ -74,9 +77,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[1][1],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -85,7 +88,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[1][1]
       }
     },
     {
@@ -96,9 +100,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[0],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -107,7 +111,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[0]
       }
     },
     {
@@ -118,9 +123,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[1],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -129,7 +134,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[1]
       }
     },
     {
@@ -140,9 +146,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[0],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -151,7 +157,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[0]
       }
     },
     {
@@ -162,9 +169,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[1],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -173,7 +180,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[1]
       }
     },
     {
@@ -184,9 +192,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[0],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -195,7 +203,8 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[0]
       }
     },
     {
@@ -206,9 +215,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: items,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        propertyName: x[1],
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -217,51 +226,25 @@
           ComparisonProperty: ,
           PropertyName: null,
           PropertyValue: 0
-        }
+        },
+        propertyName: x[1]
       }
     },
     {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
+      Message: Unexpected Execution Error,
       Path: {
         Name: arrayArgA
       },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        propertyName: x[0],
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          CollectionIndex: 0,
-          ComparisonValue: 0,
-          ComparisonProperty: ,
-          PropertyName: null,
-          PropertyValue: 0
+      Locations: [
+        {
+          Line: 1,
+          Column: 322
         }
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: arrayArgA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        propertyName: x[1],
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          CollectionIndex: 1,
-          ComparisonValue: 0,
-          ComparisonProperty: ,
-          PropertyName: null,
-          PropertyValue: 0
-        }
+      ],
+      Exception: {
+        $type: InvalidOperationException,
+        Type: InvalidOperationException,
+        Message: Cannot validate instances of type 'List`1'. This validator can only validate instances of type 'Nullable`1[]'.
       }
     },
     {
@@ -272,15 +255,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'A' must not be empty.,
-        propertyName: A,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: A,
           PropertyValue: 0
-        }
+        },
+        propertyName: A
       }
     },
     {
@@ -291,15 +275,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'B' must not be empty.,
-        propertyName: B,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: B,
           PropertyValue: false
-        }
+        },
+        propertyName: B
       }
     },
     {
@@ -310,15 +295,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'A' must not be empty.,
-        propertyName: A,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: A,
           PropertyValue: 0
-        }
+        },
+        propertyName: A
       }
     },
     {
@@ -329,15 +315,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'B' must not be empty.,
-        propertyName: B,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: B,
           PropertyValue: false
-        }
+        },
+        propertyName: B
       }
     },
     {
@@ -348,15 +335,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'A' must not be empty.,
-        propertyName: A,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: A,
           PropertyValue: 0
-        }
+        },
+        propertyName: A
       }
     },
     {
@@ -367,129 +355,16 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: input,
         errorCode: NotEmptyValidator,
         errorMessage: 'B' must not be empty.,
-        propertyName: B,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: B,
           PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        propertyName: ,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
+        },
+        propertyName: B
       }
     },
     {
@@ -500,9 +375,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: a,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -519,9 +394,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: b,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -538,9 +413,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: a,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -557,9 +432,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: b,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -576,9 +451,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: a,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -595,9 +470,9 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: b,
         errorCode: NotEmptyValidator,
         errorMessage: '' must not be empty.,
-        propertyName: ,
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {

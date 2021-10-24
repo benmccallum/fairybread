@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 using Xunit;
-using static FairyBread.Tests.ValidationMiddlewareTests;
+using static FairyBread.Tests.GeneralTests;
 
 namespace FairyBread.Tests
 {

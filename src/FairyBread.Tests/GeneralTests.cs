@@ -17,9 +17,9 @@ using Xunit;
 namespace FairyBread.Tests
 {
     [UsesVerify]
-    public class ValidationMiddlewareTests
+    public class GeneralTests
     {
-        static ValidationMiddlewareTests()
+        static GeneralTests()
         {
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
@@ -392,14 +392,6 @@ namespace FairyBread.Tests
                 RuleFor(x => x.EmailAddress)
                     // TODO: Cancellation unit test
                     .MustAsync((val, _) => Task.FromResult(val == "ben@lol.com"));
-            }
-        }
-
-        public class CustomValidationErrorsHandler : IValidationErrorsHandler
-        {
-            public void Handle(IMiddlewareContext context, IEnumerable<ValidationResult> invalidResults)
-            {
-                context.Result = "Custom set result on error";
             }
         }
 

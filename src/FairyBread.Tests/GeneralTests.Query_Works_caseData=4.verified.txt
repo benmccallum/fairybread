@@ -4,13 +4,13 @@
       Message: 'Some Integer' must be equal to '1'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: read
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: EqualValidator,
         errorMessage: 'Some Integer' must be equal to '1'.,
-        propertyName: SomeInteger,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -18,20 +18,21 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: -1
-        }
+        },
+        propertyName: SomeInteger
       }
     },
     {
       Message: 'Some String' must be equal to 'hello'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: read
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
         errorCode: EqualValidator,
         errorMessage: 'Some String' must be equal to 'hello'.,
-        propertyName: SomeString,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -39,26 +40,28 @@
           ComparisonProperty: ,
           PropertyName: Some String,
           PropertyValue: -1
-        }
+        },
+        propertyName: SomeString
       }
     },
     {
       Message: The specified condition was not met for 'Email Address'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: read
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: bar,
         errorCode: AsyncPredicateValidator,
         errorMessage: The specified condition was not met for 'Email Address'.,
-        propertyName: EmailAddress,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: Email Address,
           PropertyValue: -1
-        }
+        },
+        propertyName: EmailAddress
       }
     }
   ]
