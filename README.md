@@ -25,6 +25,7 @@ Configure services.
 
 ```csharp
 // Add your FluentValidation validators
+// (note: this will add all validators in the assembly that contains `CreateUserInputValidator`)
 services.AddValidatorsFromAssemblyContaining<CreateUserInputValidator>();
 
 // Add FairyBread
@@ -37,9 +38,9 @@ Configure [FluentValidation](https://github.com/FluentValidation/FluentValidatio
 
 
 ```csharp
-public class UserInput { ... }
+public class CreateUserInput { ... }
 
-public class UserInputValidator : AbstractValidator<CreateUserInput> { ... }
+public class CreateUserInputValidator : AbstractValidator<CreateUserInput> { ... }
 
 // An example GraphQL field in HotChocolate
 public Task CreateUser(CreateUserInput userInput) { ... }
@@ -47,7 +48,22 @@ public Task CreateUser(CreateUserInput userInput) { ... }
 
 ### How validation errors will be handled
 
-Errors will be written out into the GraphQL execution result in the `Errors` property with one error being reported per failure on a field.
+By default, errors will be written out into the GraphQL execution result in the `Errors` property with one error being reported per failure on a field.
+You can change this behaviour by implementing your own `IValidationErrorsHandler`.
+
+### Implicit vs explicit configuration
+
+FairyBread opts for an implicit approach to validation by default, similar to how
+[FluentValidation.AspNetCore](https://docs.fluentvalidation.net/en/latest/aspnet.html#asp-net-core)
+behaves. Simply create a validator for a certain input object type and argument's of that type will be validated.
+And you don't need to worry about a middleware performance penalty, as FairyBread (since v7.1) only adds the validation
+field middleware where needed.
+
+There are some cases though where explicitness is either required or useful so you can do that too.
+
+The required scenario is when you've got a field argument that's a scalar type (e.g. not an input type), like an `int`.
+It'd obviously not be a great idea to write a validator targeting `int` as that would then be applied to all your integer arguments across the schema.
+Instead, you can write what we call an "explicit usage only validator", by including the marker interface 
 
 ### Dealing with multi-threaded execution issues
 
@@ -56,10 +72,12 @@ GraphQL resolvers are inherently multi-threaded; as such, you can run into issue
 With FairyBread, you might need to do this if one of your validators uses a `DbContext` (say to check if a username already exists on a create user mutation). Good news is, it's as easy as marking your validator with `IRequiresOwnScopeValidator` and we'll take care of the rest.
 
 ```csharp
-public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScopeValidator
+public class CreateUserInputValidator
+    : AbstractValidator<CreateUserInput>
+	, IRequiresOwnScopeValidator
 {
     // db will be a unique instance for this validation operation
-    public UserInputValidator(SomeDbContext db) { ... } 
+    public CreateUserInputValidator(SomeDbContext db) { ... } 
 }
 ```
 
@@ -68,7 +86,7 @@ public class UserInputValidator : AbstractValidator<UserInput>, IRequiresOwnScop
 If you want to let MediatR fire validation, you can set up:
 * FairyBread to skip validating `MediatR.IRequest` arguments, 
 * your MediatR pipeline to validate them and throw a `ValidationException`, and
-* an `IErrorFilter`(in HotChocolate) to handle it handles using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
+* an `IErrorFilter`(in HotChocolate) to handle it using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
 
 ### Where to next?
 
