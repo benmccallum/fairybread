@@ -74,16 +74,20 @@ namespace FairyBread.Tests
                 "scalarArgsA(a: 0, b: false) " +
                 "scalarArgsB(a: 0, b: false) " +
                 "scalarArgsC(a: 0, b: false) " +
+                "scalarArgsD(a: 0, b: false) " +
                 "nullableScalarArgsA(a: 0, b: false) " +
                 "nullableScalarArgsB(a: 0, b: false) " +
                 "nullableScalarArgsC(a: 0, b: false) " +
+                "nullableScalarArgsD(a: 0, b: false) " +
                 "objectArgA(input: { a: 0, b: false }) " +
                 "objectArgB(input: { a: 0, b: false }) " +
                 "objectArgC(input: { a: 0, b: false }) " +
+                "objectArgD(input: { a: 0, b: false }) " +
                 "arrayArgA(items: [0, 0]) " +
                 "listArgA(items: [0, 0]) " +
                 "listArgB(items: [0, 0]) " +
                 "listArgC(items: [0, 0]) " +
+                "listArgD(items: [0, 0]) " +
                 "listOfListArgC(items: [[0, 0], [0, 0]]) " +
                 "filterSortAndPagingArgs(first: 10) { nodes { a } }" +
                 "}";
@@ -240,6 +244,13 @@ namespace FairyBread.Tests
                     .Resolve(ctx => "hello");
 
                 descriptor
+                    .Field("scalarArgsD")
+                    .Argument("a", arg => arg.Type(typeof(int)))
+                    .Argument("b", arg => arg.Type(typeof(bool)))
+                    .Type<StringType>()
+                    .Resolve(ctx => "hello");
+
+                descriptor
                     .Field("nullableScalarArgsB")
                     .Argument("a", arg => arg.Type<IntType>())
                     .Argument("b", arg => arg.Type<BooleanType>())
@@ -250,6 +261,13 @@ namespace FairyBread.Tests
                     .Field("nullableScalarArgsC")
                     .Argument("a", arg => arg.Type<IntType>())
                     .Argument("b", arg => arg.Type<BooleanType>())
+                    .Type<StringType>()
+                    .Resolve(ctx => "hello");
+
+                descriptor
+                    .Field("nullableScalarArgsD")
+                    .Argument("a", arg => arg.Type(typeof(int?)))
+                    .Argument("b", arg => arg.Type(typeof(bool?)))
                     .Type<StringType>()
                     .Resolve(ctx => "hello");
 
@@ -266,6 +284,12 @@ namespace FairyBread.Tests
                     .Resolve(ctx => "hello");
 
                 descriptor
+                    .Field("objectArgD")
+                    .Argument("input", arg => arg.Type(typeof(TestInput)))
+                    .Type<StringType>()
+                    .Resolve(ctx => "hello");
+
+                descriptor
                     .Field("listArgB")
                     .Argument("items", arg => arg.Type<NonNullType<ListType<IntType>>>())
                     .Type<StringType>()
@@ -274,6 +298,12 @@ namespace FairyBread.Tests
                 descriptor
                     .Field("listArgC")
                     .Argument("items", arg => arg.Type<NonNullType<ListType<IntType>>>())
+                    .Type<StringType>()
+                    .Resolve(ctx => "hello");
+
+                descriptor
+                    .Field("listArgD")
+                    .Argument("items", arg => arg.Type(typeof(List<int?>)))
                     .Type<StringType>()
                     .Resolve(ctx => "hello");
 
@@ -339,7 +369,7 @@ namespace FairyBread.Tests
         {
             public NullableIntValidator()
             {
-                RuleFor(x => x).NotEmpty();
+                RuleFor(x => x).NotEmpty().GreaterThan(0);
             }
         }
 
@@ -355,7 +385,7 @@ namespace FairyBread.Tests
         {
             public NullableBoolValidator()
             {
-                RuleFor(x => x).NotEmpty();
+                RuleFor(x => x).NotEmpty().Equal(true);
             }
         }
 
@@ -380,7 +410,7 @@ namespace FairyBread.Tests
         {
             public ArrayOfNullableIntValidator()
             {
-                RuleForEach(x => x).NotEmpty().GreaterThan(0); // TODO: Log FluentValidation issue as GreaterThan(0) shouldn't be required...
+                RuleForEach(x => x).NotEmpty().GreaterThan(0);
             }
         }
 
@@ -388,7 +418,7 @@ namespace FairyBread.Tests
         {
             public ListOfNullableIntValidator()
             {
-                RuleForEach(x => x).NotEmpty().GreaterThan(0); // TODO: Log FluentValidation issue as GreaterThan(0) shouldn't be required...
+                RuleForEach(x => x).NotEmpty().GreaterThan(0);
             }
         }
 
