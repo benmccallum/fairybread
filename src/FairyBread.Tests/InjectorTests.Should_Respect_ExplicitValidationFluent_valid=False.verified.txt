@@ -1,0 +1,181 @@
+﻿{
+  Data: {
+    readWithExplicitValidationFluent: null
+  },
+  Errors: [
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: fooInt,
+        validatorName: PositiveIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: null,
+          PropertyValue: -1
+        }
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: barInt,
+        validatorName: PositiveIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: null,
+          PropertyValue: -1
+        }
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: fooInput,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: fooInput,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B
+      }
+    },
+    {
+      Message: Explicit validator error msg.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: fooInput,
+        validatorName: TestInputExplicitValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: Explicit validator error msg.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: Explicit validator error msg.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: barInput,
+        validatorName: TestInputExplicitValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: Explicit validator error msg.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: dblInput,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidationFluent
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: dblInput,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B
+      }
+    }
+  ]
+}

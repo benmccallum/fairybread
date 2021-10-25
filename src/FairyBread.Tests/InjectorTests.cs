@@ -14,7 +14,7 @@ using Xunit;
 namespace FairyBread.Tests
 {
     [UsesVerify]
-    public class ValidationMiddlewareInjectorTests
+    public class InjectorTests
     {
         private static async Task<IRequestExecutor> GetRequestExecutorAsync(
             Action<IFairyBreadOptions>? configureOptions = null,
@@ -34,6 +34,8 @@ namespace FairyBread.Tests
                 services.AddValidator<ArrayOfNullableIntValidator, int?[]>();
                 services.AddValidator<ListOfNullableIntValidator, List<int?>>();
                 services.AddValidator<ListOfListOfNullableIntValidator, List<List<int?>>>();
+                services.AddValidator<PositiveIntValidator, int>();
+                services.AddValidator<TestInputExplicitValidator, TestInput>();
             }
 
             var builder = services
@@ -95,11 +97,82 @@ namespace FairyBread.Tests
             await Verifier.Verify(result, verifySettings);
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_ExplicitValidationAttributes(bool valid)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var args = valid
+                ? @"fooInt: 1,
+                    barInt: 1,
+                    lolInt: 1,
+                    fooInput: { a: 1, b: true },
+                    barInput: { a: 1, b: true },
+                    lolInput: { a: 1, b: true },
+                    dblInput: { a: 1, b: true }"
+                : @"fooInt: -1,
+                    barInt: -1,
+                    lolInt: -1,
+                    fooInput: { a: 0, b: false },
+                    barInput: { a: 0, b: false },
+                    lolInput: { a: 0, b: false },
+                    dblInput: { a: 0, b: false }";
+
+            var query = @"
+                query {
+                    readWithExplicitValidation(" + args + @")
+                }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result).UseParameters(valid);
+        }
+
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public async Task Should_Respect_ExplicitValidationFluent(bool valid)
+        {
+            // Arrange
+            var executor = await GetRequestExecutorAsync();
+
+            var args = valid
+                ? @"fooInt: 1,
+                    barInt: 1,
+                    lolInt: 1,
+                    fooInput: { a: 1, b: true },
+                    barInput: { a: 1, b: true },
+                    lolInput: { a: 1, b: true },
+                    dblInput: { a: 1, b: true }"
+                : @"fooInt: -1,
+                    barInt: -1,
+                    lolInt: -1,
+                    fooInput: { a: 0, b: false },
+                    barInput: { a: 0, b: false },
+                    lolInput: { a: 0, b: false },
+                    dblInput: { a: 0, b: false }";
+
+            var query = @"
+                query {
+                    readWithExplicitValidationFluent(" + args + @")
+                }";
+
+            // Act
+            var result = await executor.ExecuteAsync(query);
+
+            // Assert
+            await Verifier.Verify(result).UseParameters(valid);
+        }
+
 #pragma warning disable CA1822 // Mark members as static
         public class QueryI
         {
             public string NoArgs => "foo";
-
 
             public string ScalarArgsA(int a, bool b) => $"{a} | {b}";
 
@@ -115,6 +188,36 @@ namespace FairyBread.Tests
             [UseFiltering]
             [UseSorting]
             public IEnumerable<FooI> GetFilterSortAndPagingArgs() => new FooI[] { new FooI() };
+
+            public string ReadWithExplicitValidation(
+                // Should validate explicitly
+                [Validate(typeof(PositiveIntValidator))]
+                int fooInt,
+                // Shouldn't validate implicitly
+                [Validate(typeof(PositiveIntValidator))]
+                [DontValidateImplicitly]
+                int barInt,
+                // Shouldn't validate
+                [Validate(typeof(PositiveIntValidator))]
+                [DontValidate]
+                int lolInt,
+                // Should validate explicitly
+                [Validate(typeof(TestInputExplicitValidator))]
+                TestInput fooInput,
+                // Shouldn't validate implicitly
+                [Validate(typeof(TestInputExplicitValidator))]
+                [DontValidateImplicitly]
+                TestInput barInput,
+                // Shouldn't validate
+                [Validate(typeof(TestInputExplicitValidator))]
+                [DontValidate]
+                TestInput lolInput,
+                // Shouldn't add an implicitly added validator again
+                [Validate(typeof(TestInputValidator))]
+                TestInput dblInput)
+            {
+                return $"{fooInt} {barInt} {lolInt} {fooInput} {barInput} {lolInput}";
+            }
         }
 
         public class QueryIType
@@ -179,6 +282,24 @@ namespace FairyBread.Tests
                     .Argument("items", arg => arg.Type<NonNullType<ListType<NonNullType<ListType<IntType>>>>>())
                     .Type<StringType>()
                     .Resolve(ctx => "hello");
+
+                descriptor
+                    .Field("readWithExplicitValidationFluent")
+                    // Should validate explicitly
+                    .Argument("fooInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>())
+                    // Shouldn't validate implicitly
+                    .Argument("barInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidateImplicitly())
+                    // Shouldn't validate
+                    .Argument("lolInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidate())
+                    // Should validate explicitly
+                    .Argument("fooInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>())
+                    // Shouldn't validate implicitly
+                    .Argument("barInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidateImplicitly())
+                    // Shouldn't validate
+                    .Argument("lolInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidate())
+                    // Shouldn't add an implicitly added validator again
+                    .Argument("dblInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputValidator>())
+                    .ResolveWith<QueryI>(q => q.ReadWithExplicitValidation(default, default, default, default!, default!, default!, default!));
             }
 
             public string ScalarArgsBResolver(int a, bool b) => $"{a} | {b}";
@@ -247,6 +368,14 @@ namespace FairyBread.Tests
             }
         }
 
+        public class TestInputExplicitValidator : AbstractValidator<TestInput>, IExplicitUsageOnlyValidator
+        {
+            public TestInputExplicitValidator()
+            {
+                RuleFor(x => x.A).NotNull().GreaterThan(0).WithMessage("Explicit validator error msg.");
+            }
+        }
+
         public class ArrayOfNullableIntValidator : AbstractValidator<int?[]>
         {
             public ArrayOfNullableIntValidator()
@@ -270,6 +399,14 @@ namespace FairyBread.Tests
             {
                 RuleForEach(x => x)
                     .SetValidator(innerValidator);
+            }
+        }
+
+        public class PositiveIntValidator : AbstractValidator<int>, IExplicitUsageOnlyValidator
+        {
+            public PositiveIntValidator()
+            {
+                RuleFor(x => x).NotNull().GreaterThan(0);
             }
         }
     }
