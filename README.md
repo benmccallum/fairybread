@@ -55,15 +55,27 @@ You can change this behaviour by implementing your own `IValidationErrorsHandler
 
 FairyBread opts for an implicit approach to validation by default, similar to how
 [FluentValidation.AspNetCore](https://docs.fluentvalidation.net/en/latest/aspnet.html#asp-net-core)
-behaves. Simply create a validator for a certain input object type and argument's of that type will be validated.
+behaves. Simply create a validator for a certain input object type and arguments of that type will be validated.
 And you don't need to worry about a middleware performance penalty, as FairyBread (since v7.1) only adds the validation
 field middleware where needed.
 
-There are some cases though where explicitness is either required or useful so you can do that too.
+There are some cases though where explicitness is either required or useful, so you can do that too.
 
-The required scenario is when you've got a field argument that's a scalar type (e.g. not an input type), like an `int`.
-It'd obviously not be a great idea to write a validator targeting `int` as that would then be applied to all your integer arguments across the schema.
-Instead, you can write what we call an "explicit usage only validator", by including the marker interface 
+For example, if you've got a field argument that's a scalar type (e.g. not an input type), like an `int`, creating
+a validator targeting `int` would mean every top-level `int` argument would be across your schema would be implicitly validated, which wouldn't make sense.
+Instead, annotate the validator by having it inherit `IExplicitUsageOnly` and then explicitly setup it up on the argument (see below).
+
+Annotation API:
+
+  * `[Validate(typeof(FooValidator)]` - explicitly add this validator for the argument
+  * `[DontValidate]` - don't validate this argument at all
+  * `[DontImplicitlyValidate]` - disable implicit validators for the argument
+
+Fluent API:
+
+  * `.Argument("foo").ValidateWith<FooValidator>()`
+  * `.DontValidate()`
+  * `.DontImplicitlyValidate()`
 
 ### Dealing with multi-threaded execution issues
 
