@@ -157,6 +157,12 @@ namespace FairyBread
 
         private static Type? TryGetRuntimeType(IExtendedType extType)
         {
+            // It's already a runtime type, .Type(typeof(int))
+            if (extType.Kind == ExtendedTypeKind.Runtime)
+            {
+                return extType.Source;
+            }
+
             // Array (though not sure what produces this scenario as seems to always be list)
             if (extType.IsArray)
             {
@@ -233,11 +239,6 @@ namespace FairyBread
                 }
 
                 return argRuntimeType;
-            }
-
-            if (extType.Kind == ExtendedTypeKind.Runtime)
-            {
-                return extType.Source;
             }
 
             return null;
