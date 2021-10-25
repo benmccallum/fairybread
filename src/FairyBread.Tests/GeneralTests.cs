@@ -17,9 +17,9 @@ using Xunit;
 namespace FairyBread.Tests
 {
     [UsesVerify]
-    public class ValidationMiddlewareTests
+    public class GeneralTests
     {
-        static ValidationMiddlewareTests()
+        static GeneralTests()
         {
             VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
         }
@@ -40,6 +40,8 @@ namespace FairyBread.Tests
                 services.AddValidator<BarInputDtoValidator, BarInputDto>();
                 services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
                 services.AddValidator<NullableIntValidator, int?>();
+                services.AddValidator<ArrayOfFooInputDtoValidator, FooInputDto[]>();
+                services.AddValidator<ListOfFooInputDtoValidator, List<FooInputDto>>();
             }
 
             var builder = services
@@ -170,6 +172,7 @@ namespace FairyBread.Tests
 
         // TODO: Unit tests for:
         // - cancellation
+        // - does adding validators after fairybread still work ok?
 
         public static IEnumerable<object[]> Cases()
         {
@@ -328,6 +331,16 @@ namespace FairyBread.Tests
             {
                 return count?.ToString() ?? "null";
             }
+
+            public string ReadWithArrayArg(FooInputDto[] foos)
+            {
+                return string.Join(", ", foos.Select(f => f.ToString()));
+            }
+
+            public string ReadWithListArg(List<FooInputDto> foos)
+            {
+                return string.Join(", ", foos.Select(f => f.ToString()));
+            }
         }
 
         public class Mutation
@@ -410,14 +423,6 @@ namespace FairyBread.Tests
             }
         }
 
-        public class CustomValidationErrorsHandler : IValidationErrorsHandler
-        {
-            public void Handle(IMiddlewareContext context, IEnumerable<ValidationResult> invalidResults)
-            {
-                context.Result = "Custom set result on error";
-            }
-        }
-
         public class NullableIntValidator : AbstractValidator<int?>
         {
             public NullableIntValidator()
@@ -425,6 +430,22 @@ namespace FairyBread.Tests
                 RuleFor(x => x)
                     //.Null()
                     .GreaterThan(0).When(x => x is not null);
+            }
+        }
+
+        public class ArrayOfFooInputDtoValidator : AbstractValidator<FooInputDto[]>
+        {
+            public ArrayOfFooInputDtoValidator()
+            {
+                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
+            }
+        }
+
+        public class ListOfFooInputDtoValidator : AbstractValidator<List<FooInputDto>>
+        {
+            public ListOfFooInputDtoValidator()
+            {
+                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
             }
         }
     }

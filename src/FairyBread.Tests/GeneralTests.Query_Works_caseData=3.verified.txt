@@ -8,15 +8,17 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: bar,
+        validatorName: BarInputDtoAsyncValidator,
         errorCode: AsyncPredicateValidator,
         errorMessage: The specified condition was not met for 'Email Address'.,
-        propertyName: EmailAddress,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: Email Address,
           PropertyValue: -1
-        }
+        },
+        propertyName: EmailAddress
       }
     }
   ]

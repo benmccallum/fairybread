@@ -1,0 +1,28 @@
+﻿{
+  Errors: [
+    {
+      Message: 'Some Integer' must be equal to '1'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithListArg
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: foos,
+        validatorName: ListOfFooInputDtoValidator,
+        errorCode: EqualValidator,
+        errorMessage: 'Some Integer' must be equal to '1'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: ,
+          PropertyName: Some Integer,
+          PropertyValue: -1,
+          CollectionIndex: 0
+        },
+        propertyName: x[0].SomeInteger
+      }
+    }
+  ]
+}

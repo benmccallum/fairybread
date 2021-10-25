@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Internal;
 using HotChocolate.Resolvers;
@@ -37,26 +39,44 @@ namespace FairyBread
 
                 foreach (var argDef in fieldDef.Arguments)
                 {
+                    var argCoord = new FieldCoordinate(objTypeDef.Name, fieldDef.Name, argDef.Name);
+
                     // 2. the argument should be validated according to options func
                     if (!options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))
                     {
                         continue;
                     }
 
-                    // 3. the arg actually has a validator for its runtime type
-                    // (note: if we can't figure out the runtime type, doesn't add)
-                    if (options.OptimizeMiddlewarePlacement)
+                    // 3. there's validators for it
+                    List<ValidatorDescriptor> validatorDescs;
+                    try
                     {
-                        var argRuntimeType = TryGetArgRuntimeType(objTypeDef, fieldDef, argDef);
-                        if (argRuntimeType is null ||
-                            !validatorRegistry.Cache.ContainsKey(argRuntimeType))
+                        validatorDescs = DetermineValidatorsForArg(validatorRegistry, argDef);
+                        if (validatorDescs.Count < 1)
                         {
                             continue;
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(
+                            $"Problem getting runtime type for argument '{argDef.Name}' " +
+                            $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'.",
+                            ex);
+                    }
 
+                    // Cleanup context now we're done with these
+                    foreach (var key in argDef.ContextData.Keys)
+                    {
+                        if (key.StartsWith(WellKnownContextData.Prefix))
+                        {
+                            argDef.ContextData.Remove(key);
+                        }
+                    }
+
+                    validatorDescs.TrimExcess();
                     needsValidationMiddleware = true;
-                    argDef.ContextData[WellKnownContextData.ShouldValidate] = true;
+                    argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.AsReadOnly();
                 }
 
                 if (needsValidationMiddleware)
@@ -67,43 +87,66 @@ namespace FairyBread
                             .Create<ValidationMiddleware>();
                     }
 
-                    fieldDef.MiddlewareDefinitions.Insert(
-                        0,
-                        new FieldMiddlewareDefinition(_validationFieldMiddleware));
+                    fieldDef.MiddlewareComponents.Insert(0, _validationFieldMiddleware);
                 }
             }
         }
 
-        private static Type? TryGetArgRuntimeType(
-            ObjectTypeDefinition objTypeDef,
-            ObjectFieldDefinition fieldDef,
+        private static List<ValidatorDescriptor> DetermineValidatorsForArg(
+            IValidatorRegistry validatorRegistry,
             ArgumentDefinition argDef)
+        {
+            // If validation is explicitly disabled, return none so validation middleware won't be added
+            if (argDef.ContextData.ContainsKey(WellKnownContextData.DontValidate))
+            {
+                return new List<ValidatorDescriptor>(0);
+            }
+
+            var validators = new List<ValidatorDescriptor>();
+
+            // Include implicit validator/s first (if allowed)
+            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DontValidateImplicitly))
+            {
+                // And if we can figure out the arg's runtime type
+                var argRuntimeType = TryGetArgRuntimeType(argDef);
+                if (argRuntimeType is not null)
+                {
+                    if (validatorRegistry.Cache.TryGetValue(argRuntimeType, out var implicitValidators) &&
+                        implicitValidators is not null)
+                    {
+                        validators.AddRange(implicitValidators);
+                    }
+                }
+            }
+
+            // Include explicit validator/s (that aren't already added implicitly)
+            if (argDef.ContextData.TryGetValue(WellKnownContextData.ExplicitValidatorTypes, out var explicitValidatorTypesRaw) &&
+                explicitValidatorTypesRaw is IEnumerable<Type> explicitValidatorTypes)
+            {
+                foreach (var validatorType in explicitValidatorTypes)
+                {
+                    if (validators.Any(v => v.ValidatorType == validatorType))
+                    {
+                        continue;
+                    }
+
+                    validators.Add(new ValidatorDescriptor(validatorType));
+                }
+            }
+
+            return validators;
+        }
+
+        private static Type? TryGetArgRuntimeType(ArgumentDefinition argDef)
         {
             if (argDef.Parameter?.ParameterType is { } argRuntimeType)
             {
                 return argRuntimeType;
             }
 
-            //if (argDef.Type is SyntaxTypeReference)
-            //{
-            //    return null;
-            //}
-
             if (argDef.Type is ExtendedTypeReference extTypeRef)
             {
-                try
-                {
-                    return TryGetRuntimeType(extTypeRef.Type);
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(
-                        $"Problem getting runtime type for argument '{argDef.Name}' " +
-                        $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'. " +
-                        $"Disable {nameof(IFairyBreadOptions.OptimizeMiddlewarePlacement)} in " +
-                        $"options and report the issue on GitHub.",
-                        ex);
-                }
+                return TryGetRuntimeType(extTypeRef.Type);
             }
 
             return null;
@@ -191,10 +234,5 @@ namespace FairyBread
 
             return null;
         }
-    }
-
-    internal static class WellKnownContextData
-    {
-        public const string ShouldValidate = "FairyBread.ShouldValidate";
     }
 }

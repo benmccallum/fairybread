@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using FluentValidation.Results;
 using HotChocolate.Resolvers;
 
 namespace FairyBread
@@ -8,6 +7,6 @@ namespace FairyBread
     {
         void Handle(
             IMiddlewareContext context,
-            IEnumerable<ValidationResult> invalidResults);
+            IEnumerable<ArgumentValidationResult> invalidResults);
     }
 }

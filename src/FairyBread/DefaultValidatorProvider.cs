@@ -18,21 +18,26 @@ namespace FairyBread
 
         public virtual IEnumerable<ResolvedValidator> GetValidators(IMiddlewareContext context, IInputField argument)
         {
-            if (ValidatorRegistry.Cache.TryGetValue(argument.RuntimeType, out var validatorDescriptors))
+             if (!argument.ContextData.TryGetValue(
+                WellKnownContextData.ValidatorDescriptors,
+                out var validatorDescriptorsRaw) ||
+                validatorDescriptorsRaw is not IEnumerable<ValidatorDescriptor> validatorDescriptors)
             {
-                foreach (var validatorDescriptor in validatorDescriptors)
+                yield break;
+            }
+
+            foreach (var validatorDescriptor in validatorDescriptors)
+            {
+                if (validatorDescriptor.RequiresOwnScope)
                 {
-                    if (validatorDescriptor.RequiresOwnScope)
-                    {
-                        var scope = context.Services.CreateScope(); // disposed by middleware
-                        var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
-                        yield return new ResolvedValidator(validator, scope);
-                    }
-                    else
-                    {
-                        var validator = (IValidator)context.Services.GetRequiredService(validatorDescriptor.ValidatorType);
-                        yield return new ResolvedValidator(validator);
-                    }
+                    var scope = context.Services.CreateScope(); // disposed by middleware
+                    var validator = (IValidator)scope.ServiceProvider.GetRequiredService(validatorDescriptor.ValidatorType);
+                    yield return new ResolvedValidator(validator, scope);
+                }
+                else
+                {
+                    var validator = (IValidator)context.Services.GetRequiredService(validatorDescriptor.ValidatorType);
+                    yield return new ResolvedValidator(validator);
                 }
             }
         }

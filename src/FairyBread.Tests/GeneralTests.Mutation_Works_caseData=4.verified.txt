@@ -8,9 +8,10 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
+        validatorName: FooInputDtoValidator,
         errorCode: EqualValidator,
         errorMessage: 'Some Integer' must be equal to '1'.,
-        propertyName: SomeInteger,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -18,7 +19,8 @@
           ComparisonProperty: ,
           PropertyName: Some Integer,
           PropertyValue: -1
-        }
+        },
+        propertyName: SomeInteger
       }
     },
     {
@@ -29,9 +31,10 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: foo,
+        validatorName: FooInputDtoValidator,
         errorCode: EqualValidator,
         errorMessage: 'Some String' must be equal to 'hello'.,
-        propertyName: SomeString,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
@@ -39,7 +42,8 @@
           ComparisonProperty: ,
           PropertyName: Some String,
           PropertyValue: -1
-        }
+        },
+        propertyName: SomeString
       }
     },
     {
@@ -50,15 +54,17 @@
       },
       Extensions: {
         code: FairyBread_ValidationError,
+        argumentName: bar,
+        validatorName: BarInputDtoAsyncValidator,
         errorCode: AsyncPredicateValidator,
         errorMessage: The specified condition was not met for 'Email Address'.,
-        propertyName: EmailAddress,
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: Email Address,
           PropertyValue: -1
-        }
+        },
+        propertyName: EmailAddress
       }
     }
   ]

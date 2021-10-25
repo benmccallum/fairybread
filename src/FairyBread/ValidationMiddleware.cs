@@ -27,16 +27,11 @@ namespace FairyBread
         {
             var arguments = context.Selection.Field.Arguments;
 
-            var invalidResults = new List<ValidationResult>();
-            
+            var invalidResults = new List<ArgumentValidationResult>();
+
             foreach (var argument in arguments)
             {
-                if (argument == null ||
-                    !argument.ContextData.TryGetValue(
-                        WellKnownContextData.ShouldValidate,
-                        out var shouldValidateRaw) ||
-                    shouldValidateRaw is not bool shouldValidate ||
-                    !shouldValidate)
+                if (argument == null)
                 {
                     continue;
                 }
@@ -63,7 +58,11 @@ namespace FairyBread
                             if (validationResult != null &&
                                 !validationResult.IsValid)
                             {
-                                invalidResults.Add(validationResult);
+                                invalidResults.Add(
+                                    new ArgumentValidationResult(
+                                        argument.Name,
+                                        resolvedValidator.Validator,
+                                        validationResult));
                             }
                         }
                     }
