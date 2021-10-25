@@ -14,7 +14,7 @@ namespace FairyBread
 {
     internal class ValidationMiddlewareInjector : TypeInterceptor
     {
-        private FieldMiddleware? _validationFieldMiddleware;
+        private FieldMiddlewareDefinition? _validationFieldMiddlewareDef;
 
         public override void OnBeforeCompleteType(
             ITypeCompletionContext completionContext,
@@ -81,13 +81,13 @@ namespace FairyBread
 
                 if (needsValidationMiddleware)
                 {
-                    if (_validationFieldMiddleware is null)
+                    if (_validationFieldMiddlewareDef is null)
                     {
-                        _validationFieldMiddleware = FieldClassMiddlewareFactory
-                            .Create<ValidationMiddleware>();
+                        _validationFieldMiddlewareDef = new FieldMiddlewareDefinition(
+                            FieldClassMiddlewareFactory.Create<ValidationMiddleware>());
                     }
 
-                    fieldDef.MiddlewareComponents.Insert(0, _validationFieldMiddleware);
+                    fieldDef.MiddlewareDefinitions.Insert(0, _validationFieldMiddlewareDef);
                 }
             }
         }
@@ -123,6 +123,8 @@ namespace FairyBread
             if (argDef.ContextData.TryGetValue(WellKnownContextData.ExplicitValidatorTypes, out var explicitValidatorTypesRaw) &&
                 explicitValidatorTypesRaw is IEnumerable<Type> explicitValidatorTypes)
             {
+                // TODO: Potentially check and throw if there's a validator being explicitly applied for the wrong runtime type
+
                 foreach (var validatorType in explicitValidatorTypes)
                 {
                     if (validators.Any(v => v.ValidatorType == validatorType))

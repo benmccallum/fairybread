@@ -1,7 +1,4 @@
 ﻿{
-  Data: {
-    readWithExplicitValidationFluent: null
-  },
   Errors: [
     {
       Message: '' must be greater than '0'.,

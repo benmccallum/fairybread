@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Execution;
-using HotChocolate.Resolvers;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
 using VerifyTests;
 using VerifyXunit;
 using Xunit;
@@ -40,8 +37,6 @@ namespace FairyBread.Tests
                 services.AddValidator<BarInputDtoValidator, BarInputDto>();
                 services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
                 services.AddValidator<NullableIntValidator, int?>();
-                services.AddValidator<ArrayOfFooInputDtoValidator, FooInputDto[]>();
-                services.AddValidator<ListOfFooInputDtoValidator, List<FooInputDto>>();
             }
 
             var builder = services
@@ -331,16 +326,6 @@ namespace FairyBread.Tests
             {
                 return count?.ToString() ?? "null";
             }
-
-            public string ReadWithArrayArg(FooInputDto[] foos)
-            {
-                return string.Join(", ", foos.Select(f => f.ToString()));
-            }
-
-            public string ReadWithListArg(List<FooInputDto> foos)
-            {
-                return string.Join(", ", foos.Select(f => f.ToString()));
-            }
         }
 
         public class Mutation
@@ -430,22 +415,6 @@ namespace FairyBread.Tests
                 RuleFor(x => x)
                     //.Null()
                     .GreaterThan(0).When(x => x is not null);
-            }
-        }
-
-        public class ArrayOfFooInputDtoValidator : AbstractValidator<FooInputDto[]>
-        {
-            public ArrayOfFooInputDtoValidator()
-            {
-                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
-            }
-        }
-
-        public class ListOfFooInputDtoValidator : AbstractValidator<List<FooInputDto>>
-        {
-            public ListOfFooInputDtoValidator()
-            {
-                RuleForEach(x => x).SetValidator(new FooInputDtoValidator());
             }
         }
     }
