@@ -137,7 +137,8 @@ namespace FairyBread
             return validators;
         }
 
-        private static Type? TryGetArgRuntimeType(ArgumentDefinition argDef)
+        private static Type? TryGetArgRuntimeType(
+            ArgumentDefinition argDef)
         {
             if (argDef.Parameter?.ParameterType is { } argRuntimeType)
             {
@@ -230,6 +231,11 @@ namespace FairyBread
                 }
 
                 return argRuntimeType;
+            }
+
+            if (extType.Kind == ExtendedTypeKind.Runtime)
+            {
+                return extType.Source;
             }
 
             return null;
