@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentValidation;
-using FluentValidation.Results;
 using HotChocolate.Resolvers;
+using HotChocolate.Types;
 
 namespace FairyBread
 {
@@ -49,9 +51,27 @@ namespace FairyBread
                             continue;
                         }
 
+                        var isListType = argument.Type.IsListType();
+                        Type? valueRuntimeType = null;
+                        MethodInfo? toArrayMethod = null;
+                        object? arrayValue = null;
+
                         foreach (var resolvedValidator in resolvedValidators)
                         {
-                            var validationContext = new ValidationContext<object?>(value);
+                            // Workaround for https://github.com/ChilliCream/hotchocolate/issues/4350
+                            var valueToValidate = value;
+                            if (isListType &&
+                                !resolvedValidator.Validator.CanValidateInstancesOfType(value.GetType()))
+                            {
+                                valueRuntimeType ??= value.GetType();
+                                toArrayMethod ??= valueRuntimeType.GetMethod("ToArray");
+                                if (toArrayMethod != null)
+                                {
+                                    valueToValidate = (arrayValue ??= toArrayMethod.Invoke(value, null));
+                                }
+                            }
+
+                            var validationContext = new ValidationContext<object?>(valueToValidate);
                             var validationResult = await resolvedValidator.Validator.ValidateAsync(
                                 validationContext,
                                 context.RequestAborted);

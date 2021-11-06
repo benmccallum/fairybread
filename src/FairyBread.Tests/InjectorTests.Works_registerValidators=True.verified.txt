@@ -289,20 +289,51 @@
       }
     },
     {
-      Message: Unexpected Execution Error,
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
       Path: {
         Name: arrayArgA
       },
-      Locations: [
-        {
-          Line: 1,
-          Column: 424
-        }
-      ],
-      Exception: {
-        $type: InvalidOperationException,
-        Type: InvalidOperationException,
-        Message: Cannot validate instances of type 'List`1'. This validator can only validate instances of type 'Nullable`1[]'.
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: items,
+        validatorName: ArrayOfNullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          CollectionIndex: 0,
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: null,
+          PropertyValue: 0
+        },
+        propertyName: x[0]
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: arrayArgA
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: items,
+        validatorName: ArrayOfNullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          CollectionIndex: 1,
+          ComparisonValue: 0,
+          ComparisonProperty: ,
+          PropertyName: null,
+          PropertyValue: 0
+        },
+        propertyName: x[1]
       }
     },
     {

@@ -1,20 +1,51 @@
 ﻿{
   Errors: [
     {
-      Message: Unexpected Execution Error,
+      Message: 'Some Integer' must be equal to '1'.,
+      Code: FairyBread_ValidationError,
       Path: {
         Name: readWithArrayArg
       },
-      Locations: [
-        {
-          Line: 1,
-          Column: 9
-        }
-      ],
-      Exception: {
-        $type: InvalidOperationException,
-        Type: InvalidOperationException,
-        Message: Cannot validate instances of type 'List`1'. This validator can only validate instances of type 'FooInputDto[]'.
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: foos,
+        validatorName: ArrayOfFooInputDtoValidator,
+        errorCode: EqualValidator,
+        errorMessage: 'Some Integer' must be equal to '1'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: ,
+          PropertyName: Some Integer,
+          PropertyValue: -1,
+          CollectionIndex: 0
+        },
+        propertyName: x[0].SomeInteger
+      }
+    },
+    {
+      Message: 'Some Integer' must be equal to '1'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithArrayArg
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: foos,
+        validatorName: ArrayOfFooInputDtoValidator,
+        errorCode: EqualValidator,
+        errorMessage: 'Some Integer' must be equal to '1'.,
+        attemptedValue: -1,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonValue: 1,
+          ComparisonProperty: ,
+          PropertyName: Some Integer,
+          PropertyValue: -1,
+          CollectionIndex: 1
+        },
+        propertyName: x[1].SomeInteger
       }
     }
   ]
