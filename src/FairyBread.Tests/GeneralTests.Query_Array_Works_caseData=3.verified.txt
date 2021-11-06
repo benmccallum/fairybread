@@ -1,21 +1,5 @@
 ﻿{
-  Errors: [
-    {
-      Message: Unexpected Execution Error,
-      Path: {
-        Name: readWithArrayArg
-      },
-      Locations: [
-        {
-          Line: 1,
-          Column: 9
-        }
-      ],
-      Exception: {
-        $type: InvalidOperationException,
-        Type: InvalidOperationException,
-        Message: Cannot validate instances of type 'List`1'. This validator can only validate instances of type 'FooInputDto[]'.
-      }
-    }
-  ]
+  Data: {
+    readWithArrayArg: SomeInteger: 1, SomeString: hello, SomeInteger: 1, SomeString: hello
+  }
 }
