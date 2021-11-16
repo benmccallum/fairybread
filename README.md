@@ -79,17 +79,19 @@ Fluent API:
 
 ### Dealing with multi-threaded execution issues
 
-GraphQL resolvers are inherently multi-threaded; as such, you can run into issues injecting things like an EntityFramework `DbContext` into a field resolver (or something it uses) which doesn't allow muli-thread usage. One solution for this is to resolve `DbContext` into its own "scope", rather than the default scope (for an ASP.NET Core application is tied to the HTTP Request).
+GraphQL resolvers are inherently multi-threaded; as such, you can run into issues injecting things like an EntityFramework `DbContext` into a field resolver (or something it uses) which doesn't allow muli-thread usage. One solution for this is to resolve `DbContext` into its own "scope", rather than the default scope (for an ASP.NET Core application this is the HTTP Request).
 
-With FairyBread, you might need to do this if one of your validators uses a `DbContext` (say to check if a username already exists on a create user mutation). Good news is, it's as easy as marking your validator with `IRequiresOwnScopeValidator` and we'll take care of the rest.
+With FairyBread, you might need to do this if one of your validators uses a `DbContext` and could operate on the scoped DbContext. GraphQL mutation resolvers are executed serially, so typically you wouldn't encounter this issue for mutations. You could however encounter it for Query resolvers which often run in parallel. 
+
+Good news is, it's as easy as marking your validator with `IRequiresOwnScopeValidator` and we'll take care of the rest.
 
 ```csharp
-public class CreateUserInputValidator
-    : AbstractValidator<CreateUserInput>
-	, IRequiresOwnScopeValidator
+public class SomeInputValidator
+    : AbstractValidator<SomeInput>
+    , IRequiresOwnScopeValidator
 {
     // db will be a unique instance for this validation operation
-    public CreateUserInputValidator(SomeDbContext db) { ... } 
+    public SomeInputValidator(SomeDbContext db) { ... } 
 }
 ```
 
