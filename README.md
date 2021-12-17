@@ -62,7 +62,7 @@ field middleware where needed.
 There are some cases though where explicitness is either required or useful, so you can do that too.
 
 For example, if you've got a field argument that's a scalar type (e.g. not an input type), like an `int`, creating
-a validator targeting `int` would mean every top-level `int` argument would be across your schema would be implicitly validated, which wouldn't make sense.
+a validator targeting `int` would mean every top-level `int` argument across your schema would be implicitly validated, which wouldn't make sense.
 Instead, annotate the validator by having it inherit `IExplicitUsageOnly` and then explicitly setup it up on the argument (see below).
 
 Annotation API:
