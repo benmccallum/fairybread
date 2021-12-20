@@ -22,10 +22,6 @@ jobs:
 
       - uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: "2.2.x"
-
-      - uses: actions/setup-dotnet@v1.7.2
-        with:
           dotnet-version: "3.1.x"
 
       - uses: actions/setup-dotnet@v1.7.2
