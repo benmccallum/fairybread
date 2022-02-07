@@ -135,7 +135,9 @@ See issues.
 FairyBread depends on [HotChocolate.Execution](https://www.nuget.org/packages/HotChocolate.Execution)
 which can bring breaking changes from time to time and require a major bump our end. This is also the case
 for FluentValidation.
-Compatibility is listed below.
+Compatibility is listed below. 
+
+Note, these are minimum versions, for instance, v12.0.1 through to 12.3.x of Hot Chocolate are supported by FairyBread v8.x.x.
 
 We strive to match Hot Chocolate's supported .NET target frameworks, though this might not always be possible.
 
