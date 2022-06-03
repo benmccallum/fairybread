@@ -15,8 +15,8 @@
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 50,
           ComparisonProperty: ,
+          ComparisonValue: 50,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
@@ -38,8 +38,8 @@
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 100,
           ComparisonProperty: ,
+          ComparisonValue: 100,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
@@ -61,8 +61,8 @@
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 999,
           ComparisonProperty: ,
+          ComparisonValue: 999,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
@@ -84,8 +84,8 @@
         attemptedValue: 1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 9999,
           ComparisonProperty: ,
+          ComparisonValue: 9999,
           PropertyName: Some Integer,
           PropertyValue: 1
         },

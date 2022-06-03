@@ -1,4 +1,4 @@
-﻿{
+{
   Errors: [
     {
       Message: '' must be greater than '0'.,
@@ -15,8 +15,8 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
         }
@@ -37,8 +37,8 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
         }
@@ -59,8 +59,8 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
         }
@@ -123,8 +123,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: A,
           PropertyValue: 0
         },
@@ -146,8 +146,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: A,
           PropertyValue: 0
         },

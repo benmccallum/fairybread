@@ -1,4 +1,4 @@
-﻿{
+{
   Errors: [
     {
       Message: '' must not be empty.,
@@ -175,8 +175,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         }
@@ -197,8 +197,8 @@
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: true,
           ComparisonProperty: ,
+          ComparisonValue: true,
           PropertyName: null,
           PropertyValue: false
         }
@@ -219,8 +219,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         }
@@ -241,8 +241,8 @@
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: true,
           ComparisonProperty: ,
+          ComparisonValue: true,
           PropertyName: null,
           PropertyValue: false
         }
@@ -263,8 +263,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         }
@@ -285,8 +285,8 @@
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: true,
           ComparisonProperty: ,
+          ComparisonValue: true,
           PropertyName: null,
           PropertyValue: false
         }
@@ -307,8 +307,8 @@
         attemptedValue: 0,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         }
@@ -329,8 +329,8 @@
         attemptedValue: false,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: true,
           ComparisonProperty: ,
+          ComparisonValue: true,
           PropertyName: null,
           PropertyValue: false
         }
@@ -520,8 +520,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -544,8 +544,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -568,8 +568,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -592,8 +592,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -616,8 +616,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -640,8 +640,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -664,8 +664,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -688,8 +688,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -712,8 +712,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -736,8 +736,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -760,8 +760,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -784,8 +784,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -808,8 +808,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
@@ -832,8 +832,8 @@
         severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 1,
-          ComparisonValue: 0,
           ComparisonProperty: ,
+          ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: 0
         },
