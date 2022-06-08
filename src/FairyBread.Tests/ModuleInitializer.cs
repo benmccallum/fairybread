@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using VerifyTests;
 
@@ -9,10 +8,7 @@ public static class ModuleInitializer
     [ModuleInitializer]
     public static void Init()
     {
-        VerifierSettings.ModifySerialization(settings =>
-        {
-            settings.IgnoreMember<Exception>(_ => _.StackTrace);
-        });
+        VerifierSettings.IgnoreStackTrack();
     }
 }
 #if !NET5_0_OR_GREATER

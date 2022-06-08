@@ -15,8 +15,8 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 1,
           ComparisonProperty: ,
+          ComparisonValue: 1,
           PropertyName: Some Integer,
           PropertyValue: -1
         },
@@ -38,8 +38,8 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: hello,
           ComparisonProperty: ,
+          ComparisonValue: hello,
           PropertyName: Some String,
           PropertyValue: -1
         },

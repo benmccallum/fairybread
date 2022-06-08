@@ -15,11 +15,11 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 1,
+          CollectionIndex: 0,
           ComparisonProperty: ,
+          ComparisonValue: 1,
           PropertyName: Some Integer,
-          PropertyValue: -1,
-          CollectionIndex: 0
+          PropertyValue: -1
         },
         propertyName: x[0].SomeInteger
       }
@@ -39,11 +39,11 @@
         attemptedValue: -1,
         severity: Error,
         formattedMessagePlaceholderValues: {
-          ComparisonValue: 1,
+          CollectionIndex: 1,
           ComparisonProperty: ,
+          ComparisonValue: 1,
           PropertyName: Some Integer,
-          PropertyValue: -1,
-          CollectionIndex: 1
+          PropertyValue: -1
         },
         propertyName: x[1].SomeInteger
       }
