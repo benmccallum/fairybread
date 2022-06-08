@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
@@ -12,13 +14,20 @@ namespace FairyBread
             IMiddlewareContext context,
             IEnumerable<ArgumentValidationResult> invalidResults)
         {
-            foreach (var invalidResult in invalidResults)
+            if (context.ContextData.ContainsKey(WellKnownContextData.ValidatorDescriptorsParams))
             {
-                foreach (var failure in invalidResult.Result.Errors)
+                throw new AggregateException(invalidResults.Select(x => new ValidationException(x.Result.Errors)));
+            }
+            else
+            {
+                foreach (var invalidResult in invalidResults)
                 {
-                    var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, invalidResult.Validator, failure);
-                    var error = errorBuilder.Build();
-                    context.ReportError(error);
+                    foreach (var failure in invalidResult.Result.Errors)
+                    {
+                        var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, invalidResult.Validator, failure);
+                        var error = errorBuilder.Build();
+                        context.ReportError(error);
+                    }
                 }
             }
         }
