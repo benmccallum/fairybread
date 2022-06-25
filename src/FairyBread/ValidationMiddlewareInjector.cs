@@ -97,7 +97,7 @@ namespace FairyBread
             ArgumentDefinition argDef)
         {
             // If validation is explicitly disabled, return none so validation middleware won't be added
-            if (argDef.ContextData.ContainsKey(WellKnownContextData.DontValidate))
+            if (argDef.ContextData.ContainsKey(WellKnownContextData.DisableValidation))
             {
                 return new List<ValidatorDescriptor>(0);
             }
@@ -105,7 +105,7 @@ namespace FairyBread
             var validators = new List<ValidatorDescriptor>();
 
             // Include implicit validator/s first (if allowed)
-            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DontValidateImplicitly))
+            if (!argDef.ContextData.ContainsKey(WellKnownContextData.DisableImplicitValidation))
             {
                 // And if we can figure out the arg's runtime type
                 var argRuntimeType = TryGetArgRuntimeType(argDef);

@@ -6,10 +6,10 @@
   <p>
 	  <a href="https://github.com/benmccallum/fairybread/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/benmccallum/fairybread.svg"></a>
 	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="Nuget version" src="https://img.shields.io/nuget/v/FairyBread"></a>
-	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/FairyBread"></a>	  
+	  <a href="https://www.nuget.org/packages/FairyBread"><img alt="NuGet downloads" src="https://img.shields.io/nuget/dt/FairyBread"></a>
       <a href="https://codecov.io/gh/benmccallum/FairyBread">
         <img src="https://codecov.io/gh/benmccallum/FairyBread/branch/main/graph/badge.svg?token=HB3O7GR51M"/>
-      </a>    
+      </a>
   </p>
 </div>
 
@@ -68,14 +68,14 @@ Instead, annotate the validator by having it inherit `IExplicitUsageOnlyValidato
 Annotation API:
 
   * `[Validate(typeof(FooValidator)]` - explicitly add this validator for the argument
-  * `[DontValidate]` - don't validate this argument at all
-  * `[DontImplicitlyValidate]` - disable implicit validators for the argument
+  * `[DisableValidation]` - don't validate this argument at all
+  * `[DisableImplicitValidation]` - disable implicit validators for the argument
 
 Fluent API:
 
   * `.Argument("foo").ValidateWith<FooValidator>()`
-  * `.DontValidate()`
-  * `.DontImplicitlyValidate()`
+  * `.DisableValidation()`
+  * `.DisableImplicitValidation()`
 
 ### Dealing with multi-threaded execution issues
 
@@ -91,14 +91,14 @@ public class SomeInputValidator
     , IRequiresOwnScopeValidator
 {
     // db will be a unique instance for this validation operation
-    public SomeInputValidator(SomeDbContext db) { ... } 
+    public SomeInputValidator(SomeDbContext db) { ... }
 }
 ```
 
 ### Using MediatR?
 
 If you want to let MediatR fire validation, you can set up:
-* FairyBread to skip validating `MediatR.IRequest` arguments, 
+* FairyBread to skip validating `MediatR.IRequest` arguments,
 * your MediatR pipeline to validate them and throw a `ValidationException`, and
 * an `IErrorFilter`(in Hot Chocolate) to handle it using `FairyBread.DefaultValidationErrorsHandler` to report the errors.
 
@@ -134,7 +134,7 @@ See issues.
 FairyBread depends on [HotChocolate.Execution](https://www.nuget.org/packages/HotChocolate.Execution)
 which can bring breaking changes from time to time and require a major bump our end. This is also the case
 for FluentValidation.
-Compatibility is listed below. 
+Compatibility is listed below.
 
 Note, these are minimum versions, for instance, v12.0.1 through to 12.3.x of Hot Chocolate are supported by FairyBread v8.x.x.
 
@@ -157,7 +157,7 @@ We strive to match Hot Chocolate's supported .NET target frameworks, though this
 
 ## What the heck is a fairy bread?
 
-A (bizarre) Australian food served at children's parties. Since I'm Australian and HotChocolate has a lot of 
+A (bizarre) Australian food served at children's parties. Since I'm Australian and HotChocolate has a lot of
 project names with sweet tendencies, this seemed like a fun name for the project.
 
 According to [wikipedia](https://en.wikipedia.org/wiki/Fairy_bread):
