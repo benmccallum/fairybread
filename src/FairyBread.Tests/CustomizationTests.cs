@@ -44,10 +44,11 @@ namespace FairyBread.Tests
             });
 
             // Act
-            var result = await executor.ExecuteAsync(Query);
+            var result = await executor.ExecuteAsync(Query) as IQueryResult;
 
             // Assert
-            Assert.NotNull(result.Errors);
+            Assert.NotNull(result);
+            Assert.NotNull(result!.Errors);
             Assert.NotEmpty(result.Errors);
             Assert.True(result.Errors!.All(e => e.Message == "lol"));
         }
