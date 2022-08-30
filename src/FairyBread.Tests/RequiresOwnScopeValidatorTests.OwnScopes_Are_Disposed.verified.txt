@@ -4,7 +4,12 @@
       Message: 'Some Integer' must be greater than or equal to '999'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: read
+        Name: read,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,

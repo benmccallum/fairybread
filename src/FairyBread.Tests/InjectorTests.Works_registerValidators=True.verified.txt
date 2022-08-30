@@ -4,364 +4,37 @@
       Message: '' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: scalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: IntValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: BoolValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: IntValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: BoolValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: IntValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: BoolValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsD
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: IntValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: scalarArgsD
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: BoolValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: '' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: NullableIntValidator,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must be equal to 'True'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: NullableBoolValidator,
-        errorCode: EqualValidator,
-        errorMessage: '' must be equal to 'True'.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: true,
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: NullableIntValidator,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must be equal to 'True'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: NullableBoolValidator,
-        errorCode: EqualValidator,
-        errorMessage: '' must be equal to 'True'.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: true,
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: NullableIntValidator,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must be equal to 'True'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: NullableBoolValidator,
-        errorCode: EqualValidator,
-        errorMessage: '' must be equal to 'True'.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: true,
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsD
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: a,
-        validatorName: NullableIntValidator,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: 0
-        }
-      }
-    },
-    {
-      Message: '' must be equal to 'True'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: nullableScalarArgsD
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: b,
-        validatorName: NullableBoolValidator,
-        errorCode: EqualValidator,
-        errorMessage: '' must be equal to 'True'.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: true,
-          PropertyName: null,
-          PropertyValue: false
-        }
-      }
-    },
-    {
-      Message: 'A' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: objectArgA
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: input,
-        validatorName: TestInputValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: 'A' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: A,
-          PropertyValue: 0
+        Name: scalarArgsA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
         },
-        propertyName: A
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: IntValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
       }
     },
     {
       Message: 'B' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: objectArgA
+        Name: objectArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -382,7 +55,12 @@
       Message: 'A' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: objectArgB
+        Name: objectArgD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -403,91 +81,12 @@
       Message: 'B' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: objectArgB
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: input,
-        validatorName: TestInputValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: 'B' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: B,
-          PropertyValue: false
+        Name: objectArgD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
         },
-        propertyName: B
-      }
-    },
-    {
-      Message: 'A' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: objectArgC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: input,
-        validatorName: TestInputValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: 'A' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: A,
-          PropertyValue: 0
-        },
-        propertyName: A
-      }
-    },
-    {
-      Message: 'B' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: objectArgC
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: input,
-        validatorName: TestInputValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: 'B' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: B,
-          PropertyValue: false
-        },
-        propertyName: B
-      }
-    },
-    {
-      Message: 'A' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: objectArgD
-      },
-      Extensions: {
-        code: FairyBread_ValidationError,
-        argumentName: input,
-        validatorName: TestInputValidator,
-        errorCode: NotEmptyValidator,
-        errorMessage: 'A' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
-        formattedMessagePlaceholderValues: {
-          PropertyName: A,
-          PropertyValue: 0
-        },
-        propertyName: A
-      }
-    },
-    {
-      Message: 'B' must not be empty.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: objectArgD
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -508,7 +107,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: arrayArgA
+        Name: arrayArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -532,7 +136,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: arrayArgA
+        Name: arrayArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -556,7 +165,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgA
+        Name: listArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -580,7 +194,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgA
+        Name: listArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -604,7 +223,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgB
+        Name: listArgB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -628,7 +252,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgB
+        Name: listArgB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -652,7 +281,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgC
+        Name: listArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -676,7 +310,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgC
+        Name: listArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -700,7 +339,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgD
+        Name: listArgD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -724,7 +368,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listArgD
+        Name: listArgD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -748,7 +397,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listOfListArgC
+        Name: listOfListArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -772,7 +426,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listOfListArgC
+        Name: listOfListArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -793,10 +452,294 @@
       }
     },
     {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: input,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: input,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: input,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: input,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: BoolValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: IntValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: BoolValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: IntValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: BoolValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: IntValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: scalarArgsD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: BoolValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: '' must not be empty.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listOfListArgC
+        Name: listOfListArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -820,7 +763,254 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: listOfListArgC
+        Name: nullableScalarArgsA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: NullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: 0,
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: NullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: 0,
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must be equal to 'True'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsB,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: NullableBoolValidator,
+        errorCode: EqualValidator,
+        errorMessage: '' must be equal to 'True'.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: true,
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: NullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: 0,
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must be equal to 'True'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: NullableBoolValidator,
+        errorCode: EqualValidator,
+        errorMessage: '' must be equal to 'True'.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: true,
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: a,
+        validatorName: NullableIntValidator,
+        errorCode: GreaterThanValidator,
+        errorMessage: '' must be greater than '0'.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: 0,
+          PropertyName: null,
+          PropertyValue: 0
+        }
+      }
+    },
+    {
+      Message: '' must be equal to 'True'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsD,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: NullableBoolValidator,
+        errorCode: EqualValidator,
+        errorMessage: '' must be equal to 'True'.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: true,
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: objectArgA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: input,
+        validatorName: TestInputValidator,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        attemptedValue: 0,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A
+      }
+    },
+    {
+      Message: '' must be equal to 'True'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: nullableScalarArgsA,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
+      },
+      Extensions: {
+        code: FairyBread_ValidationError,
+        argumentName: b,
+        validatorName: NullableBoolValidator,
+        errorCode: EqualValidator,
+        errorMessage: '' must be equal to 'True'.,
+        attemptedValue: false,
+        severity: Error,
+        formattedMessagePlaceholderValues: {
+          ComparisonProperty: ,
+          ComparisonValue: true,
+          PropertyName: null,
+          PropertyValue: false
+        }
+      }
+    },
+    {
+      Message: '' must be greater than '0'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: listOfListArgC,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
