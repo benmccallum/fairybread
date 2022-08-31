@@ -20,7 +20,7 @@
     <Version>10.0.0-rc1</Version>
 
     <FluentValidationVersion>10.0.0</FluentValidationVersion>
-    <HotChocolateVersion>13.0.0-preview.40</HotChocolateVersion>
+    <HotChocolateVersion>13.0.0-preview.44</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net7.0; net6.0; net5.0; netcoreapp3.1; netstandard2.0</LibraryTargetFrameworks>
     <TestTargetFrameworks>net7.0; net6.0</TestTargetFrameworks>
