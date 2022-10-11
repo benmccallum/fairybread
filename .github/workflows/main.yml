@@ -20,13 +20,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: actions/setup-dotnet@v1.7.2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "3.1.x"
-
-      - uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: "5.0.x"
+          dotnet-version: | 
+            6.0.x
+            7.0.x
 
       - name: Run tests
         run: dotnet test src/ --collect:"XPlat Code Coverage"
