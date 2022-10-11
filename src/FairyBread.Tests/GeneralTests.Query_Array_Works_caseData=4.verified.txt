@@ -4,7 +4,12 @@
       Message: 'Some Integer' must be equal to '1'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithArrayArg
+        Name: readWithArrayArg,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,

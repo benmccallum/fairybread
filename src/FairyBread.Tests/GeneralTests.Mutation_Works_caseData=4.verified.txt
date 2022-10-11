@@ -4,7 +4,12 @@
       Message: 'Some Integer' must be equal to '1'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: write,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -27,7 +32,12 @@
       Message: 'Some String' must be equal to 'hello'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: write,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -50,7 +60,12 @@
       Message: The specified condition was not met for 'Email Address'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: write
+        Name: write,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,

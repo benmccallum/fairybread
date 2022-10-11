@@ -10,7 +10,7 @@ namespace FairyBread
         /// <summary>
         /// Name of the argument this result is for.
         /// </summary>
-        public NameString ArgumentName { get; }
+        public string ArgumentName { get; }
 
         /// <summary>
         /// The validator that caused this result.
@@ -23,7 +23,7 @@ namespace FairyBread
         public ValidationResult Result { get; }
 
         public ArgumentValidationResult(
-            NameString argumentName,
+            string argumentName,
             IValidator validator,
             ValidationResult result)
         {

@@ -4,7 +4,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -26,7 +31,12 @@
       Message: '' must be greater than '0'.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -48,7 +58,12 @@
       Message: 'A' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -69,7 +84,12 @@
       Message: 'B' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -90,7 +110,12 @@
       Message: Explicit validator error msg.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -113,7 +138,12 @@
       Message: Explicit validator error msg.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -136,7 +166,12 @@
       Message: 'A' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
@@ -157,7 +192,12 @@
       Message: 'B' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
-        Name: readWithExplicitValidation
+        Name: readWithExplicitValidation,
+        Parent: {
+          Depth: -1,
+          IsRoot: true
+        },
+        IsRoot: false
       },
       Extensions: {
         code: FairyBread_ValidationError,
