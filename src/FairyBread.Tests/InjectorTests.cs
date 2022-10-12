@@ -199,22 +199,22 @@ namespace FairyBread.Tests
                 int fooInt,
                 // Shouldn't validate implicitly
                 [Validate(typeof(PositiveIntValidator))]
-                [DontValidateImplicitly]
+                [DisableImplicitValidation]
                 int barInt,
                 // Shouldn't validate
                 [Validate(typeof(PositiveIntValidator))]
-                [DontValidate]
+                [DisableValidation]
                 int lolInt,
                 // Should validate explicitly
                 [Validate(typeof(TestInputExplicitValidator))]
                 TestInput fooInput,
                 // Shouldn't validate implicitly
                 [Validate(typeof(TestInputExplicitValidator))]
-                [DontValidateImplicitly]
+                [DisableImplicitValidation]
                 TestInput barInput,
                 // Shouldn't validate
                 [Validate(typeof(TestInputExplicitValidator))]
-                [DontValidate]
+                [DisableValidation]
                 TestInput lolInput,
                 // Shouldn't add an implicitly added validator again
                 [Validate(typeof(TestInputValidator))]
@@ -318,15 +318,15 @@ namespace FairyBread.Tests
                     // Should validate explicitly
                     .Argument("fooInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>())
                     // Shouldn't validate implicitly
-                    .Argument("barInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidateImplicitly())
+                    .Argument("barInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DisableImplicitValidation())
                     // Shouldn't validate
-                    .Argument("lolInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DontValidate())
+                    .Argument("lolInt", arg => arg.Type<IntType>().ValidateWith<PositiveIntValidator>().DisableValidation())
                     // Should validate explicitly
                     .Argument("fooInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>())
                     // Shouldn't validate implicitly
-                    .Argument("barInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidateImplicitly())
+                    .Argument("barInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DisableImplicitValidation())
                     // Shouldn't validate
-                    .Argument("lolInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DontValidate())
+                    .Argument("lolInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputExplicitValidator>().DisableValidation())
                     // Shouldn't add an implicitly added validator again
                     .Argument("dblInput", arg => arg.Type<TestInputType>().ValidateWith<TestInputValidator>())
                     .ResolveWith<QueryI>(q => q.ReadWithExplicitValidation(default, default, default, default!, default!, default!, default!));

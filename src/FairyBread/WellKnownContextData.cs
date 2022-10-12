@@ -4,11 +4,11 @@
     {
         public const string Prefix = "FairyBread";
 
-        public const string DontValidate =
-            Prefix + ".DontValidate";
+        public const string DisableValidation =
+            Prefix + ".DisableValidation";
 
-        public const string DontValidateImplicitly =
-            Prefix + ".DontValidateImplicitly";
+        public const string DisableImplicitValidation =
+            Prefix + ".DisableImplicitValidation";
 
         public const string ExplicitValidatorTypes =
             Prefix + ".ExplicitValidatorTypes";
