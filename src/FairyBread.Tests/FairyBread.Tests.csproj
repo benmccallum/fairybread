@@ -20,11 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="*.received.*" />
-    <Content Include="*.verified.*" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FairyBread\FairyBread.csproj" />
   </ItemGroup>
 
