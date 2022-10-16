@@ -1,4 +1,4 @@
-{
+﻿{
   Errors: [
     {
       Message: 'Some Integer' must be greater than or equal to '999'.,
@@ -12,20 +12,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: RequiresOwnScopeValidator,
+        attemptedValue: 1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '999'.,
-        attemptedValue: 1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 999,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: RequiresOwnScopeValidator
       }
     }
   ]

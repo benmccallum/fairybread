@@ -13,20 +13,20 @@
           IsRoot: false
         },
         Extensions: {
-          code: FairyBread_ValidationError,
           argumentName: foo,
-          validatorName: FooInputDtoValidator,
+          attemptedValue: -1,
+          code: FairyBread_ValidationError,
           errorCode: EqualValidator,
           errorMessage: 'Some Integer' must be equal to '1'.,
-          attemptedValue: -1,
-          severity: Error,
           formattedMessagePlaceholderValues: {
             ComparisonProperty: ,
             ComparisonValue: 1,
             PropertyName: Some Integer,
             PropertyValue: -1
           },
-          propertyName: SomeInteger
+          propertyName: SomeInteger,
+          severity: Error,
+          validatorName: FooInputDtoValidator
         }
       }
     ]
@@ -45,20 +45,20 @@
           IsRoot: false
         },
         Extensions: {
-          code: FairyBread_ValidationError,
           argumentName: foo,
-          validatorName: FooInputDtoValidator,
+          attemptedValue: -1,
+          code: FairyBread_ValidationError,
           errorCode: EqualValidator,
           errorMessage: 'Some Integer' must be equal to '1'.,
-          attemptedValue: -1,
-          severity: Error,
           formattedMessagePlaceholderValues: {
             ComparisonProperty: ,
             ComparisonValue: 1,
             PropertyName: Some Integer,
             PropertyValue: -1
           },
-          propertyName: SomeInteger
+          propertyName: SomeInteger,
+          severity: Error,
+          validatorName: FooInputDtoValidator
         }
       }
     ]
@@ -77,20 +77,20 @@
           IsRoot: false
         },
         Extensions: {
-          code: FairyBread_ValidationError,
           argumentName: foo,
-          validatorName: FooInputDtoValidator,
+          attemptedValue: -1,
+          code: FairyBread_ValidationError,
           errorCode: EqualValidator,
           errorMessage: 'Some Integer' must be equal to '1'.,
-          attemptedValue: -1,
-          severity: Error,
           formattedMessagePlaceholderValues: {
             ComparisonProperty: ,
             ComparisonValue: 1,
             PropertyName: Some Integer,
             PropertyValue: -1
           },
-          propertyName: SomeInteger
+          propertyName: SomeInteger,
+          severity: Error,
+          validatorName: FooInputDtoValidator
         }
       }
     ]

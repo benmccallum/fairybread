@@ -1,4 +1,4 @@
-{
+﻿{
   Errors: [
     {
       Message: '' must be greater than '0'.,
@@ -12,19 +12,19 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: fooInt,
-        validatorName: NullableIntValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
-        }
+        },
+        severity: Error,
+        validatorName: NullableIntValidator
       }
     },
     {
@@ -39,19 +39,19 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: fooInt,
-        validatorName: PositiveIntValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
-        }
+        },
+        severity: Error,
+        validatorName: PositiveIntValidator
       }
     },
     {
@@ -66,19 +66,19 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: barInt,
-        validatorName: PositiveIntValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanValidator,
         errorMessage: '' must be greater than '0'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 0,
           PropertyName: null,
           PropertyValue: -1
-        }
+        },
+        severity: Error,
+        validatorName: PositiveIntValidator
       }
     },
     {
@@ -93,18 +93,18 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: fooInput,
-        validatorName: TestInputValidator,
+        attemptedValue: 0,
+        code: FairyBread_ValidationError,
         errorCode: NotEmptyValidator,
         errorMessage: 'A' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: A,
           PropertyValue: 0
         },
-        propertyName: A
+        propertyName: A,
+        severity: Error,
+        validatorName: TestInputValidator
       }
     },
     {
@@ -119,18 +119,18 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: fooInput,
-        validatorName: TestInputValidator,
+        attemptedValue: false,
+        code: FairyBread_ValidationError,
         errorCode: NotEmptyValidator,
         errorMessage: 'B' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: B,
           PropertyValue: false
         },
-        propertyName: B
+        propertyName: B,
+        severity: Error,
+        validatorName: TestInputValidator
       }
     },
     {
@@ -145,20 +145,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: fooInput,
-        validatorName: TestInputExplicitValidator,
+        attemptedValue: 0,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanValidator,
         errorMessage: Explicit validator error msg.,
-        attemptedValue: 0,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 0,
           PropertyName: A,
           PropertyValue: 0
         },
-        propertyName: A
+        propertyName: A,
+        severity: Error,
+        validatorName: TestInputExplicitValidator
       }
     },
     {
@@ -173,20 +173,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: barInput,
-        validatorName: TestInputExplicitValidator,
+        attemptedValue: 0,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanValidator,
         errorMessage: Explicit validator error msg.,
-        attemptedValue: 0,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 0,
           PropertyName: A,
           PropertyValue: 0
         },
-        propertyName: A
+        propertyName: A,
+        severity: Error,
+        validatorName: TestInputExplicitValidator
       }
     },
     {
@@ -201,18 +201,18 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: dblInput,
-        validatorName: TestInputValidator,
+        attemptedValue: 0,
+        code: FairyBread_ValidationError,
         errorCode: NotEmptyValidator,
         errorMessage: 'A' must not be empty.,
-        attemptedValue: 0,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: A,
           PropertyValue: 0
         },
-        propertyName: A
+        propertyName: A,
+        severity: Error,
+        validatorName: TestInputValidator
       }
     },
     {
@@ -227,18 +227,18 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: dblInput,
-        validatorName: TestInputValidator,
+        attemptedValue: false,
+        code: FairyBread_ValidationError,
         errorCode: NotEmptyValidator,
         errorMessage: 'B' must not be empty.,
-        attemptedValue: false,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: B,
           PropertyValue: false
         },
-        propertyName: B
+        propertyName: B,
+        severity: Error,
+        validatorName: TestInputValidator
       }
     }
   ]

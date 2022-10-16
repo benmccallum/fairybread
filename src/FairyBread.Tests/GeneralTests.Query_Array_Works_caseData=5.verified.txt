@@ -12,13 +12,11 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foos,
-        validatorName: ArrayOfFooInputDtoValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: EqualValidator,
         errorMessage: 'Some Integer' must be equal to '1'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           CollectionIndex: 0,
           ComparisonProperty: ,
@@ -26,7 +24,9 @@
           PropertyName: Some Integer,
           PropertyValue: -1
         },
-        propertyName: x[0].SomeInteger
+        propertyName: x[0].SomeInteger,
+        severity: Error,
+        validatorName: ArrayOfFooInputDtoValidator
       }
     }
   ]

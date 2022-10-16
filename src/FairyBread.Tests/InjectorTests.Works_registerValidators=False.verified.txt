@@ -1,24 +1,6 @@
 ﻿{
   Data: {
-    noArgs: foo,
-    scalarArgsA: 0 | False,
-    scalarArgsB: 0 | False,
-    scalarArgsC: hello,
-    scalarArgsD: hello,
-    nullableScalarArgsA: 0 | False,
-    nullableScalarArgsB: 0 | False,
-    nullableScalarArgsC: hello,
-    nullableScalarArgsD: hello,
-    objectArgA: 0 | False,
-    objectArgB: 0 | False,
-    objectArgC: hello,
-    objectArgD: hello,
     arrayArgA: 0, 0,
-    listArgA: 0, 0,
-    listArgB: 0,0,
-    listArgC: hello,
-    listArgD: hello,
-    listOfListArgC: hello,
     filterSortAndPagingArgs: {
       nodes: [
         {
@@ -28,6 +10,24 @@
         null,
         null
       ]
-    }
+    },
+    listArgA: 0, 0,
+    listArgB: 0,0,
+    listArgC: hello,
+    listArgD: hello,
+    listOfListArgC: hello,
+    noArgs: foo,
+    nullableScalarArgsA: 0 | False,
+    nullableScalarArgsB: 0 | False,
+    nullableScalarArgsC: hello,
+    nullableScalarArgsD: hello,
+    objectArgA: 0 | False,
+    objectArgB: 0 | False,
+    objectArgC: hello,
+    objectArgD: hello,
+    scalarArgsA: 0 | False,
+    scalarArgsB: 0 | False,
+    scalarArgsC: hello,
+    scalarArgsD: hello
   }
 }
