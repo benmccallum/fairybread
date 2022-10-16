@@ -8,6 +8,6 @@ public static class ModuleInitializer
     [ModuleInitializer]
     public static void Init()
     {
-        VerifierSettings.IgnoreStackTrack();
+        VerifierSettings.IgnoreStackTrace();
     }
 }
