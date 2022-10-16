@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Verify (https://github.com/VerifyTests/Verify)
 *.received.*
+
+# Rider
+src/.idea/
