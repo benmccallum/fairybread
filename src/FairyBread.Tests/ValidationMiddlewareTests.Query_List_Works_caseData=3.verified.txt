@@ -1,5 +1,0 @@
-﻿{
-  Data: {
-    readWithListArg: SomeInteger: 1, SomeString: hello, SomeInteger: 1, SomeString: hello
-  }
-}
