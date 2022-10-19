@@ -12,20 +12,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: StandardValidator,
+        attemptedValue: 1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '50'.,
-        attemptedValue: 1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 50,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: StandardValidator
       }
     },
     {
@@ -40,20 +40,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: AnotherStandardValidator,
+        attemptedValue: 1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '100'.,
-        attemptedValue: 1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 100,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: AnotherStandardValidator
       }
     },
     {
@@ -68,20 +68,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: RequiresOwnScopeValidator,
+        attemptedValue: 1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '999'.,
-        attemptedValue: 1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 999,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: RequiresOwnScopeValidator
       }
     },
     {
@@ -96,20 +96,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: AnotherRequiresOwnScopeValidator,
+        attemptedValue: 1,
+        code: FairyBread_ValidationError,
         errorCode: GreaterThanOrEqualValidator,
         errorMessage: 'Some Integer' must be greater than or equal to '9999'.,
-        attemptedValue: 1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 9999,
           PropertyName: Some Integer,
           PropertyValue: 1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: AnotherRequiresOwnScopeValidator
       }
     }
   ]

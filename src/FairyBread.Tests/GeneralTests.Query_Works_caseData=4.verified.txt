@@ -12,20 +12,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: FooInputDtoValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: EqualValidator,
         errorMessage: 'Some Integer' must be equal to '1'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: 1,
           PropertyName: Some Integer,
           PropertyValue: -1
         },
-        propertyName: SomeInteger
+        propertyName: SomeInteger,
+        severity: Error,
+        validatorName: FooInputDtoValidator
       }
     },
     {
@@ -40,20 +40,20 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: foo,
-        validatorName: FooInputDtoValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: EqualValidator,
         errorMessage: 'Some String' must be equal to 'hello'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           ComparisonProperty: ,
           ComparisonValue: hello,
           PropertyName: Some String,
           PropertyValue: -1
         },
-        propertyName: SomeString
+        propertyName: SomeString,
+        severity: Error,
+        validatorName: FooInputDtoValidator
       }
     },
     {
@@ -68,18 +68,18 @@
         IsRoot: false
       },
       Extensions: {
-        code: FairyBread_ValidationError,
         argumentName: bar,
-        validatorName: BarInputDtoAsyncValidator,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
         errorCode: AsyncPredicateValidator,
         errorMessage: The specified condition was not met for 'Email Address'.,
-        attemptedValue: -1,
-        severity: Error,
         formattedMessagePlaceholderValues: {
           PropertyName: Email Address,
           PropertyValue: -1
         },
-        propertyName: EmailAddress
+        propertyName: EmailAddress,
+        severity: Error,
+        validatorName: BarInputDtoAsyncValidator
       }
     }
   ]
