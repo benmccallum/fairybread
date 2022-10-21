@@ -1,6 +1,3 @@
-using Microsoft.Extensions.DependencyInjection;
-using Shouldly;
-
 namespace FairyBread.Tests;
 
 public class DefaultValidatorRegistryTests

@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public class DefaultValidatorRegistry : IValidatorRegistry
 {

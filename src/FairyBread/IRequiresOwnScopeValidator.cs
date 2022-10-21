@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 /// <summary>
 /// Marker interface for validators that should be resolved

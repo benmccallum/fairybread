@@ -1,8 +1,4 @@
-﻿using FairyBread;
-using HotChocolate.Execution.Configuration;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-
-namespace Microsoft.Extensions.DependencyInjection;
+﻿namespace Microsoft.Extensions.DependencyInjection;
 
 public static class IRequestExecutorBuilderExtensions
 {

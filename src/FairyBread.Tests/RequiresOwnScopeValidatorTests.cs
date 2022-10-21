@@ -1,11 +1,4 @@
-﻿using FluentValidation;
-using HotChocolate.Execution;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
-
-namespace FairyBread.Tests;
+﻿namespace FairyBread.Tests;
 
 [UsesVerify]
 public class RequiresOwnScopeValidatorTests

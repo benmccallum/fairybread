@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public record ArgumentValidationResult
 {

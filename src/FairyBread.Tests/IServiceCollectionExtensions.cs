@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FairyBread.Tests;
+﻿namespace FairyBread.Tests;
 
 public static class IServiceCollectionExtensions
 {

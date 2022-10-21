@@ -1,12 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using HotChocolate;
-using HotChocolate.Execution;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FairyBread.Tests;
+﻿namespace FairyBread.Tests;
 
 [UsesVerify]
 public class CustomizationTests

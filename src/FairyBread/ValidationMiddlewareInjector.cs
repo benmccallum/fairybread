@@ -1,13 +1,4 @@
-﻿using HotChocolate;
-using HotChocolate.Configuration;
-using HotChocolate.Internal;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-using HotChocolate.Types.Descriptors;
-using HotChocolate.Types.Descriptors.Definitions;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 internal class ValidationMiddlewareInjector : TypeInterceptor
 {
