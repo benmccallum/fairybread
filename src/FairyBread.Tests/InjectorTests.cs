@@ -242,7 +242,7 @@ public class InjectorTests
                 .Argument("a", arg => arg.Type<IntType>())
                 .Argument("b", arg => arg.Type<BooleanType>())
                 .Type<StringType>()
-                .ResolveWith<QueryIType>(x => x.NullableScalarArgsBResolver(default, default)); ;
+                .ResolveWith<QueryIType>(x => x.NullableScalarArgsBResolver(default, default));
 
             descriptor
                 .Field("nullableScalarArgsC")
