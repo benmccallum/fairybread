@@ -11,13 +11,13 @@ public class ValidatorDescriptor
     public Type ValidatorType { get; }
 
     /// <summary>
-    /// Does the validator inherit <see cref="IRequiresOwnScopeValidator"/>? 
+    /// Does the validator inherit <see cref="IRequiresOwnScopeValidator"/>?
     /// If so, this means it should be resolved from the service provider in it's own scope.
     /// </summary>
     public bool RequiresOwnScope { get; }
 
     /// <summary>
-    /// Does the validator inherit <see cref="IExplicitUsageOnlyValidator"/>? 
+    /// Does the validator inherit <see cref="IExplicitUsageOnlyValidator"/>?
     /// If so, this means it should be only executed when explicitly set on an argument
     /// (rather than implicitly given the type it can validate).
     /// </summary>

@@ -339,7 +339,7 @@ public class GeneralTests
 
         public string SomeString { get; set; } = "";
 
-        public override string ToString() => 
+        public override string ToString() =>
             $"SomeInteger: {SomeInteger}, " +
             $"SomeString: {SomeString}";
     }
