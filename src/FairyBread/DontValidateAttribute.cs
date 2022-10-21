@@ -3,37 +3,36 @@ using System.Reflection;
 using HotChocolate.Types;
 using HotChocolate.Types.Descriptors;
 
-namespace FairyBread
+namespace FairyBread;
+
+/// <summary>
+/// Instructs FairyBread to not run any validation on the annotated argument.
+/// </summary>
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+public class DontValidateAttribute : ArgumentDescriptorAttribute
+{
+    public override void OnConfigure(
+        IDescriptorContext context,
+        IArgumentDescriptor descriptor,
+        ParameterInfo parameter)
+    {
+        descriptor.DontValidate();
+    }
+}
+
+public static class DontValidateArgumentDescriptorExtensions
 {
     /// <summary>
-    /// Instructs FairyBread to not run any validation on the annotated argument.
+    /// Instructs FairyBread to not run any validation for this argument.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
-    public class DontValidateAttribute : ArgumentDescriptorAttribute
+    public static IArgumentDescriptor DontValidate(
+        this IArgumentDescriptor descriptor)
     {
-        public override void OnConfigure(
-            IDescriptorContext context,
-            IArgumentDescriptor descriptor,
-            ParameterInfo parameter)
+        descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
         {
-            descriptor.DontValidate();
-        }
-    }
+            argDef.ContextData[WellKnownContextData.DontValidate] = true;
+        });
 
-    public static class DontValidateArgumentDescriptorExtensions
-    {
-        /// <summary>
-        /// Instructs FairyBread to not run any validation for this argument.
-        /// </summary>
-        public static IArgumentDescriptor DontValidate(
-            this IArgumentDescriptor descriptor)
-        {
-            descriptor.Extend().OnBeforeNaming((completionContext, argDef) =>
-            {
-                argDef.ContextData[WellKnownContextData.DontValidate] = true;
-            });
-
-            return descriptor;
-        }
+        return descriptor;
     }
 }
