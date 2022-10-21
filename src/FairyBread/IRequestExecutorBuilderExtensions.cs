@@ -3,31 +3,30 @@ using FairyBread;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class IRequestExecutorBuilderExtensions
 {
-    public static class IRequestExecutorBuilderExtensions
+    public static IRequestExecutorBuilder AddFairyBread(
+        this IRequestExecutorBuilder requestExecutorBuilder,
+        Action<IFairyBreadOptions>? configureOptions = null)
     {
-        public static IRequestExecutorBuilder AddFairyBread(
-            this IRequestExecutorBuilder requestExecutorBuilder,
-            Action<IFairyBreadOptions>? configureOptions = null)
-        {
-            // Services
-            var services = requestExecutorBuilder.Services;
+        // Services
+        var services = requestExecutorBuilder.Services;
 
-            var options = new DefaultFairyBreadOptions();
-            configureOptions?.Invoke(options);
-            services.TryAddSingleton<IFairyBreadOptions>(options);
+        var options = new DefaultFairyBreadOptions();
+        configureOptions?.Invoke(options);
+        services.TryAddSingleton<IFairyBreadOptions>(options);
 
-            services.TryAddSingleton<IValidatorRegistry>(sp =>
-                new DefaultValidatorRegistry(services, sp.GetRequiredService<IFairyBreadOptions>()));
-            services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
+        services.TryAddSingleton<IValidatorRegistry>(sp =>
+            new DefaultValidatorRegistry(services, sp.GetRequiredService<IFairyBreadOptions>()));
+        services.TryAddSingleton<IValidatorProvider, DefaultValidatorProvider>();
 
-            services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
+        services.TryAddSingleton<IValidationErrorsHandler, DefaultValidationErrorsHandler>();
 
-            // Executor builder
-            requestExecutorBuilder.TryAddTypeInterceptor<ValidationMiddlewareInjector>();
+        // Executor builder
+        requestExecutorBuilder.TryAddTypeInterceptor<ValidationMiddlewareInjector>();
 
-            return requestExecutorBuilder;
-        }
+        return requestExecutorBuilder;
     }
 }

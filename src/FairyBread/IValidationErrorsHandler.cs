@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using HotChocolate.Resolvers;
 
-namespace FairyBread
+namespace FairyBread;
+
+public interface IValidationErrorsHandler
 {
-    public interface IValidationErrorsHandler
-    {
-        void Handle(
-            IMiddlewareContext context,
-            IEnumerable<ArgumentValidationResult> invalidResults);
-    }
+    void Handle(
+        IMiddlewareContext context,
+        IEnumerable<ArgumentValidationResult> invalidResults);
 }
