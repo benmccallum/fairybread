@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using HotChocolate.Resolvers;
+﻿using HotChocolate.Resolvers;
 using HotChocolate.Types;
 
 namespace FairyBread;

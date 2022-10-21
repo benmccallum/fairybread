@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 /// <summary>
 /// Maintains a registry of implicit validators

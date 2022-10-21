@@ -1,5 +1,4 @@
-﻿using System;
-using FairyBread;
+﻿using FairyBread;
 using HotChocolate.Execution.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
