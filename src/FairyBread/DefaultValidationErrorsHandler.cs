@@ -1,9 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using HotChocolate;
-using HotChocolate.Resolvers;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public class DefaultValidationErrorsHandler : IValidationErrorsHandler
 {

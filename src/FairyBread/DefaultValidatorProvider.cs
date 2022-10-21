@@ -1,9 +1,4 @@
-﻿using FluentValidation;
-using HotChocolate.Resolvers;
-using HotChocolate.Types;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public class DefaultValidatorProvider : IValidatorProvider
 {

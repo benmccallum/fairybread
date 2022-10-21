@@ -1,6 +1,4 @@
-﻿using HotChocolate.Resolvers;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public interface IValidationErrorsHandler
 {

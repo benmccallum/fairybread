@@ -1,6 +1,4 @@
-﻿using HotChocolate.Types.Descriptors.Definitions;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 public interface IFairyBreadOptions
 {

@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-
-[SuppressMessage("Design", "CA1050:Declare types in namespaces")]
+﻿[SuppressMessage("Design", "CA1050:Declare types in namespaces")]
 public static class ModuleInitializer
 {
     [ModuleInitializer]

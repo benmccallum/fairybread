@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using HotChocolate.Resolvers;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 internal class ValidationMiddleware
 {

@@ -1,8 +1,3 @@
-using FluentValidation;
-using HotChocolate.Execution;
-using HotChocolate.Types;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace FairyBread.Tests;
 
 [UsesVerify]

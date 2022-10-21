@@ -1,7 +1,4 @@
-﻿using HotChocolate.Resolvers;
-using HotChocolate.Types;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 /// <summary>
 /// Resolves validators at query execution time.
