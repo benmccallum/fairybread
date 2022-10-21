@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FluentValidation;
-using HotChocolate;
-using HotChocolate.Data;
 using HotChocolate.Execution;
 using HotChocolate.Types;
 using Microsoft.Extensions.DependencyInjection;
-using VerifyTests;
-using VerifyXunit;
-using Xunit;
 
 namespace FairyBread.Tests;
 

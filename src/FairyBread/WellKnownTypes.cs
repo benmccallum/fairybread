@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 internal class WellKnownTypes
 {

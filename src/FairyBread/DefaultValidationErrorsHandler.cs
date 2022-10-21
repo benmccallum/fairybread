@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Resolvers;

@@ -1,5 +1,4 @@
-﻿using System;
-using HotChocolate.Types.Descriptors.Definitions;
+﻿using HotChocolate.Types.Descriptors.Definitions;
 
 namespace FairyBread;
 

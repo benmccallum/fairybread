@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FairyBread;
+﻿namespace FairyBread;
 
 /// <summary>
 /// Description of a validator configuration to be stored in the validator descriptor cache.
