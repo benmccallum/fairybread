@@ -6,7 +6,7 @@
       Path: {
         Name: readWithListArg,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false

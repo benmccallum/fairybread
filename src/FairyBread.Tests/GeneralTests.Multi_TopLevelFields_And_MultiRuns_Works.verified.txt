@@ -7,7 +7,7 @@
         Path: {
           Name: read,
           Parent: {
-            Depth: -1,
+            Length: -1,
             IsRoot: true
           },
           IsRoot: false
@@ -39,7 +39,7 @@
         Path: {
           Name: read,
           Parent: {
-            Depth: -1,
+            Length: -1,
             IsRoot: true
           },
           IsRoot: false
@@ -71,7 +71,7 @@
         Path: {
           Name: read,
           Parent: {
-            Depth: -1,
+            Length: -1,
             IsRoot: true
           },
           IsRoot: false
