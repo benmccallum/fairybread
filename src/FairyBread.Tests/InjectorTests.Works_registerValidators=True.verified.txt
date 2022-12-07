@@ -6,7 +6,7 @@
       Path: {
         Name: scalarArgsA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -31,7 +31,7 @@
       Path: {
         Name: objectArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -57,7 +57,7 @@
       Path: {
         Name: objectArgD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -83,7 +83,7 @@
       Path: {
         Name: objectArgD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -109,7 +109,7 @@
       Path: {
         Name: arrayArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -138,7 +138,7 @@
       Path: {
         Name: arrayArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -167,7 +167,7 @@
       Path: {
         Name: listArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -196,7 +196,7 @@
       Path: {
         Name: listArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -225,7 +225,7 @@
       Path: {
         Name: listArgB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -254,7 +254,7 @@
       Path: {
         Name: listArgB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -283,7 +283,7 @@
       Path: {
         Name: listArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -312,7 +312,7 @@
       Path: {
         Name: listArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -341,7 +341,7 @@
       Path: {
         Name: listArgD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -370,7 +370,7 @@
       Path: {
         Name: listArgD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -399,7 +399,7 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -428,7 +428,7 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -457,7 +457,7 @@
       Path: {
         Name: objectArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -483,7 +483,7 @@
       Path: {
         Name: objectArgB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -509,7 +509,7 @@
       Path: {
         Name: objectArgB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -535,7 +535,7 @@
       Path: {
         Name: objectArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -561,7 +561,7 @@
       Path: {
         Name: scalarArgsA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -586,7 +586,7 @@
       Path: {
         Name: scalarArgsB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -611,7 +611,7 @@
       Path: {
         Name: scalarArgsB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -636,7 +636,7 @@
       Path: {
         Name: scalarArgsC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -661,7 +661,7 @@
       Path: {
         Name: scalarArgsC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -686,7 +686,7 @@
       Path: {
         Name: scalarArgsD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -711,7 +711,7 @@
       Path: {
         Name: scalarArgsD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -736,7 +736,7 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -765,7 +765,7 @@
       Path: {
         Name: nullableScalarArgsA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -792,7 +792,7 @@
       Path: {
         Name: nullableScalarArgsB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -819,7 +819,7 @@
       Path: {
         Name: nullableScalarArgsB,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -846,7 +846,7 @@
       Path: {
         Name: nullableScalarArgsC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -873,7 +873,7 @@
       Path: {
         Name: nullableScalarArgsC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -900,7 +900,7 @@
       Path: {
         Name: nullableScalarArgsD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -927,7 +927,7 @@
       Path: {
         Name: nullableScalarArgsD,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -954,7 +954,7 @@
       Path: {
         Name: objectArgA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -980,7 +980,7 @@
       Path: {
         Name: nullableScalarArgsA,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false
@@ -1007,7 +1007,7 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Depth: -1,
+          Length: -1,
           IsRoot: true
         },
         IsRoot: false

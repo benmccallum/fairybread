@@ -17,10 +17,10 @@
     <PackageIconUrl>https://github.com/benmccallum/fairybread/raw/master/logo-400x400.png</PackageIconUrl>
     <PackageLicenseUrl>https://github.com/benmccallum/fairybread/blob/master/LICENSE</PackageLicenseUrl>
 
-    <Version>10.0.0-preview.1</Version>
+    <Version>10.0.0-preview.2</Version>
 
     <FluentValidationVersion>10.0.0</FluentValidationVersion>
-    <HotChocolateVersion>13.0.0-preview.68</HotChocolateVersion>
+    <HotChocolateVersion>13.0.0-preview.88</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net7.0; net6.0; netstandard2.0</LibraryTargetFrameworks>
     <TestTargetFrameworks>net7.0; net6.0</TestTargetFrameworks>
