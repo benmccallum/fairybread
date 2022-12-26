@@ -15,5 +15,8 @@
 
         public const string ValidatorDescriptors =
             Prefix + ".Validators";
+
+        public const string ValidatorDescriptorsParams =
+            Prefix + ".Validators.Params";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HotChocolate;
 using HotChocolate.Configuration;
 using HotChocolate.Internal;
@@ -15,6 +16,7 @@ namespace FairyBread
     internal class ValidationMiddlewareInjector : TypeInterceptor
     {
         private FieldMiddlewareDefinition? _validationFieldMiddlewareDef;
+        private FieldMiddlewareDefinition? _validationFieldMiddlewareDefParams;
 
         public override void OnBeforeCompleteType(
             ITypeCompletionContext completionContext,
@@ -36,6 +38,7 @@ namespace FairyBread
                 // Don't add validation middleware unless:
                 // 1. we have args
                 var needsValidationMiddleware = false;
+                var needsValidationMiddlewareParams = false;
 
                 foreach (var argDef in fieldDef.Arguments)
                 {
@@ -48,13 +51,28 @@ namespace FairyBread
                     }
 
                     // 3. there's validators for it
-                    List<ValidatorDescriptor> validatorDescs;
+                    Dictionary<string, List<ValidatorDescriptor>> validatorDescs;
+                    var usingArgs = true;
                     try
                     {
-                        validatorDescs = DetermineValidatorsForArg(validatorRegistry, argDef);
-                        if (validatorDescs.Count < 1)
+                        var validatorDescsArgs = DetermineValidatorsForArg(validatorRegistry, argDef);
+                        if (validatorDescsArgs.Any())
+                            validatorDescs = new Dictionary<string, List<ValidatorDescriptor>>() { { "Args", validatorDescsArgs } };
+                        else
                         {
-                            continue;
+                            if (fieldDef.Arguments.Count == 1) // MutationConventions always use one argument
+                            {
+                                var type = fieldDef.ResolverMember as MethodInfo;
+                                var parameters = type?.GetParameters();
+                                if (parameters is null)
+                                    continue;
+                                validatorDescs = DetermineValidatorsForParameters(validatorRegistry, parameters);
+                                if (!validatorDescs.Any())
+                                    continue;
+                                usingArgs = false;
+                            }
+                            else
+                                continue;
                         }
                     }
                     catch (Exception ex)
@@ -74,9 +92,16 @@ namespace FairyBread
                         }
                     }
 
-                    validatorDescs.TrimExcess();
-                    needsValidationMiddleware = true;
-                    argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.AsReadOnly();
+                    if (usingArgs)
+                    {
+                        needsValidationMiddleware = true;
+                        argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.First().Value.AsReadOnly();
+                    }
+                    else
+                    {
+                        needsValidationMiddlewareParams = true;
+                        argDef.ContextData[WellKnownContextData.ValidatorDescriptorsParams] = validatorDescs;
+                    }
                 }
 
                 if (needsValidationMiddleware)
@@ -89,8 +114,76 @@ namespace FairyBread
 
                     fieldDef.MiddlewareDefinitions.Insert(0, _validationFieldMiddlewareDef);
                 }
+                else if (needsValidationMiddlewareParams)
+                {
+                    if (_validationFieldMiddlewareDefParams is null)
+                    {
+                        _validationFieldMiddlewareDefParams = new FieldMiddlewareDefinition(
+                            FieldClassMiddlewareFactory.Create<ValidationMiddlewareParams>());
+                    }
+
+                    fieldDef.MiddlewareDefinitions.Add(_validationFieldMiddlewareDefParams);
+                }
             }
         }
+
+        private static Dictionary<string, List<ValidatorDescriptor>> DetermineValidatorsForParameters(IValidatorRegistry validatorRegistry, ParameterInfo[] parameters)
+        {
+            var validators = new Dictionary<string, List<ValidatorDescriptor>>();
+
+
+            foreach (var parameter in parameters)
+            {
+                var paramVals = new List<ValidatorDescriptor>();
+                // If validation is explicitly disabled, return none so validation middleware won't be added
+                if (parameter.CustomAttributes.Any(x => x.AttributeType == typeof(DontValidateAttribute)))
+                {
+                    continue;
+                }
+
+
+                // Include implicit validator/s first (if allowed)
+                if (!parameter.CustomAttributes.Any(x => x.AttributeType == typeof(DontValidateImplicitlyAttribute)))
+                {
+                    // And if we can figure out the arg's runtime type
+                    var argRuntimeType = parameter.ParameterType;
+                    if (argRuntimeType is not null)
+                    {
+                        if (validatorRegistry.Cache.TryGetValue(argRuntimeType, out var implicitValidators) &&
+                            implicitValidators is not null)
+                        {
+                            paramVals.AddRange(implicitValidators);
+                        }
+                    }
+                }
+
+                // Include explicit validator/s (that aren't already added implicitly)
+                var explicitValidators = parameter.GetCustomAttributes().Where(x => x.GetType() == typeof(ValidateAttribute)).Cast<ValidateAttribute>().ToList();
+                if (explicitValidators.Any())
+                {
+                    var validatorTypes = explicitValidators.SelectMany(x => x.ValidatorTypes);
+                    // TODO: Potentially check and throw if there's a validator being explicitly applied for the wrong runtime type
+
+                    foreach (var validatorType in validatorTypes)
+                    {
+                        if (paramVals.Any(v => v.ValidatorType == validatorType))
+                        {
+                            continue;
+                        }
+
+                        paramVals.Add(new ValidatorDescriptor(validatorType));
+                    }
+                }
+
+                if (paramVals.Any())
+                {
+                    paramVals.TrimExcess();
+                    validators[parameter.Name] = paramVals;
+                }
+            }
+            return validators;
+        }
+
 
         private static List<ValidatorDescriptor> DetermineValidatorsForArg(
             IValidatorRegistry validatorRegistry,
