@@ -13,7 +13,7 @@ public class ValidateAttribute : ArgumentDescriptorAttribute
         ValidatorTypes = validatorTypes;
     }
 
-    public override void OnConfigure(
+    protected override void OnConfigure(
         IDescriptorContext context,
         IArgumentDescriptor descriptor,
         ParameterInfo parameter)

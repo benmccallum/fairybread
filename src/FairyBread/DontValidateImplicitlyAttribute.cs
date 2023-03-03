@@ -8,7 +8,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 public class DontValidateImplicitlyAttribute : ArgumentDescriptorAttribute
 {
-    public override void OnConfigure(
+    protected override void OnConfigure(
         IDescriptorContext context,
         IArgumentDescriptor descriptor,
         ParameterInfo parameter)

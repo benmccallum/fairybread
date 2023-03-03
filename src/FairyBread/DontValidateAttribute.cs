@@ -6,7 +6,7 @@
 [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
 public class DontValidateAttribute : ArgumentDescriptorAttribute
 {
-    public override void OnConfigure(
+    protected override void OnConfigure(
         IDescriptorContext context,
         IArgumentDescriptor descriptor,
         ParameterInfo parameter)
