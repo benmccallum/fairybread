@@ -1,0 +1,26 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Mutation {
+  write(foo: FooInputDtoInput! bar: BarInputDtoInput!): String!
+}
+
+type Query {
+  read(foo: FooInputDtoInput! bar: BarInputDtoInput): String!
+  readWithArrayArg(foos: [FooInputDtoInput!]!): String!
+  readWithListArg(foos: [FooInputDtoInput!]!): String!
+  someResolver(foo: FooInputDtoInput! bar: BarInputDtoInput): String!
+  intResolver(count: Int!): String!
+  nullableIntResolver(count: Int): String!
+}
+
+input BarInputDtoInput {
+  emailAddress: String!
+}
+
+input FooInputDtoInput {
+  someInteger: Int!
+  someString: String!
+}

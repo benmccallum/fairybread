@@ -39,6 +39,19 @@ public class GeneralTests
             .BuildRequestExecutorAsync();
     }
 
+    [Fact]
+    public async Task SchemaWorks()
+    {
+        // Arrange
+        var executor = await GetRequestExecutorAsync();
+
+        // Act
+        var result = executor.Schema.ToString();
+
+        // Assert
+        await Verifier.Verify(result);
+    }
+
     [Theory]
     [MemberData(nameof(Cases))]
     public async Task Query_Works(CaseData caseData)
