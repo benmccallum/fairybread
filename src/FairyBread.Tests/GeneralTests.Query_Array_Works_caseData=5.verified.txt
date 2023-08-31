@@ -6,9 +6,9 @@
       Path: {
         Name: readWithArrayArg,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {

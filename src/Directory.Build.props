@@ -21,7 +21,7 @@
     <Version>10.0.0</Version>
 
     <FluentValidationVersion>10.0.0</FluentValidationVersion>
-    <HotChocolateVersion>13.0.0</HotChocolateVersion>
+    <HotChocolateVersion>13.5.0-preview.22</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net7.0; net6.0; netstandard2.0</LibraryTargetFrameworks>
     <TestTargetFrameworks>net7.0; net6.0</TestTargetFrameworks>

@@ -7,9 +7,9 @@
         Path: {
           Name: read,
           Parent: {
-            Length: -1,
             IsRoot: true
           },
+          Length: 1,
           IsRoot: false
         },
         Extensions: {
@@ -39,9 +39,9 @@
         Path: {
           Name: read,
           Parent: {
-            Length: -1,
             IsRoot: true
           },
+          Length: 1,
           IsRoot: false
         },
         Extensions: {
@@ -71,9 +71,9 @@
         Path: {
           Name: read,
           Parent: {
-            Length: -1,
             IsRoot: true
           },
+          Length: 1,
           IsRoot: false
         },
         Extensions: {
