@@ -1,0 +1,5 @@
+﻿{
+  Data: {
+    readWithArrayArg: SomeInteger: 1, SomeString: hello, SomeInteger: 1, SomeString: hello
+  }
+}

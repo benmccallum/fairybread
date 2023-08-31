@@ -1,0 +1,30 @@
+﻿{
+  Errors: [
+    {
+      Message: The specified condition was not met for 'Email Address'.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: read,
+        Parent: {
+          IsRoot: true
+        },
+        Length: 1,
+        IsRoot: false
+      },
+      Extensions: {
+        argumentName: bar,
+        attemptedValue: -1,
+        code: FairyBread_ValidationError,
+        errorCode: AsyncPredicateValidator,
+        errorMessage: The specified condition was not met for 'Email Address'.,
+        formattedMessagePlaceholderValues: {
+          PropertyName: Email Address,
+          PropertyValue: -1
+        },
+        propertyName: EmailAddress,
+        severity: Error,
+        validatorName: BarInputDtoAsyncValidator
+      }
+    }
+  ]
+}

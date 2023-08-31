@@ -1,0 +1,5 @@
+﻿{
+  Data: {
+    write: SomeInteger: -1, SomeString: hello; EmailAddress: ben@lol.com
+  }
+}

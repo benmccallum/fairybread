@@ -2,17 +2,20 @@
 
 internal static class WellKnownContextData
 {
-    public const string Prefix = "FairyBread";
+    public const string Prefix = "FairyBread.";
 
     public const string DontValidate =
-        Prefix + ".DontValidate";
+        Prefix + "DontValidate";
 
     public const string DontValidateImplicitly =
-        Prefix + ".DontValidateImplicitly";
+        Prefix + "DontValidateImplicitly";
 
     public const string ExplicitValidatorTypes =
-        Prefix + ".ExplicitValidatorTypes";
+        Prefix + "ExplicitValidatorTypes";
 
     public const string ValidatorDescriptors =
-        Prefix + ".Validators";
+        Prefix + "Validators";
+
+    public const string UsesMutationConvention =
+        Prefix + "UsesMutationConvention";
 }

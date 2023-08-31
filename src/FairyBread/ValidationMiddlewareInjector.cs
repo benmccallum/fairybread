@@ -2,10 +2,11 @@
 
 internal class ValidationMiddlewareInjector : TypeInterceptor
 {
+    private const string _middlewareKey = "FairyBread.ValidationMiddleware";
     private FieldMiddlewareDefinition? _validationFieldMiddlewareDef;
 
-    public override void OnBeforeCompleteType(
-        ITypeCompletionContext completionContext,
+    public override void OnBeforeRegisterDependencies(
+        ITypeDiscoveryContext context,
         DefinitionBase definition)
     {
         if (definition is not ObjectTypeDefinition objTypeDef)
@@ -13,9 +14,9 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
             return;
         }
 
-        var options = completionContext.Services
+        var options = context.Services
             .GetRequiredService<IFairyBreadOptions>();
-        var validatorRegistry = completionContext.Services
+        var validatorRegistry = context.Services
             .GetRequiredService<IValidatorRegistry>();
 
         foreach (var fieldDef in objTypeDef.Fields)
@@ -68,13 +69,26 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
 
             if (needsValidationMiddleware)
             {
-                if (_validationFieldMiddlewareDef is null)
-                {
-                    _validationFieldMiddlewareDef = new FieldMiddlewareDefinition(
-                        FieldClassMiddlewareFactory.Create<ValidationMiddleware>());
-                }
+                _validationFieldMiddlewareDef ??= new FieldMiddlewareDefinition(
+                    FieldClassMiddlewareFactory.Create<ValidationMiddleware>(),
+                    key: _middlewareKey);
 
                 fieldDef.MiddlewareDefinitions.Insert(0, _validationFieldMiddlewareDef);
+
+                // If the middleware contains the mutation convention's errors middleware
+                // then this field is using mutation conventions and we can add our error
+                // type to this mutation field
+                // We also add a context data flag so that we know how to handle any validation
+                // errors later
+                if (fieldDef.MiddlewareDefinitions
+                        .Any(md => md.Key == WellKnownMiddleware.MutationErrors))
+                {
+                    fieldDef.ContextData[WellKnownContextData.UsesMutationConvention] = true;
+
+                    fieldDef.AddErrorType(
+                        context.DescriptorContext,
+                        typeof(OutOfMemoryException));
+                }
             }
         }
     }
@@ -231,3 +245,23 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
         return null;
     }
 }
+
+//// Copied from HC source
+//internal static class MutationContextDataKeys
+//{
+//    public const string Options = "HotChocolate.Types.Mutations.Options";
+//    public const string Fields = "HotChocolate.Types.Mutations.Fields";
+//}
+//namespace HotChocolate;
+
+///// <summary>
+///// Provides keys that identify well-known middleware components.
+///// </summary>
+//public static class WellKnownMiddleware
+//{
+//    /// <summary>
+//    /// This key identifies the mutation convention middleware.
+//    /// </summary>
+//    public const string MutationErrors = "HotChocolate.Types.Mutations.Errors";
+//}
+
