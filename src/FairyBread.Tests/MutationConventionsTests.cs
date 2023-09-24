@@ -53,6 +53,12 @@ public class MutationsConventionTests
         await Verifier.Verify(result);
     }
 
+    // todo; test for mutation convention wrapping up x arguments into a
+    // single Input type, that their validation middleware still executes
+    // on the mutation field.
+    // It may be that the field middleware needs to go after the `MutationArguments`
+    // middleware, another chicken and the egg problem :/
+
     [Theory]
     [MemberData(nameof(Cases))]
     public async Task Mutation_Works(CaseData caseData)
