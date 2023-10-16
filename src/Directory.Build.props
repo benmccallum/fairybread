@@ -24,6 +24,6 @@
     <HotChocolateVersion>13.6.0-preview.31</HotChocolateVersion>
 
     <LibraryTargetFrameworks>net7.0; net6.0; netstandard2.0</LibraryTargetFrameworks>
-    <TestTargetFrameworks>net7.0</TestTargetFrameworks>
+    <TestTargetFrameworks>net7.0; net6.0</TestTargetFrameworks>
   </PropertyGroup>
 </Project>
