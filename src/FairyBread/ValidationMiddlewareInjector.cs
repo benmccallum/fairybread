@@ -1,10 +1,35 @@
 ﻿namespace FairyBread;
 
+internal class ValidationErrorConfigurer : MutationErrorConfiguration
+{
+    public override void OnConfigure(IDescriptorContext context, ObjectFieldDefinition fieldDef)
+    {
+        var options = context.Services
+            .GetRequiredService<IFairyBreadOptions>();
+        if (!options.UseMutationConventions)
+        {
+            return;
+        }
+
+        var validatorRegistry = context.Services
+            .GetRequiredService<IValidatorRegistry>();
+
+        var objTypeDef = new ObjectTypeDefinition(); // TODO: Can I get this?
+
+        if (Helpers.NeedsMiddleware(options, validatorRegistry, objTypeDef, fieldDef))
+        {
+            fieldDef.AddErrorType(context, typeof(DefaultValidationError));
+
+            Helpers.AddMiddleware(fieldDef);
+
+            // Set a flag that indicates to the error handler that this field uses mutation conventions
+            fieldDef.ContextData[WellKnownContextData.UsesMutationConvention] = true;
+        }     
+    }
+}
+
 internal class ValidationMiddlewareInjector : TypeInterceptor
 {
-    private const string _middlewareKey = "FairyBread.ValidationMiddleware";
-    private FieldMiddlewareDefinition? _validationFieldMiddlewareDef;
-
     public override void OnBeforeRegisterDependencies(
         ITypeDiscoveryContext context,
         DefinitionBase definition)
@@ -21,76 +46,78 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
 
         foreach (var fieldDef in objTypeDef.Fields)
         {
-            // Don't add validation middleware unless:
-            // 1. we have args
-            var needsValidationMiddleware = false;
-
-            foreach (var argDef in fieldDef.Arguments)
+            if (Helpers.NeedsMiddleware(options, validatorRegistry, objTypeDef, fieldDef))
             {
-                var argCoord = new FieldCoordinate(objTypeDef.Name, fieldDef.Name, argDef.Name);
+                Helpers.AddMiddleware(fieldDef);
+            }
+        }
+    }
+}
 
-                // 2. the argument should be validated according to options func
-                if (!options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))
+internal static class Helpers
+{
+    private const string _middlewareKey = "FairyBread.ValidationMiddleware";
+    internal static Lazy<FieldMiddlewareDefinition> _validationFieldMiddlewareDef = new(() =>
+        new FieldMiddlewareDefinition(
+            FieldClassMiddlewareFactory.Create<ValidationMiddleware>(),
+           key: _middlewareKey));
+
+    internal static bool NeedsMiddleware(
+        IFairyBreadOptions options,
+        IValidatorRegistry validatorRegistry,
+        ObjectTypeDefinition objTypeDef,
+        ObjectFieldDefinition fieldDef)
+    {
+        // Don't add validation middleware unless:
+        // 1. we have args
+        var needsValidationMiddleware = false;
+
+        foreach (var argDef in fieldDef.Arguments)
+        {
+            // 2. the argument should be validated according to options func
+            if (!options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))
+            {
+                continue;
+            }
+
+            // 3. there's validators for it
+            List<ValidatorDescriptor> validatorDescs;
+            try
+            {
+                validatorDescs = DetermineValidatorsForArg(validatorRegistry, argDef);
+                if (validatorDescs.Count < 1)
                 {
                     continue;
                 }
-
-                // 3. there's validators for it
-                List<ValidatorDescriptor> validatorDescs;
-                try
-                {
-                    validatorDescs = DetermineValidatorsForArg(validatorRegistry, argDef);
-                    if (validatorDescs.Count < 1)
-                    {
-                        continue;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(
-                        $"Problem getting runtime type for argument '{argDef.Name}' " +
-                        $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'.",
-                        ex);
-                }
-
-                // Cleanup context now we're done with these
-                foreach (var key in argDef.ContextData.Keys)
-                {
-                    if (key.StartsWith(WellKnownContextData.Prefix))
-                    {
-                        argDef.ContextData.Remove(key);
-                    }
-                }
-
-                validatorDescs.TrimExcess();
-                needsValidationMiddleware = true;
-                argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.AsReadOnly();
             }
-
-            if (needsValidationMiddleware)
+            catch (Exception ex)
             {
-                _validationFieldMiddlewareDef ??= new FieldMiddlewareDefinition(
-                    FieldClassMiddlewareFactory.Create<ValidationMiddleware>(),
-                    key: _middlewareKey);
+                throw new Exception(
+                    $"Problem getting runtime type for argument '{argDef.Name}' " +
+                    $"in field '{fieldDef.Name}' on object type '{objTypeDef.Name}'.",
+                    ex);
+            }
 
-                fieldDef.MiddlewareDefinitions.Insert(0, _validationFieldMiddlewareDef);
-
-                // If the middleware contains the mutation convention's errors middleware
-                // then this field is using mutation conventions and we can add our error
-                // type to this mutation field
-                // We also add a context data flag so that we know how to handle any validation
-                // errors later
-                if (fieldDef.MiddlewareDefinitions
-                        .Any(md => md.Key == WellKnownMiddleware.MutationErrors))
+            // Cleanup context now we're done with these
+            foreach (var key in argDef.ContextData.Keys)
+            {
+                if (key.StartsWith(WellKnownContextData.Prefix))
                 {
-                    fieldDef.ContextData[WellKnownContextData.UsesMutationConvention] = true;
-
-                    fieldDef.AddErrorType(
-                        context.DescriptorContext,
-                        typeof(OutOfMemoryException));
+                    argDef.ContextData.Remove(key);
                 }
             }
+
+            validatorDescs.TrimExcess();
+            needsValidationMiddleware = true;
+            argDef.ContextData[WellKnownContextData.ValidatorDescriptors] = validatorDescs.AsReadOnly();
         }
+
+        return needsValidationMiddleware;
+    }
+
+    internal static void AddMiddleware(ObjectFieldDefinition fieldDef)
+    {
+        fieldDef.MiddlewareDefinitions.Insert(0, _validationFieldMiddlewareDef.Value);
     }
 
     private static List<ValidatorDescriptor> DetermineValidatorsForArg(
@@ -245,23 +272,3 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
         return null;
     }
 }
-
-//// Copied from HC source
-//internal static class MutationContextDataKeys
-//{
-//    public const string Options = "HotChocolate.Types.Mutations.Options";
-//    public const string Fields = "HotChocolate.Types.Mutations.Fields";
-//}
-//namespace HotChocolate;
-
-///// <summary>
-///// Provides keys that identify well-known middleware components.
-///// </summary>
-//public static class WellKnownMiddleware
-//{
-//    /// <summary>
-//    /// This key identifies the mutation convention middleware.
-//    /// </summary>
-//    public const string MutationErrors = "HotChocolate.Types.Mutations.Errors";
-//}
-

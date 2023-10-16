@@ -4,6 +4,13 @@
 public class DefaultValidationError
 {
     private DefaultValidationError(
+        string message)
+    {
+        Message = "A validation error occurred";
+        // TODO: Complete a nice rich implementation.
+    }
+
+    private DefaultValidationError(
         DefaultValidationException exception)
     {
         Message = "A validation error occurred";
@@ -14,6 +21,12 @@ public class DefaultValidationError
         DefaultValidationException ex)
     {
         return new(ex);
+    }
+
+    public static DefaultValidationError CreateErrorFrom(
+        ArgumentValidationResult argValRes)
+    {
+        return new("");
     }
 
     public string Message { get; }

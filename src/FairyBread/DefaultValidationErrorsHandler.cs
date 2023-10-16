@@ -6,16 +6,24 @@ public class DefaultValidationErrorsHandler : IValidationErrorsHandler
         IMiddlewareContext context,
         IEnumerable<ArgumentValidationResult> invalidResults)
     {
-        if (context.ObjectType.Fields.Any())
+        if (context.Selection.Field.ContextData.TryGetValue(WellKnownContextData.UsesMutationConvention, out var usesMutationConventionObj) &&
+            usesMutationConventionObj is bool usesMutationConvention &&
+            usesMutationConvention == true)
+            // TODO: And options are configured to write this into conventions now
         {
-            // Throw and let the mutation convention's error middleware
-            // pick this up and do what it wants with it.
-            // TODO: Consider if I can short-circuit their middleware
-            // or just give it something they handle rather than doing the whole
-            // exception hoop jump
-            throw new DefaultValidationException(
-                context,
-                invalidResults);
+            context.Result = new MutationError(
+                invalidResults
+                .Select(DefaultValidationError.CreateErrorFrom)
+                .ToArray());
+            return;
+            //// Throw and let the mutation convention's error middleware
+            //// pick this up and do what it wants with it.
+            //// TODO: Consider if I can short-circuit their middleware
+            //// or just give it something they handle rather than doing the whole
+            //// exception hoop jump
+            //throw new DefaultValidationException(
+            //    context,
+            //    invalidResults);
         }
 
         foreach (var invalidResult in invalidResults)

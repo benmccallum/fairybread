@@ -1,9 +1,9 @@
 namespace FairyBread.Tests;
 
 [UsesVerify]
-public class MutationsConventionTests
+public class MutationConventionsTests
 {
-    static MutationsConventionTests()
+    static MutationConventionsTests()
     {
         VerifierSettings.NameForParameter<CaseData>(_ => _.CaseId);
     }
@@ -18,11 +18,11 @@ public class MutationsConventionTests
 
         if (registerValidators)
         {
-            services.AddValidator<FooInputDtoValidator, FooInputDto>();
-            services.AddValidator<ArrayOfFooInputDtoValidator, FooInputDto[]>();
-            services.AddValidator<ListOfFooInputDtoValidator, List<FooInputDto>>();
-            services.AddValidator<BarInputDtoValidator, BarInputDto>();
-            services.AddValidator<BarInputDtoAsyncValidator, BarInputDto>();
+            services.AddValidator<FooInputDtoValidator, CreateFooInput>();
+            services.AddValidator<ArrayOfFooInputDtoValidator, CreateFooInput[]>();
+            services.AddValidator<ListOfFooInputDtoValidator, List<CreateFooInput>>();
+            services.AddValidator<BarInputDtoValidator, CreateBarInputDto>();
+            services.AddValidator<BarInputDtoAsyncValidator, CreateBarInputDto>();
             services.AddValidator<NullableIntValidator, int?>();
         }
 
@@ -30,7 +30,7 @@ public class MutationsConventionTests
             .AddGraphQL()
             .AddQueryType<Query>()
             .AddMutationType<Mutation>()
-            .AddMutationConventions()
+            .AddMutationConventions(applyToAllMutations: true)
             .AddFairyBread(options =>
             {
                 configureOptions?.Invoke(options);
@@ -68,7 +68,13 @@ public class MutationsConventionTests
 
         var query = $$"""
             mutation {
-              write(foo: {{caseData.FooInput}}, bar: {{caseData.BarInput}}) {
+              createFoo(input: {{caseData.FooInput}}) {
+                string
+                errors {
+                  __typename
+                }
+              }
+              createBar(input: {{caseData.BarInput}}) {
                 string
                 errors {
                   __typename
@@ -133,10 +139,11 @@ public class MutationsConventionTests
 
     public class Mutation
     {
-        public string Write(FooInputDto foo, BarInputDto bar) => $"{foo}; {bar}";
+        public string CreateFoo(CreateFooInput input) => input.SomeString;
+        public string CreateBar(CreateBarInputDto input) => input.EmailAddress;
     }
 
-    public class FooInputDto
+    public class CreateFooInput
     {
         public int SomeInteger { get; set; }
 
@@ -147,7 +154,7 @@ public class MutationsConventionTests
             $"SomeString: {SomeString}";
     }
 
-    public class FooInputDtoValidator : AbstractValidator<FooInputDto>
+    public class FooInputDtoValidator : AbstractValidator<CreateFooInput>
     {
         public FooInputDtoValidator()
         {
@@ -156,7 +163,7 @@ public class MutationsConventionTests
         }
     }
 
-    public class ArrayOfFooInputDtoValidator : AbstractValidator<FooInputDto[]>
+    public class ArrayOfFooInputDtoValidator : AbstractValidator<CreateFooInput[]>
     {
         public ArrayOfFooInputDtoValidator()
         {
@@ -164,7 +171,7 @@ public class MutationsConventionTests
         }
     }
 
-    public class ListOfFooInputDtoValidator : AbstractValidator<List<FooInputDto>>
+    public class ListOfFooInputDtoValidator : AbstractValidator<List<CreateFooInput>>
     {
         public ListOfFooInputDtoValidator()
         {
@@ -172,7 +179,8 @@ public class MutationsConventionTests
         }
     }
 
-    public class BarInputDto
+    [GraphQLName("CreateBarInput")]
+    public class CreateBarInputDto
     {
         public string EmailAddress { get; set; } = "";
 
@@ -180,7 +188,7 @@ public class MutationsConventionTests
             => $"EmailAddress: {EmailAddress}";
     }
 
-    public abstract class BarInputDtoValidatorBase : AbstractValidator<BarInputDto>
+    public abstract class BarInputDtoValidatorBase : AbstractValidator<CreateBarInputDto>
     {
         public BarInputDtoValidatorBase()
         {
@@ -193,7 +201,7 @@ public class MutationsConventionTests
 
     }
 
-    public class BarInputDtoAsyncValidator : AbstractValidator<BarInputDto>
+    public class BarInputDtoAsyncValidator : AbstractValidator<CreateBarInputDto>
     {
         public BarInputDtoAsyncValidator()
         {

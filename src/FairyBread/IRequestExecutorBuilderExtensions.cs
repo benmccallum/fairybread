@@ -21,6 +21,7 @@ public static class IRequestExecutorBuilderExtensions
 
         // Executor builder
         requestExecutorBuilder.TryAddTypeInterceptor<ValidationMiddlewareInjector>();
+        requestExecutorBuilder.AddMutationErrorConfiguration<ValidationErrorConfigurer>();
 
         return requestExecutorBuilder;
     }
