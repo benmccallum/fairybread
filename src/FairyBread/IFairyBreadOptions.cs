@@ -18,5 +18,5 @@ public interface IFairyBreadOptions
 
     bool UseMutationConventions { get; set; }
 
-    Type ValidationExceptionType { get; set; }
+    Type ValidationErrorType { get; set; }
 }

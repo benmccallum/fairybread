@@ -6,10 +6,9 @@ public class DefaultValidationErrorsHandler : IValidationErrorsHandler
         IMiddlewareContext context,
         IEnumerable<ArgumentValidationResult> invalidResults)
     {
-        if (context.Selection.Field.ContextData.TryGetValue(WellKnownContextData.UsesMutationConvention, out var usesMutationConventionObj) &&
-            usesMutationConventionObj is bool usesMutationConvention &&
-            usesMutationConvention == true)
-            // TODO: And options are configured to write this into conventions now
+        if (context.Selection.Field.ContextData.TryGetValue(WellKnownContextData.UsesInlineErrors, out var usesInlineErrorsObj) &&
+            usesInlineErrorsObj is bool usesInlineErrors &&
+            usesInlineErrors == true)
         {
             context.Result = new MutationError(
                 invalidResults

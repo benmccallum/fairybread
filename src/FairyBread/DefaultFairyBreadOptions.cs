@@ -15,6 +15,6 @@ public class DefaultFairyBreadOptions : IFairyBreadOptions
         = true;
 
     /// <inheritdoc/>
-    public virtual Type ValidationExceptionType { get; set; }
-        = typeof(DefaultValidationException);
+    public virtual Type ValidationErrorType { get; set; }
+        = typeof(DefaultValidationError);
 }

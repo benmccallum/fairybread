@@ -16,6 +16,9 @@ internal static class WellKnownContextData
     public const string ValidatorDescriptors =
         Prefix + "Validators";
 
-    public const string UsesMutationConvention =
-        Prefix + "UsesMutationConvention";
+    public const string UsesInlineErrors =
+        Prefix + "UsesInlineErrors";
+
+    public const string UsesGlobalErrors =
+        Prefix + "UsesGlobalErrors";
 }
