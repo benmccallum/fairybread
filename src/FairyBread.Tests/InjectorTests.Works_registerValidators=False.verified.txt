@@ -5,10 +5,7 @@
       nodes: [
         {
           a: A
-        },
-        null,
-        null,
-        null
+        }
       ]
     },
     listArgA: 0, 0,

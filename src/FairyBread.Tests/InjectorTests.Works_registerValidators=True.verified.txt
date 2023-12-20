@@ -6,9 +6,9 @@
       Path: {
         Name: scalarArgsA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -31,9 +31,9 @@
       Path: {
         Name: objectArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -57,9 +57,9 @@
       Path: {
         Name: objectArgD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -83,9 +83,9 @@
       Path: {
         Name: objectArgD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -109,9 +109,9 @@
       Path: {
         Name: arrayArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -138,9 +138,9 @@
       Path: {
         Name: arrayArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -167,9 +167,9 @@
       Path: {
         Name: listArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -196,9 +196,9 @@
       Path: {
         Name: listArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -225,9 +225,9 @@
       Path: {
         Name: listArgB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -254,9 +254,9 @@
       Path: {
         Name: listArgB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -283,9 +283,9 @@
       Path: {
         Name: listArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -312,9 +312,9 @@
       Path: {
         Name: listArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -341,9 +341,9 @@
       Path: {
         Name: listArgD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -370,9 +370,9 @@
       Path: {
         Name: listArgD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -399,9 +399,9 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -428,9 +428,9 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -457,9 +457,9 @@
       Path: {
         Name: objectArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -483,9 +483,9 @@
       Path: {
         Name: objectArgB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -509,9 +509,9 @@
       Path: {
         Name: objectArgB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -535,9 +535,9 @@
       Path: {
         Name: objectArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -561,9 +561,9 @@
       Path: {
         Name: scalarArgsA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -586,9 +586,9 @@
       Path: {
         Name: scalarArgsB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -611,9 +611,9 @@
       Path: {
         Name: scalarArgsB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -636,9 +636,9 @@
       Path: {
         Name: scalarArgsC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -661,9 +661,9 @@
       Path: {
         Name: scalarArgsC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -686,9 +686,9 @@
       Path: {
         Name: scalarArgsD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -711,9 +711,9 @@
       Path: {
         Name: scalarArgsD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -736,9 +736,9 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -765,9 +765,9 @@
       Path: {
         Name: nullableScalarArgsA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -792,9 +792,9 @@
       Path: {
         Name: nullableScalarArgsB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -819,9 +819,9 @@
       Path: {
         Name: nullableScalarArgsB,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -846,9 +846,9 @@
       Path: {
         Name: nullableScalarArgsC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -873,9 +873,9 @@
       Path: {
         Name: nullableScalarArgsC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -900,9 +900,9 @@
       Path: {
         Name: nullableScalarArgsD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -927,9 +927,9 @@
       Path: {
         Name: nullableScalarArgsD,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -954,9 +954,9 @@
       Path: {
         Name: objectArgA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -980,9 +980,9 @@
       Path: {
         Name: nullableScalarArgsA,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -1007,9 +1007,9 @@
       Path: {
         Name: listOfListArgC,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {

@@ -6,11 +6,34 @@ public class DefaultValidationErrorsHandler : IValidationErrorsHandler
         IMiddlewareContext context,
         IEnumerable<ArgumentValidationResult> invalidResults)
     {
+        if (context.Selection.Field.ContextData.TryGetValue(WellKnownContextData.UsesInlineErrors, out var usesInlineErrorsObj) &&
+            usesInlineErrorsObj is bool usesInlineErrors &&
+            usesInlineErrors == true)
+        {
+            context.Result = new MutationError(
+                invalidResults
+                .Select(DefaultValidationError.CreateErrorFrom)
+                .ToArray());
+            return;
+            //// Throw and let the mutation convention's error middleware
+            //// pick this up and do what it wants with it.
+            //// TODO: Consider if I can short-circuit their middleware
+            //// or just give it something they handle rather than doing the whole
+            //// exception hoop jump
+            //throw new DefaultValidationException(
+            //    context,
+            //    invalidResults);
+        }
+
         foreach (var invalidResult in invalidResults)
         {
             foreach (var failure in invalidResult.Result.Errors)
             {
-                var errorBuilder = CreateErrorBuilder(context, invalidResult.ArgumentName, invalidResult.Validator, failure);
+                var errorBuilder = CreateErrorBuilder(
+                    context,
+                    invalidResult.ArgumentName,
+                    invalidResult.Validator,
+                    failure);
                 var error = errorBuilder.Build();
                 context.ReportError(error);
             }
@@ -33,7 +56,9 @@ public class DefaultValidationErrorsHandler : IValidationErrorsHandler
             .SetExtension("errorMessage", failure.ErrorMessage)
             .SetExtension("attemptedValue", failure.AttemptedValue)
             .SetExtension("severity", failure.Severity)
-            .SetExtension("formattedMessagePlaceholderValues", failure.FormattedMessagePlaceholderValues);
+            .SetExtension(
+                "formattedMessagePlaceholderValues",
+                failure.FormattedMessagePlaceholderValues);
 
         if (!string.IsNullOrWhiteSpace(failure.PropertyName))
         {

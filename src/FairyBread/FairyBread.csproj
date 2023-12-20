@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="$(FluentValidationVersion)" />
     <PackageReference Include="HotChocolate.Execution" Version="$(HotChocolateVersion)" />
+    <PackageReference Include="HotChocolate.Types.Mutations" Version="$(HotChocolateVersion)" />
   </ItemGroup>
 
 </Project>

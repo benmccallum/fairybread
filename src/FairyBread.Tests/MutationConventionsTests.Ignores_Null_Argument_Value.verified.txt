@@ -1,0 +1,5 @@
+﻿{
+  Data: {
+    read: SomeInteger: 1, SomeString: hello; 
+  }
+}

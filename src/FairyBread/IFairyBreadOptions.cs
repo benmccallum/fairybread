@@ -15,4 +15,8 @@ public interface IFairyBreadOptions
     /// The default implementation always returns <c>true</c>.
     /// </summary>
     Func<ObjectTypeDefinition, ObjectFieldDefinition, ArgumentDefinition, bool> ShouldValidateArgument { get; set; }
+
+    bool UseMutationConventions { get; set; }
+
+    Type ValidationErrorType { get; set; }
 }

@@ -48,8 +48,23 @@ public Task CreateUser(CreateUserInput userInput) { ... }
 
 ### How validation errors will be handled
 
-By default, errors will be written out into the GraphQL execution result in the `Errors` property with one error being reported per failure on a field.
-You can change this behaviour by implementing your own `IValidationErrorsHandler`.
+Validation errors can be reported by FairyBread in one of two fashions, depending on the field in question:
+1. Globally, under the GraphQL response's `errors` array.
+2. Inline, under the mutation field's `errors` array as per [mutation conventions]().
+
+Currently, standard fields (i.e. not a mutation field), will always report errors globally.
+This may be changed in the future as best practices and upstream support comes through.
+
+Mutation fields on the other hand, when using a field is using Hot Chocolate's mutation convention
+(and FairyBread's UseMutationConvention setting is on, as is the default),
+the validation errors will be written out under the convention-based `errors` array field
+under the mutation field.
+
+Note: To assist in migration from the old behavior to the new one, you can use `[GlobalValidationErrors]` or
+`.GlobalValidationErrors()` (fluent-style) on mutation fields to opt back into global errors field-by-field.
+
+In both cases, one error will be reported per failure on a field.
+You can change this behavior by implementing your own `IValidationErrorsHandler`.
 
 ### Implicit vs explicit configuration
 
@@ -117,6 +132,8 @@ services.AddFairyBread(options =>
 {
     options.ShouldValidateArgument = (objTypeDef, fieldTypeDef, argTypeDef) => ...;
     options.ThrowIfNoValidatorsFound = true/false;
+	options.UseMutationConventions = true/false;
+	options.ValidationErrorType = typeof(...);
 });
 ```
 

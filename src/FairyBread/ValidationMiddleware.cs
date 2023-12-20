@@ -19,7 +19,7 @@ internal class ValidationMiddleware
     public async Task InvokeAsync(IMiddlewareContext context)
     {
         var arguments = context.Selection.Field.Arguments;
-
+        
         var invalidResults = new List<ArgumentValidationResult>();
 
         foreach (var argument in arguments)

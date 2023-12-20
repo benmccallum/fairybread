@@ -1,0 +1,46 @@
+﻿schema {
+  query: Query
+  mutation: Mutation
+}
+
+interface Error {
+  message: String!
+}
+
+type CreateBarPayload {
+  string: String
+  errors: [CreateBarError!]
+}
+
+type CreateFooPayload {
+  string: String
+  errors: [CreateFooError!]
+}
+
+type Mutation {
+  createFoo(input: CreateFooInput!): CreateFooPayload!
+  createBar(input: CreateBarInput!): CreateBarPayload!
+}
+
+type Query {
+  meh: String!
+}
+
+type ValidationError implements Error {
+  message: String!
+}
+
+union CreateBarError = ValidationError
+
+union CreateFooError = ValidationError
+
+input CreateBarInput {
+  emailAddress: String!
+}
+
+input CreateFooInput {
+  someInteger: Int!
+  someString: String!
+}
+
+directive @tag(name: String!) repeatable on SCHEMA | SCALAR | OBJECT | FIELD_DEFINITION | ARGUMENT_DEFINITION | INTERFACE | UNION | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION

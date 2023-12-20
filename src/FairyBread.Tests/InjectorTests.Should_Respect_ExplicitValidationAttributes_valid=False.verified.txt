@@ -1,68 +1,14 @@
 ﻿{
   Errors: [
     {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: readWithExplicitValidation,
-        Parent: {
-          Length: -1,
-          IsRoot: true
-        },
-        IsRoot: false
-      },
-      Extensions: {
-        argumentName: fooInt,
-        attemptedValue: -1,
-        code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: -1
-        },
-        severity: Error,
-        validatorName: PositiveIntValidator
-      }
-    },
-    {
-      Message: '' must be greater than '0'.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: readWithExplicitValidation,
-        Parent: {
-          Length: -1,
-          IsRoot: true
-        },
-        IsRoot: false
-      },
-      Extensions: {
-        argumentName: barInt,
-        attemptedValue: -1,
-        code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: '' must be greater than '0'.,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: null,
-          PropertyValue: -1
-        },
-        severity: Error,
-        validatorName: PositiveIntValidator
-      }
-    },
-    {
       Message: 'A' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -86,9 +32,9 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -107,59 +53,55 @@
       }
     },
     {
-      Message: Explicit validator error msg.,
+      Message: 'A' must not be empty.,
       Code: FairyBread_ValidationError,
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
-        IsRoot: false
-      },
-      Extensions: {
-        argumentName: fooInput,
-        attemptedValue: 0,
-        code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: Explicit validator error msg.,
-        formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
-          PropertyName: A,
-          PropertyValue: 0
-        },
-        propertyName: A,
-        severity: Error,
-        validatorName: TestInputExplicitValidator
-      }
-    },
-    {
-      Message: Explicit validator error msg.,
-      Code: FairyBread_ValidationError,
-      Path: {
-        Name: readWithExplicitValidation,
-        Parent: {
-          Length: -1,
-          IsRoot: true
-        },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
         argumentName: barInput,
         attemptedValue: 0,
         code: FairyBread_ValidationError,
-        errorCode: GreaterThanValidator,
-        errorMessage: Explicit validator error msg.,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
         formattedMessagePlaceholderValues: {
-          ComparisonProperty: ,
-          ComparisonValue: 0,
           PropertyName: A,
           PropertyValue: 0
         },
         propertyName: A,
         severity: Error,
-        validatorName: TestInputExplicitValidator
+        validatorName: TestInputValidator
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidation,
+        Parent: {
+          IsRoot: true
+        },
+        Length: 1,
+        IsRoot: false
+      },
+      Extensions: {
+        argumentName: barInput,
+        attemptedValue: false,
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B,
+        severity: Error,
+        validatorName: TestInputValidator
       }
     },
     {
@@ -168,9 +110,61 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
+        IsRoot: false
+      },
+      Extensions: {
+        argumentName: lolInput,
+        attemptedValue: 0,
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'A' must not be empty.,
+        formattedMessagePlaceholderValues: {
+          PropertyName: A,
+          PropertyValue: 0
+        },
+        propertyName: A,
+        severity: Error,
+        validatorName: TestInputValidator
+      }
+    },
+    {
+      Message: 'B' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidation,
+        Parent: {
+          IsRoot: true
+        },
+        Length: 1,
+        IsRoot: false
+      },
+      Extensions: {
+        argumentName: lolInput,
+        attemptedValue: false,
+        code: FairyBread_ValidationError,
+        errorCode: NotEmptyValidator,
+        errorMessage: 'B' must not be empty.,
+        formattedMessagePlaceholderValues: {
+          PropertyName: B,
+          PropertyValue: false
+        },
+        propertyName: B,
+        severity: Error,
+        validatorName: TestInputValidator
+      }
+    },
+    {
+      Message: 'A' must not be empty.,
+      Code: FairyBread_ValidationError,
+      Path: {
+        Name: readWithExplicitValidation,
+        Parent: {
+          IsRoot: true
+        },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
@@ -194,9 +188,9 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
       Extensions: {
