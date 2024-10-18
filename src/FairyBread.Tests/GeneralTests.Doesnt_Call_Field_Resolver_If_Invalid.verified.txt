@@ -6,11 +6,17 @@
       Path: {
         Name: someResolver,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
       Extensions: {
         argumentName: foo,
         attemptedValue: -1,
@@ -28,5 +34,6 @@
         validatorName: FooInputDtoValidator
       }
     }
-  ]
+  ],
+  IsDataSet: true
 }

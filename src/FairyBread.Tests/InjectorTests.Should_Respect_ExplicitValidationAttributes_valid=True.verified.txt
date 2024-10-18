@@ -1,5 +1,6 @@
 ﻿{
   Data: {
     readWithExplicitValidation: 1 1 1 1 | True 1 | True 1 | True
-  }
+  },
+  IsDataSet: true
 }
