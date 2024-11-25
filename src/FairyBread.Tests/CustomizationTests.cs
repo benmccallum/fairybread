@@ -1,6 +1,5 @@
 ﻿namespace FairyBread.Tests;
 
-[UsesVerify]
 public class CustomizationTests
 {
     private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
@@ -30,7 +29,7 @@ public class CustomizationTests
         });
 
         // Act
-        var result = await executor.ExecuteAsync(Query) as IQueryResult;
+        var result = await executor.ExecuteAsync(Query) as IOperationResult;
 
         // Assert
         Assert.NotNull(result);

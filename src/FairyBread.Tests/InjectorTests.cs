@@ -1,6 +1,5 @@
 namespace FairyBread.Tests;
 
-[UsesVerify]
 public class InjectorTests
 {
     private static async Task<IRequestExecutor> GetRequestExecutorAsync(
