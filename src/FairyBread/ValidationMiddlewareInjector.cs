@@ -26,7 +26,7 @@ internal class ValidationMiddlewareInjector : TypeInterceptor
 
             foreach (var argDef in fieldDef.Arguments)
             {
-                var argCoord = new FieldCoordinate(objTypeDef.Name, fieldDef.Name, argDef.Name);
+                var argCoord = new SchemaCoordinate(objTypeDef.Name, fieldDef.Name, argDef.Name);
 
                 // 2. the argument should be validated according to options func
                 if (!options.ShouldValidateArgument(objTypeDef, fieldDef, argDef))

@@ -6,11 +6,17 @@
       Path: {
         Name: readWithListArg,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
       Extensions: {
         argumentName: foos,
         attemptedValue: -1,
@@ -35,11 +41,17 @@
       Path: {
         Name: readWithListArg,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
       Extensions: {
         argumentName: foos,
         attemptedValue: -1,
@@ -58,5 +70,6 @@
         validatorName: ListOfFooInputDtoValidator
       }
     }
-  ]
+  ],
+  IsDataSet: true
 }
