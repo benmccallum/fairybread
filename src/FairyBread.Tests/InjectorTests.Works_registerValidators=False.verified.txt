@@ -5,10 +5,7 @@
       nodes: [
         {
           a: A
-        },
-        null,
-        null,
-        null
+        }
       ]
     },
     listArgA: 0, 0,
@@ -29,5 +26,6 @@
     scalarArgsB: 0 | False,
     scalarArgsC: hello,
     scalarArgsD: hello
-  }
+  },
+  IsDataSet: true
 }

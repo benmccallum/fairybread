@@ -6,11 +6,17 @@
       Path: {
         Name: read,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 1,
+          Column: 9
+        }
+      ],
       Extensions: {
         argumentName: bar,
         attemptedValue: -1,
@@ -26,5 +32,6 @@
         validatorName: BarInputDtoAsyncValidator
       }
     }
-  ]
+  ],
+  IsDataSet: true
 }

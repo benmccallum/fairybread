@@ -6,11 +6,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: fooInt,
         attemptedValue: -1,
@@ -33,11 +39,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: barInt,
         attemptedValue: -1,
@@ -60,11 +72,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: fooInput,
         attemptedValue: 0,
@@ -86,11 +104,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: fooInput,
         attemptedValue: false,
@@ -112,11 +136,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: fooInput,
         attemptedValue: 0,
@@ -140,11 +170,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: barInput,
         attemptedValue: 0,
@@ -168,11 +204,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: dblInput,
         attemptedValue: 0,
@@ -194,11 +236,17 @@
       Path: {
         Name: readWithExplicitValidation,
         Parent: {
-          Length: -1,
           IsRoot: true
         },
+        Length: 1,
         IsRoot: false
       },
+      Locations: [
+        {
+          Line: 3,
+          Column: 21
+        }
+      ],
       Extensions: {
         argumentName: dblInput,
         attemptedValue: false,
@@ -214,5 +262,6 @@
         validatorName: TestInputValidator
       }
     }
-  ]
+  ],
+  IsDataSet: true
 }

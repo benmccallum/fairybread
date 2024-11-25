@@ -1,6 +1,5 @@
 namespace FairyBread.Tests;
 
-[UsesVerify]
 public class GeneralTests
 {
     static GeneralTests()

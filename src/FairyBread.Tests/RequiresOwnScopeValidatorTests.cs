@@ -1,6 +1,5 @@
 ﻿namespace FairyBread.Tests;
 
-[UsesVerify]
 public class RequiresOwnScopeValidatorTests
 {
     private const string Query = @"query { read(foo: { someInteger: 1, someString: ""hello"" }) }";
