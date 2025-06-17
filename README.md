@@ -142,8 +142,8 @@ We strive to match Hot Chocolate's supported .NET target frameworks, though this
 
 | HotChocolate | FluentValidation | FairyBread | FairyBread docs |
 | ------------ | ---------------- | ---------- | --------------- |
-|     v15.0.0 |              v11 |         v11 | right here |
-|     v14.0.0 |              v10 |         v10 | [/v11/main](https://github.com/benmccallum/fairybread/tree/v10/main) branch |
+|     v15.0.0 |              v11 |         v12 | right here |
+|     v14.0.0 |              v10 |         v11 | [/v11/main](https://github.com/benmccallum/fairybread/tree/v10/main) branch |
 |     v13.0.0 |              v10 |         v10 | [/v10/main](https://github.com/benmccallum/fairybread/tree/v10/main) branch |
 |     v12.4.0* |              v10 |         v9 | [/v9/main](https://github.com/benmccallum/fairybread/tree/v9/main) branch |
 |      v12.0.1 |              v10 |         v8 | [/v8/main](https://github.com/benmccallum/fairybread/tree/v8/main) branch |
